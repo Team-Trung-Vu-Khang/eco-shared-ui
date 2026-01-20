@@ -168,11 +168,6 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
             href: "/distribution-detail",
           },
           {
-            id: "dist-detail-v2",
-            label: "Chi tiết phân bổ (v2)",
-            href: "/distribution-detail-v2",
-          },
-          {
             id: "search-crop",
             label: "Tìm kiếm cây trồng",
             href: "/search-crop",
