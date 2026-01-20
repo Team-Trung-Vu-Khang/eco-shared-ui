@@ -124,16 +124,65 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     title: "Vùng trồng",
     items: [
       {
-        id: "geo-zone",
-        label: "Vùng trồng địa lý",
+        id: "region-chart",
+        label: "Biểu đồ vùng",
         icon: Map,
-        href: "/geo-zone",
+        href: "/region-chart",
+        children: [
+          {
+            id: "region-dist",
+            label: "Phân bố vùng",
+            href: "/region-distribution",
+          },
+          {
+            id: "area-dist",
+            label: "Phân bố khu vực",
+            href: "/area-distribution",
+          },
+          {
+            id: "plot-dist",
+            label: "Phân bố lô",
+            href: "/plot-distribution",
+          },
+          {
+            id: "map-view",
+            label: "Bản đồ",
+            href: "/map-view",
+          },
+        ],
       },
       {
         id: "cultivation-zone",
         label: "Vùng canh tác",
         icon: TreePine,
         href: "/cultivation-zone",
+        children: [
+          {
+            id: "cultivation-area",
+            label: "Khu vực canh tác",
+            href: "/cultivation-area",
+          },
+          {
+            id: "dist-detail",
+            label: "Chi tiết phân bổ",
+            href: "/distribution-detail",
+          },
+          {
+            id: "dist-detail-v2",
+            label: "Chi tiết phân bổ (v2)",
+            href: "/distribution-detail-v2",
+          },
+          {
+            id: "search-crop",
+            label: "Tìm kiếm cây trồng",
+            href: "/search-crop",
+          },
+          {
+            id: "search-zone",
+            label: "Tìm kiếm vùng trồng",
+            href: "/search-zone",
+          },
+        ],
       },
     ],
   },
