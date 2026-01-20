@@ -56,20 +56,66 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
   {
     title: "Danh mục cơ bản",
     items: [
-      { id: "terrain", label: "Quản lý địa hình", icon: Mountain, href: "/terrain" },
+      {
+        id: "terrain",
+        label: "Quản lý địa hình",
+        icon: Mountain,
+        href: "/terrain",
+      },
       { id: "land", label: "Quản lý đất", icon: Layers, href: "/land" },
-      { id: "farming-method", label: "Phương thức canh tác", icon: Leaf, href: "/farming-method" },
-      { id: "certificate", label: "Chứng nhận chứng chỉ", icon: Award, href: "/certificate" },
+      {
+        id: "farming-method",
+        label: "Phương thức canh tác",
+        icon: Leaf,
+        href: "/farming-method",
+      },
+      {
+        id: "certificate",
+        label: "Chứng nhận chứng chỉ",
+        icon: Award,
+        href: "/certificate",
+      },
     ],
   },
   {
     title: "Tổ chức",
     items: [
-      { id: "enterprise", label: "Doanh nghiệp / Nông hộ", icon: Building2, href: "/enterprise" },
+      {
+        id: "enterprise",
+        label: "Doanh nghiệp / Nông hộ",
+        icon: Building2,
+        href: "/enterprise",
+      },
       { id: "branch", label: "Chi nhánh", icon: GitBranch, href: "/branch" },
-      { id: "bank", label: "Thông tin ngân hàng", icon: Landmark, href: "/bank" },
-      { id: "contact", label: "Thông tin liên hệ", icon: Users, href: "/contact" },
-      { id: "department", label: "Phòng ban", icon: Building, href: "/department" },
+      {
+        id: "bank",
+        label: "Thông tin ngân hàng",
+        icon: Landmark,
+        href: "/bank",
+      },
+      {
+        id: "contact",
+        label: "Thông tin liên hệ",
+        icon: Users,
+        href: "/contact",
+      },
+    ],
+  },
+  {
+    title: "Tổ chức & Nhân sự",
+    items: [
+      {
+        id: "personnel",
+        label: "Nhân sự",
+        icon: Users,
+        href: "/personnel",
+      },
+      {
+        id: "department",
+        label: "Phòng ban",
+        icon: Building,
+        href: "/department",
+      },
       { id: "position", label: "Vị trí", icon: MapPin, href: "/position" },
       { id: "team", label: "Đội nhóm", icon: UsersRound, href: "/team" },
     ],
@@ -77,17 +123,37 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
   {
     title: "Vùng trồng",
     items: [
-      { id: "geo-zone", label: "Vùng trồng địa lý", icon: Map, href: "/geo-zone" },
-      { id: "cultivation-zone", label: "Vùng canh tác", icon: TreePine, href: "/cultivation-zone" },
+      {
+        id: "geo-zone",
+        label: "Vùng trồng địa lý",
+        icon: Map,
+        href: "/geo-zone",
+      },
+      {
+        id: "cultivation-zone",
+        label: "Vùng canh tác",
+        icon: TreePine,
+        href: "/cultivation-zone",
+      },
     ],
   },
   {
     title: "Cây trồng",
     items: [
       { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
-      { id: "variety", label: "Giống cây trồng", icon: Sprout, href: "/variety" },
+      {
+        id: "variety",
+        label: "Giống cây trồng",
+        icon: Sprout,
+        href: "/variety",
+      },
       { id: "seed", label: "Hạt giống", icon: Leaf, href: "/seed" },
-      { id: "growth-cycle", label: "Chu kỳ sinh trưởng", icon: CalendarDays, href: "/growth-cycle" },
+      {
+        id: "growth-cycle",
+        label: "Chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/growth-cycle",
+      },
       { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
     ],
   },
@@ -95,9 +161,24 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     title: "Vật tư",
     items: [
       { id: "pesticide", label: "Thuốc BVTV", icon: Bug, href: "/pesticide" },
-      { id: "fertilizer", label: "Phân bón", icon: FlaskConical, href: "/fertilizer" },
-      { id: "material", label: "Vật tư khác", icon: Package, href: "/material" },
-      { id: "equipment", label: "Dụng cụ – Máy móc", icon: Wrench, href: "/equipment" },
+      {
+        id: "fertilizer",
+        label: "Phân bón",
+        icon: FlaskConical,
+        href: "/fertilizer",
+      },
+      {
+        id: "material",
+        label: "Vật tư khác",
+        icon: Package,
+        href: "/material",
+      },
+      {
+        id: "equipment",
+        label: "Dụng cụ – Máy móc",
+        icon: Wrench,
+        href: "/equipment",
+      },
       { id: "unit", label: "Đơn vị quy đổi", icon: Scale, href: "/unit" },
     ],
   },
@@ -105,7 +186,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     title: "Quản lý hoạt động",
     items: [
       { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
-      { id: "plan", label: "Kế hoạch canh tác", icon: ClipboardList, href: "/plan" },
+      {
+        id: "plan",
+        label: "Kế hoạch canh tác",
+        icon: ClipboardList,
+        href: "/plan",
+      },
       { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
     ],
   },
@@ -116,15 +202,18 @@ interface AdminSidebarProps {
   onToggle?: () => void;
 }
 
-export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps) {
+export function AdminSidebar({
+  collapsed = false,
+  onToggle,
+}: AdminSidebarProps) {
   const [location] = useLocation();
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    menuGroups.map((g) => g.title)
+    menuGroups.map((g) => g.title),
   );
 
   const toggleGroup = (title: string) => {
     setExpandedGroups((prev) =>
-      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     );
   };
 
@@ -132,7 +221,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
     <aside
       className={cn(
         "fixed left-0 top-0 z-40 h-screen bg-sidebar text-sidebar-foreground transition-all duration-300 flex flex-col",
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-64",
       )}
       data-testid="admin-sidebar"
     >
@@ -143,7 +232,9 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
           </div>
           {!collapsed && (
             <div>
-              <h1 className="font-display font-bold text-lg leading-tight">FARM</h1>
+              <h1 className="font-display font-bold text-lg leading-tight">
+                FARM
+              </h1>
               <p className="text-xs text-sidebar-foreground/60">Admin Portal</p>
             </div>
           )}
@@ -191,7 +282,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
                           isActive
                             ? "bg-sidebar-primary text-sidebar-primary-foreground"
                             : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                          collapsed && "justify-center px-2"
+                          collapsed && "justify-center px-2",
                         )}
                         data-testid={`menu-${item.id}`}
                       >
@@ -212,7 +303,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
           href="/settings"
           className={cn(
             "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all",
-            collapsed && "justify-center px-2"
+            collapsed && "justify-center px-2",
           )}
           data-testid="menu-settings"
         >
@@ -222,7 +313,7 @@ export function AdminSidebar({ collapsed = false, onToggle }: AdminSidebarProps)
         <button
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all",
-            collapsed && "justify-center px-2"
+            collapsed && "justify-center px-2",
           )}
           data-testid="menu-logout"
         >
