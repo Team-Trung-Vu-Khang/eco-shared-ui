@@ -260,9 +260,19 @@ export function AdminSidebar({
     menuGroups.map((g) => g.title),
   );
 
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
   const toggleGroup = (title: string) => {
     setExpandedGroups((prev) =>
       prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
+    );
+  };
+
+  const toggleItem = (itemId: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(itemId)
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId],
     );
   };
 
@@ -321,7 +331,67 @@ export function AdminSidebar({
                 <div className="mt-1 space-y-0.5">
                   {group.items.map((item) => {
                     const Icon = item.icon;
-                    const isActive = location === item.href;
+                    const hasChildren =
+                      item.children && item.children.length > 0;
+                    const isExpanded = expandedItems.includes(item.id);
+                    // Check if any child is active
+                    const isChildActive = item.children?.some(
+                      (child) => location === child.href,
+                    );
+                    const isActive = location === item.href || isChildActive;
+
+                    if (hasChildren) {
+                      return (
+                        <div key={item.id} className="space-y-1">
+                          <button
+                            onClick={() => {
+                              if (collapsed && onToggle) onToggle();
+                              toggleItem(item.id);
+                            }}
+                            className={cn(
+                              "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                              isActive
+                                ? "text-sidebar-primary font-semibold"
+                                : "text-sidebar-foreground/80",
+                              collapsed && "justify-center px-2",
+                            )}
+                          >
+                            <div className="flex items-center gap-3">
+                              <Icon className="w-4.5 h-4.5 flex-shrink-0" />
+                              {!collapsed && <span>{item.label}</span>}
+                            </div>
+                            {!collapsed &&
+                              (isExpanded ? (
+                                <ChevronDown className="w-4 h-4" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4" />
+                              ))}
+                          </button>
+                          {!collapsed && isExpanded && (
+                            <div className="ml-4 pl-3 border-l border-sidebar-border/50 space-y-1">
+                              {item.children!.map((child) => {
+                                const isItemActive = location === child.href;
+                                return (
+                                  <Link
+                                    key={child.id}
+                                    href={child.href}
+                                    className={cn(
+                                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                                      isItemActive
+                                        ? "text-sidebar-primary font-medium bg-sidebar-accent/50"
+                                        : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/30",
+                                    )}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+
                     return (
                       <Link
                         key={item.id}
