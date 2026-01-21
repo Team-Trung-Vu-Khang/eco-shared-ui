@@ -19,6 +19,7 @@ interface FormDialogProps {
   submitLabel?: string;
   loading?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
+  maxWidth?: string;
 }
 
 export function FormDialog({
@@ -31,6 +32,7 @@ export function FormDialog({
   submitLabel = "Lưu",
   loading = false,
   size = "md",
+  maxWidth,
 }: FormDialogProps) {
   const sizeClasses = {
     sm: "max-w-sm",
@@ -41,17 +43,29 @@ export function FormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={sizeClasses[size]} data-testid="form-dialog">
+      <DialogContent
+        className={maxWidth || sizeClasses[size]}
+        data-testid="form-dialog"
+      >
         <DialogHeader>
           <DialogTitle className="font-display">{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         <div className="py-4">{children}</div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading} data-testid="cancel-btn">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={loading}
+            data-testid="cancel-btn"
+          >
             Hủy
           </Button>
-          <Button onClick={onSubmit} disabled={loading} data-testid="submit-btn">
+          <Button
+            onClick={onSubmit}
+            disabled={loading}
+            data-testid="submit-btn"
+          >
             {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             {submitLabel}
           </Button>
