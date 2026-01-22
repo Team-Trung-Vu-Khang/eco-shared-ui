@@ -1,0 +1,27 @@
+import { useMemo, useRef } from "react";
+import debounce from "lodash.debounce";
+
+export function useDebounce<T extends (...args: never[]) => void>(
+  fn: T,
+  ms: number,
+  maxWait?: number,
+) {
+  const funcRef = useRef<T | null>(null);
+  // eslint-disable-next-line react-hooks/refs
+  funcRef.current = fn;
+
+  return useMemo(
+    () =>
+      debounce(
+        // eslint-disable-next-line react-hooks/refs
+        (...args: Parameters<T>) => {
+          if (funcRef.current) {
+            funcRef.current(...args);
+          }
+        },
+        ms,
+        { maxWait },
+      ),
+    [ms, maxWait],
+  );
+}
