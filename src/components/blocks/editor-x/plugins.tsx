@@ -39,6 +39,7 @@ import { MarkdownTogglePlugin } from "@/components/editor/plugins/actions/markdo
 import { MaxLengthPlugin } from "@/components/editor/plugins/actions/max-length-plugin";
 import { ShareContentPlugin } from "@/components/editor/plugins/actions/share-content-plugin";
 import { SpeechToTextPlugin } from "@/components/editor/plugins/actions/speech-to-text-plugin";
+import { TreeViewPlugin } from "@/components/editor/plugins/actions/tree-view-plugin";
 import { AutoLinkPlugin } from "@/components/editor/plugins/auto-link-plugin";
 import { AutocompletePlugin } from "@/components/editor/plugins/autocomplete-plugin";
 import { CodeActionMenuPlugin } from "@/components/editor/plugins/code-action-menu-plugin";
@@ -48,6 +49,7 @@ import { ContextMenuPlugin } from "@/components/editor/plugins/context-menu-plug
 import { DragDropPastePlugin } from "@/components/editor/plugins/drag-drop-paste-plugin";
 import { DraggableBlockPlugin } from "@/components/editor/plugins/draggable-block-plugin";
 import { AutoEmbedPlugin } from "@/components/editor/plugins/embeds/auto-embed-plugin";
+import { TwitterPlugin } from "@/components/editor/plugins/embeds/twitter-plugin";
 import { YouTubePlugin } from "@/components/editor/plugins/embeds/youtube-plugin";
 import { EmojiPickerPlugin } from "@/components/editor/plugins/emoji-picker-plugin";
 import { EmojisPlugin } from "@/components/editor/plugins/emojis-plugin";
