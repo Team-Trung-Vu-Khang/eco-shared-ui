@@ -3,3 +3,4 @@ export * from "./DeleteDialog";
 export * from "./FormDialog";
 export * from "./StatsCard";
 export * from "./StepperForm";
+export * from "./MultiSelect";
