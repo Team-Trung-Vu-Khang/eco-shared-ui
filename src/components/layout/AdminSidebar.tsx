@@ -37,6 +37,7 @@ import {
   Heart,
   Trees,
   BookOpenText,
+  Heart,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -223,7 +224,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       {
         id: "treatment",
         label: "Phác đồ điều trị",
-        icon: CalendarDays,
+        icon: Heart,
         href: "/treatment",
       },
     ],
