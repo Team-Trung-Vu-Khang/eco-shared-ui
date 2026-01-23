@@ -210,12 +210,6 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
       {
-        id: "treatment",
-        label: "Phác đồ điều trị",
-        icon: Heart,
-        href: "/treatment",
-      },
-      {
         id: "docs",
         label: "Tài liệu kỹ thuật",
         icon: BookOpenText,
