@@ -1,4 +1,12 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $generateNodesFromDOM } from "@lexical/html";
+import {
+  $createParagraphNode,
+  $createTextNode,
+  $getRoot,
+  $insertNodes,
+} from "lexical";
 import {
   CHECK_LIST,
   ELEMENT_TRANSFORMERS,
@@ -31,7 +39,6 @@ import { MarkdownTogglePlugin } from "@/components/editor/plugins/actions/markdo
 import { MaxLengthPlugin } from "@/components/editor/plugins/actions/max-length-plugin";
 import { ShareContentPlugin } from "@/components/editor/plugins/actions/share-content-plugin";
 import { SpeechToTextPlugin } from "@/components/editor/plugins/actions/speech-to-text-plugin";
-import { TreeViewPlugin } from "@/components/editor/plugins/actions/tree-view-plugin";
 import { AutoLinkPlugin } from "@/components/editor/plugins/auto-link-plugin";
 import { AutocompletePlugin } from "@/components/editor/plugins/autocomplete-plugin";
 import { CodeActionMenuPlugin } from "@/components/editor/plugins/code-action-menu-plugin";
@@ -41,7 +48,6 @@ import { ContextMenuPlugin } from "@/components/editor/plugins/context-menu-plug
 import { DragDropPastePlugin } from "@/components/editor/plugins/drag-drop-paste-plugin";
 import { DraggableBlockPlugin } from "@/components/editor/plugins/draggable-block-plugin";
 import { AutoEmbedPlugin } from "@/components/editor/plugins/embeds/auto-embed-plugin";
-import { TwitterPlugin } from "@/components/editor/plugins/embeds/twitter-plugin";
 import { YouTubePlugin } from "@/components/editor/plugins/embeds/youtube-plugin";
 import { EmojiPickerPlugin } from "@/components/editor/plugins/emoji-picker-plugin";
 import { EmojisPlugin } from "@/components/editor/plugins/emojis-plugin";
@@ -112,9 +118,55 @@ const $maxLength = 500;
 type PluginsProps = {
   maxLength?: number;
   contentEditableClassname?: ClassValue;
+  initialHtml?: string;
+  initialText?: string;
 };
 
+function InitContentPlugin({
+  initialHtml,
+  initialText,
+}: {
+  initialHtml?: string;
+  initialText?: string;
+}) {
+  const [editor] = useLexicalComposerContext();
+  const isInitialized = useRef(false);
+
+  useEffect(() => {
+    if (isInitialized.current) return;
+
+    if (initialHtml) {
+      isInitialized.current = true;
+      editor.update(() => {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(initialHtml, "text/html");
+        const nodes = $generateNodesFromDOM(editor, dom);
+        const root = $getRoot();
+        root.clear();
+        root.select();
+        $insertNodes(nodes);
+      });
+    } else if (initialText) {
+      isInitialized.current = true;
+      editor.update(() => {
+        const root = $getRoot();
+        const paragraph = $createParagraphNode();
+        const textNode = $createTextNode(initialText);
+        paragraph.append(textNode);
+
+        root.clear();
+        root.select();
+        $insertNodes([paragraph]);
+      });
+    }
+  }, [editor, initialHtml, initialText]);
+
+  return null;
+}
+
 export function Plugins({
+  initialHtml,
+  initialText,
   maxLength = $maxLength,
   contentEditableClassname,
 }: PluginsProps) {
@@ -176,6 +228,10 @@ export function Plugins({
         )}
       </ToolbarPlugin>
       <div className="relative">
+        <InitContentPlugin
+          initialHtml={initialHtml}
+          initialText={initialText}
+        />
         <AutoFocusPlugin />
         <RichTextPlugin
           contentEditable={
