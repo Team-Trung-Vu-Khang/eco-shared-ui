@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import {
   Mountain,
@@ -199,6 +199,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/growth-cycle",
       },
       { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
+      {
+        id: "treatment",
+        label: "Phác đồ điều trị",
+        icon: CalendarDays,
+        href: "/treatment",
+      },
     ],
   },
   {
@@ -250,7 +256,7 @@ export function AdminSidebar({
   collapsed = false,
   onToggle,
 }: AdminSidebarProps) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
     menuGroups.map((g) => g.title),
   );
@@ -269,6 +275,12 @@ export function AdminSidebar({
         ? prev.filter((id) => id !== itemId)
         : [...prev, itemId],
     );
+  };
+
+  // Custom navigation handler to prevent auto-scroll
+  const handleNavigate = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLocation(href);
   };
 
   return (
@@ -367,18 +379,19 @@ export function AdminSidebar({
                               {item.children!.map((child) => {
                                 const isItemActive = location === child.href;
                                 return (
-                                  <Link
+                                  <a
                                     key={child.id}
                                     href={child.href}
+                                    onClick={handleNavigate(child.href)}
                                     className={cn(
-                                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                                      "block px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer",
                                       isItemActive
                                         ? "text-sidebar-primary font-medium bg-sidebar-accent/50"
                                         : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent/30",
                                     )}
                                   >
                                     {child.label}
-                                  </Link>
+                                  </a>
                                 );
                               })}
                             </div>
@@ -388,11 +401,14 @@ export function AdminSidebar({
                     }
 
                     return (
-                      <Link
+                      <a
                         key={item.id}
                         href={item.href || "#"}
+                        onClick={
+                          item.href ? handleNavigate(item.href) : undefined
+                        }
                         className={cn(
-                          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer",
                           isActive
                             ? "bg-sidebar-primary text-sidebar-primary-foreground"
                             : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -402,7 +418,7 @@ export function AdminSidebar({
                       >
                         <Icon className="w-4.5 h-4.5 flex-shrink-0" />
                         {!collapsed && <span>{item.label}</span>}
-                      </Link>
+                      </a>
                     );
                   })}
                 </div>
@@ -413,17 +429,18 @@ export function AdminSidebar({
       </ScrollArea>
 
       <div className="border-t border-sidebar-border p-3 space-y-1">
-        <Link
+        <a
           href="/settings"
+          onClick={handleNavigate("/settings")}
           className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all",
+            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all cursor-pointer",
             collapsed && "justify-center px-2",
           )}
           data-testid="menu-settings"
         >
           <Settings className="w-4.5 h-4.5" />
           {!collapsed && <span>Cài đặt</span>}
-        </Link>
+        </a>
         <button
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all",
