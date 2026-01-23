@@ -220,6 +220,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         icon: BookOpenText,
         href: "/docs",
       },
+      {
+        id: "treatment",
+        label: "Phác đồ điều trị",
+        icon: CalendarDays,
+        href: "/treatment",
+      },
     ],
   },
   {
