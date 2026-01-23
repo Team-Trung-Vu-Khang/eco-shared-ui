@@ -34,6 +34,8 @@ import {
   Settings,
   LogOut,
   Tractor,
+  Trees,
+  BookOpenText,
   Heart,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -192,6 +194,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         icon: Sprout,
         href: "/variety",
       },
+      {
+        id: "group-crop",
+        label: "Nhóm cây trồng",
+        icon: Trees,
+        href: "/group-crop",
+      },
       { id: "seed", label: "Hạt giống", icon: Leaf, href: "/seed" },
       {
         id: "growth-cycle",
@@ -200,6 +208,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/growth-cycle",
       },
       { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
+      {
+        id: "docs",
+        label: "Tài liệu kỹ thuật",
+        icon: BookOpenText,
+        href: "/docs",
+      },
       {
         id: "treatment",
         label: "Phác đồ điều trị",
