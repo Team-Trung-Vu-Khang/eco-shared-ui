@@ -34,6 +34,7 @@ import {
   Settings,
   LogOut,
   Tractor,
+  Heart,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -202,7 +203,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       {
         id: "treatment",
         label: "Phác đồ điều trị",
-        icon: CalendarDays,
+        icon: Heart,
         href: "/treatment",
       },
     ],
@@ -280,7 +281,18 @@ export function AdminSidebar({
   // Custom navigation handler to prevent auto-scroll
   const handleNavigate = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    setLocation(href);
+    e.stopPropagation();
+
+    // Store current scroll position
+    const scrollY = window.scrollY;
+
+    // Navigate without triggering scroll
+    setLocation(href, { replace: false });
+
+    // Restore scroll position after navigation
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+    });
   };
 
   return (
