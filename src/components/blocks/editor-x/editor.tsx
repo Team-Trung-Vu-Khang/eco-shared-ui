@@ -25,11 +25,15 @@ export function Editor({
   editorState,
   maxLength,
   editorSerializedState,
+  initialHtml,
+  initialText,
   onChange,
   onSerializedChange,
   contentEditableClassname,
 }: {
   maxLength?: number;
+  initialHtml?: string;
+  initialText?: string;
   editorState?: EditorState;
   contentEditableClassname?: ClassValue;
   editorSerializedState?: SerializedEditorState;
@@ -50,6 +54,8 @@ export function Editor({
         <TooltipProvider>
           <Plugins
             maxLength={maxLength}
+            initialHtml={initialHtml}
+            initialText={initialText}
             contentEditableClassname={contentEditableClassname}
           />
 
@@ -67,3 +73,4 @@ export function Editor({
 }
 
 export type { EditorState, SerializedEditorState };
+export { convertHtmlToLexical, convertLexicalToHtml } from "./utils";
