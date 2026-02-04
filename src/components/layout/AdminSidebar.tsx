@@ -61,11 +61,11 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     items: [
       {
         id: "terrain",
-        label: "Quản lý địa hình",
+        label: "Danh mục địa hình",
         icon: Mountain,
         href: "/terrain",
       },
-      { id: "land", label: "Quản lý đất", icon: Layers, href: "/land" },
+      { id: "land", label: "Danh mục đất", icon: Layers, href: "/land" },
       {
         id: "farming-method",
         label: "Phương thức canh tác",
@@ -74,9 +74,15 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       {
         id: "certificate",
-        label: "Chứng nhận chứng chỉ",
+        label: "Danh mục tiêu chuẩn",
         icon: Award,
         href: "/certificate",
+      },
+      {
+        id: "enterprise-type",
+        label: "Danh mục loại hình doanh nghiệp",
+        icon: Award,
+        href: "/enterprise-type",
       },
     ],
   },
@@ -101,6 +107,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         label: "Thông tin liên hệ",
         icon: Users,
         href: "/contact",
+      },
+      {
+        id: "enterprise-certificate",
+        label: "Danh mục chứng nhận",
+        icon: Award,
+        href: "/enterprise-certificate",
       },
     ],
   },
