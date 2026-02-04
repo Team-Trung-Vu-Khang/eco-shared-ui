@@ -79,6 +79,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/certificate",
       },
       {
+        id: "bank-directory",
+        label: "Danh mục ngân hàng",
+        icon: Landmark,
+        href: "/bank-directory",
+      },
+      {
         id: "enterprise-type",
         label: "Danh mục loại hình doanh nghiệp",
         icon: Award,
@@ -90,10 +96,55 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     title: "Tổ chức",
     items: [
       {
-        id: "enterprise",
-        label: "Doanh nghiệp / Nông hộ",
+        id: "region-chart",
+        label: "Biểu đồ vùng",
+        icon: Map,
+        href: "/region-chart",
+        children: [
+          {
+            id: "region-dist",
+            label: "Phân bố vùng",
+            href: "/region-distribution",
+          },
+          {
+            id: "area-dist",
+            label: "Phân bố khu vực",
+            href: "/area-distribution",
+          },
+          {
+            id: "plot-dist",
+            label: "Phân bố lô",
+            href: "/plot-distribution",
+          },
+          {
+            id: "map-view",
+            label: "Bản đồ",
+            href: "/map-view",
+          },
+        ],
+      },
+      {
+        id: "unit",
+        label: "Đơn vị",
         icon: Building2,
-        href: "/enterprise",
+        href: "/unit",
+        children: [
+          {
+            id: "enterprise",
+            label: "Doanh nghiệp",
+            href: "/enterprise",
+          },
+          {
+            id: "farmer",
+            label: "Nông hộ",
+            href: "/farmer",
+          },
+          {
+            id: "cooperative",
+            label: "Hợp tác xã",
+            href: "/cooperative",
+          },
+        ],
       },
       { id: "branch", label: "Chi nhánh", icon: GitBranch, href: "/branch" },
       {
