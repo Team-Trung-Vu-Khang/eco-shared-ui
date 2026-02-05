@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import {
@@ -37,6 +37,8 @@ import {
   Trees,
   BookOpenText,
   Heart,
+  Boxes,
+  Atom,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -87,8 +89,20 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       {
         id: "enterprise-type",
         label: "Danh mục loại hình doanh nghiệp",
-        icon: Award,
+        icon: Building2,
         href: "/enterprise-type",
+      },
+      {
+        id: "material-group",
+        label: "Phân loại vật tư",
+        icon: Boxes,
+        href: "/material-group",
+      },
+      {
+        id: "product-ingredient",
+        label: "Định danh chi tiết",
+        icon: Atom,
+        href: "/product-ingredient",
       },
     ],
   },
@@ -335,11 +349,58 @@ export function AdminSidebar({
   onToggle,
 }: AdminSidebarProps) {
   const [location, setLocation] = useLocation();
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    menuGroups.map((g) => g.title),
-  );
 
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  // State persistence keys
+  const STORAGE_KEY_GROUPS = "sidebar_expanded_groups";
+  const STORAGE_KEY_ITEMS = "sidebar_expanded_items";
+  const STORAGE_KEY_SCROLL = "sidebar_scroll_position";
+
+  // Initialize state from storage or defaults
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(() => {
+    const saved = sessionStorage.getItem(STORAGE_KEY_GROUPS);
+    return saved ? JSON.parse(saved) : menuGroups.map((g) => g.title);
+  });
+
+  const [expandedItems, setExpandedItems] = useState<string[]>(() => {
+    const saved = sessionStorage.getItem(STORAGE_KEY_ITEMS);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Use a standard ref and useEffect for clearer cleanup logic
+
+  // Use a standard ref and useEffect for clearer cleanup logic
+  const viewportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = viewportRef.current;
+    if (!element) return;
+
+    // Restore
+    const savedScroll = sessionStorage.getItem(STORAGE_KEY_SCROLL);
+    if (savedScroll) {
+      // Small timeout to ensure content is rendered
+      setTimeout(() => {
+        element.scrollTop = parseInt(savedScroll, 10);
+      }, 0);
+    }
+
+    // Save
+    const handleScroll = () => {
+      sessionStorage.setItem(STORAGE_KEY_SCROLL, element.scrollTop.toString());
+    };
+
+    element.addEventListener("scroll", handleScroll);
+    return () => element.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Persist state changes
+  useEffect(() => {
+    sessionStorage.setItem(STORAGE_KEY_GROUPS, JSON.stringify(expandedGroups));
+  }, [expandedGroups]);
+
+  useEffect(() => {
+    sessionStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(expandedItems));
+  }, [expandedItems]);
 
   const toggleGroup = (title: string) => {
     setExpandedGroups((prev) =>
@@ -355,21 +416,14 @@ export function AdminSidebar({
     );
   };
 
-  // Custom navigation handler to prevent auto-scroll
+  // Custom navigation handler to prevent auto-scroll of the main window,
+  // sidebar scroll is handled by the persistence logic above.
   const handleNavigate = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Store current scroll position
-    const scrollY = window.scrollY;
-
-    // Navigate without triggering scroll
-    setLocation(href, { replace: false });
-
-    // Restore scroll position after navigation
-    requestAnimationFrame(() => {
-      window.scrollTo(0, scrollY);
-    });
+    // Navigate
+    setLocation(href as any); // Type assertion for wouter issue if any
   };
 
   return (
@@ -405,7 +459,7 @@ export function AdminSidebar({
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 py-4 scrollbar-thin">
+      <ScrollArea className="flex-1 py-4 scrollbar-thin" ref={viewportRef}>
         <nav className="px-2 space-y-6">
           {menuGroups.map((group) => (
             <div key={group.title}>
@@ -438,19 +492,22 @@ export function AdminSidebar({
 
                     if (hasChildren) {
                       return (
-                        <div key={item.id} className="space-y-1">
-                          <button
-                            onClick={() => {
-                              if (collapsed && onToggle) onToggle();
-                              toggleItem(item.id);
-                            }}
+                        <div
+                          key={item.id}
+                          className="space-y-1 relative group/item"
+                        >
+                          {/* Parent Item */}
+                          <div
                             className={cn(
-                              "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                              "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer select-none",
                               isActive
                                 ? "text-sidebar-primary font-semibold"
                                 : "text-sidebar-foreground/80",
                               collapsed && "justify-center px-2",
                             )}
+                            onClick={() => {
+                              if (!collapsed) toggleItem(item.id);
+                            }}
                           >
                             <div className="flex items-center gap-3">
                               <Icon className="w-4.5 h-4.5 flex-shrink-0" />
@@ -462,9 +519,40 @@ export function AdminSidebar({
                               ) : (
                                 <ChevronRight className="w-4 h-4" />
                               ))}
-                          </button>
+                          </div>
+
+                          {/* Collapsed Mode: Hover Flyout Menu */}
+                          {collapsed && (
+                            <div className="absolute left-full top-0 ml-2 w-48 bg-card border border-border shadow-lg rounded-md overflow-hidden hidden group-hover/item:block z-50">
+                              <div className="px-3 py-2 bg-muted/50 text-xs font-bold text-muted-foreground uppercase border-b border-border">
+                                {item.label}
+                              </div>
+                              <div className="p-1">
+                                {item.children!.map((child) => {
+                                  const isItemActive = location === child.href;
+                                  return (
+                                    <a
+                                      key={child.id}
+                                      href={child.href}
+                                      onClick={handleNavigate(child.href)}
+                                      className={cn(
+                                        "block px-3 py-2 rounded-md text-sm transition-colors cursor-pointer",
+                                        isItemActive
+                                          ? "text-primary font-medium bg-primary/10"
+                                          : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                                      )}
+                                    >
+                                      {child.label}
+                                    </a>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Expanded Mode: Inline List */}
                           {!collapsed && isExpanded && (
-                            <div className="ml-4 pl-3 border-l border-sidebar-border/50 space-y-1">
+                            <div className="ml-4 pl-3 border-l border-sidebar-border/50 space-y-1 animation-slide-down">
                               {item.children!.map((child) => {
                                 const isItemActive = location === child.href;
                                 return (
@@ -497,7 +585,7 @@ export function AdminSidebar({
                           item.href ? handleNavigate(item.href) : undefined
                         }
                         className={cn(
-                          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer",
+                          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer relative group", // Added relative group
                           isActive
                             ? "bg-sidebar-primary text-sidebar-primary-foreground"
                             : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
@@ -507,6 +595,13 @@ export function AdminSidebar({
                       >
                         <Icon className="w-4.5 h-4.5 flex-shrink-0" />
                         {!collapsed && <span>{item.label}</span>}
+
+                        {/* Tooltip for collapsed single items (optional enhancement) */}
+                        {collapsed && (
+                          <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded shadow-md whitespace-nowrap hidden group-hover:block z-50">
+                            {item.label}
+                          </div>
+                        )}
                       </a>
                     );
                   })}
