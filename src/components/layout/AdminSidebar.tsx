@@ -282,6 +282,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
           },
         ],
       },
+      {
+        id: "soil-amendment-map",
+        label: "Bảng đồ cải tạo đất",
+        icon: Leaf,
+        href: "/soil-amendment-map",
+      },
     ],
   },
   {
