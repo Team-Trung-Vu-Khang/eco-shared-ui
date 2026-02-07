@@ -43,7 +43,7 @@ export function MultiSelect({
   searchPlaceholder = "Tìm kiếm...",
   emptyText = "Không có dữ liệu",
   disabled,
-  clearable = false,
+  clearable = true,
 }: Props) {
   const [open, setOpen] = React.useState(false);
 

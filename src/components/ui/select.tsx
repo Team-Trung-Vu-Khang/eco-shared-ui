@@ -185,6 +185,7 @@ interface AutoCompleteSelectProps {
   emptyText?: string;
   disabled?: boolean;
   clearable?: boolean;
+  autocomplete?: boolean;
 }
 
 export function AutoCompleteSelect({
@@ -195,7 +196,8 @@ export function AutoCompleteSelect({
   searchPlaceholder = "Tìm kiếm...",
   emptyText = "Không có dữ liệu",
   disabled,
-  clearable = false,
+  clearable = true,
+  autocomplete = true,
 }: AutoCompleteSelectProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -271,7 +273,7 @@ export function AutoCompleteSelect({
         align="start"
       >
         <Command filter={commandFilter}>
-          <CommandInput placeholder={searchPlaceholder} />
+          {autocomplete && <CommandInput placeholder={searchPlaceholder} />}
           <CommandList>
             <CommandEmpty>{emptyText}</CommandEmpty>
             <CommandGroup>
