@@ -389,6 +389,11 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
             label: "Bản đồ",
             href: "/soil-amendment-map",
           },
+          {
+            id: "soil-amendment-treatment",
+            label: "Phác đồ cải tạo",
+            href: "/soil-amendment-treatment",
+          },
         ],
       },
     ],
