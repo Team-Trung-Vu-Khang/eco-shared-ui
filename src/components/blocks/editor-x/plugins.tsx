@@ -186,7 +186,7 @@ export function Plugins({
     <div className="relative">
       <ToolbarPlugin>
         {({ blockType }) => (
-          <div className="vertical-align-middle sticky top-0 z-10 flex items-center gap-2 overflow-auto border-b p-1">
+          <div className="vertical-align-middle sticky top-0 z-10 flex flex-wrap items-center gap-2 border-b p-1 bg-background">
             <HistoryToolbarPlugin />
             <Separator orientation="vertical" className="!h-7" />
             <BlockFormatDropDown>
@@ -242,7 +242,7 @@ export function Plugins({
                 <ContentEditable
                   placeholder={placeholder}
                   className={cn(
-                    "ContentEditable__root relative block h-[calc(100vh-90px)] min-h-72 overflow-auto px-8 py-4 focus:outline-none",
+                    "ContentEditable__root relative block min-h-72 overflow-auto px-8 py-4 focus:outline-none",
                     contentEditableClassname,
                   )}
                 />

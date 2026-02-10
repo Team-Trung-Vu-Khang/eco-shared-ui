@@ -99,7 +99,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       {
         id: "enterprise-type",
-        label: "Danh mục loại hình doanh nghiệp",
+        label: "Danh mục tổ chức",
         icon: Building2,
         href: "/enterprise-type",
       },
@@ -132,34 +132,34 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
   {
     title: "Tổ chức",
     items: [
-      {
-        id: "region-chart",
-        label: "Biểu đồ vùng",
-        icon: Map,
-        href: "/region-chart",
-        children: [
-          {
-            id: "region-dist",
-            label: "Phân bố vùng",
-            href: "/region-distribution",
-          },
-          {
-            id: "area-dist",
-            label: "Phân bố khu vực",
-            href: "/area-distribution",
-          },
-          {
-            id: "plot-dist",
-            label: "Phân bố lô",
-            href: "/plot-distribution",
-          },
-          {
-            id: "map-view",
-            label: "Bản đồ",
-            href: "/map-view",
-          },
-        ],
-      },
+      // {
+      //   id: "region-chart",
+      //   label: "Biểu đồ vùng",
+      //   icon: Map,
+      //   href: "/region-chart",
+      //   children: [
+      //     {
+      //       id: "region-dist",
+      //       label: "Phân bố vùng",
+      //       href: "/region-distribution",
+      //     },
+      //     {
+      //       id: "area-dist",
+      //       label: "Phân bố khu vực",
+      //       href: "/area-distribution",
+      //     },
+      //     {
+      //       id: "plot-dist",
+      //       label: "Phân bố lô",
+      //       href: "/plot-distribution",
+      //     },
+      //     {
+      //       id: "map-view",
+      //       label: "Bản đồ",
+      //       href: "/map-view",
+      //     },
+      //   ],
+      // },
       {
         id: "unit",
         label: "Đơn vị",
@@ -284,7 +284,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       {
         id: "soil-amendment-map",
-        label: "Bảng đồ cải tạo đất",
+        label: "Bản đồ cải tạo đất",
         icon: Leaf,
         href: "/soil-amendment-map",
       },
@@ -354,9 +354,8 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
-    title: "Quản lý hoạt động",
+    title: "Quản lý canh tác",
     items: [
-      { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
       {
         id: "plan",
         label: "Kế hoạch canh tác",
@@ -364,6 +363,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/plan",
       },
       { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
+    ],
+  },
+  {
+    title: "Quản lý hồ sơ",
+    items: [
+      { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
     ],
   },
 ];
