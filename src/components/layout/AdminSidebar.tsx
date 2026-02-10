@@ -199,7 +199,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       {
         id: "enterprise-certificate",
-        label: "Danh mục chứng nhận",
+        label: "Chứng nhận - chứng chỉ",
         icon: Award,
         href: "/enterprise-certificate",
       },
@@ -349,7 +349,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
-    title: "Quản lý canh tác",
+    title: "Canh tác",
     items: [
       {
         id: "plan",
@@ -399,7 +399,48 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
-    title: "Quản lý hồ sơ",
+    title: "Cải tạo đất",
+    items: [
+      {
+        id: "amendment-cycle",
+        label: "Chu kỳ cải tạo",
+        href: "/amendment-cycle",
+        icon: CalendarDays,
+      },
+      {
+        id: "amendment-method",
+        label: "Phương pháp & Quy trình",
+        href: "/amendment-method",
+        icon: Wrench,
+      },
+      {
+        id: "amendment-plan",
+        label: "Kế hoạch",
+        href: "/amendment-plan",
+        icon: ClipboardList,
+      },
+      {
+        id: "amendment-task",
+        label: "Công việc",
+        href: "/amendment-task",
+        icon: CheckSquare,
+      },
+      {
+        id: "soil-amendment-map",
+        label: "Bản đồ",
+        href: "/soil-amendment-map",
+        icon: Map,
+      },
+      {
+        id: "soil-amendment-treatment",
+        label: "Phác đồ cải tạo",
+        href: "/soil-amendment-treatment",
+        icon: Heart,
+      },
+    ],
+  },
+  {
+    title: "Hồ sơ",
     items: [
       { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
     ],
