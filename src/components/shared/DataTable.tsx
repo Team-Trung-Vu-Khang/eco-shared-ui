@@ -332,7 +332,7 @@ export function DataTable<T extends { id: string | number }>({
                   </TableHead>
                 ))}
               {(onView || onEdit || onDelete) && (
-                <TableHead className="w-20 px-4 text-center">
+                <TableHead className="w-20 px-4 text-center text-xs">
                   Thao tác
                 </TableHead>
               )}
