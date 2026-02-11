@@ -72,72 +72,6 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
-    title: "Dữ liệu liên kết",
-    items: [
-      {
-        id: "terrain",
-        label: "Đặc điểm địa hình",
-        icon: Mountain,
-        href: "/terrain",
-      },
-      { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
-      {
-        id: "farming-method",
-        label: "Phương thức canh tác",
-        icon: Leaf,
-        href: "/farming-method",
-      },
-      {
-        id: "certificate",
-        label: "Bộ tiêu chuẩn",
-        icon: Award,
-        href: "/certificate",
-      },
-      {
-        id: "bank-directory",
-        label: "Ngân hàng",
-        icon: Landmark,
-        href: "/bank-directory",
-      },
-      {
-        id: "enterprise-type",
-        label: "Nhóm tổ chức",
-        icon: Building2,
-        href: "/enterprise-type",
-      },
-      {
-        id: "enterprise-form",
-        label: "Loại hình tổ chức",
-        icon: Building2,
-        href: "/enterprise-form",
-      },
-      {
-        id: "material-group",
-        label: "Nhóm vật tư",
-        icon: Boxes,
-        href: "/material-group",
-      },
-      {
-        id: "fertilizer-group",
-        label: "Nhóm phân bón",
-        icon: Atom,
-        href: "/fertilizer-group",
-      },
-      {
-        id: "pesticide-group",
-        label: "Nhóm thuốc BVTV",
-        icon: Bug,
-        href: "/pesticide-group",
-      },
-      {
-        id: "vehicle-group",
-        label: "Nhóm máy móc - thiết bị",
-        icon: Tractor,
-        href: "/vehicle-group",
-      },
-    ],
-  },
-  {
     title: "Tổ chức",
     items: [
       // {
@@ -418,6 +352,72 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     title: "Hồ sơ",
     items: [
       { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
+    ],
+  },
+  {
+    title: "Dữ liệu liên kết",
+    items: [
+      {
+        id: "terrain",
+        label: "Đặc điểm địa hình",
+        icon: Mountain,
+        href: "/terrain",
+      },
+      { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
+      {
+        id: "farming-method",
+        label: "Phương thức canh tác",
+        icon: Leaf,
+        href: "/farming-method",
+      },
+      {
+        id: "certificate",
+        label: "Bộ tiêu chuẩn",
+        icon: Award,
+        href: "/certificate",
+      },
+      {
+        id: "bank-directory",
+        label: "Ngân hàng",
+        icon: Landmark,
+        href: "/bank-directory",
+      },
+      {
+        id: "enterprise-type",
+        label: "Nhóm tổ chức",
+        icon: Building2,
+        href: "/enterprise-type",
+      },
+      {
+        id: "enterprise-form",
+        label: "Loại hình tổ chức",
+        icon: Building2,
+        href: "/enterprise-form",
+      },
+      {
+        id: "material-group",
+        label: "Nhóm vật tư",
+        icon: Boxes,
+        href: "/material-group",
+      },
+      {
+        id: "fertilizer-group",
+        label: "Nhóm phân bón",
+        icon: Atom,
+        href: "/fertilizer-group",
+      },
+      {
+        id: "pesticide-group",
+        label: "Nhóm thuốc BVTV",
+        icon: Bug,
+        href: "/pesticide-group",
+      },
+      {
+        id: "vehicle-group",
+        label: "Nhóm máy móc - thiết bị",
+        icon: Tractor,
+        href: "/vehicle-group",
+      },
     ],
   },
 ];
