@@ -40,6 +40,7 @@ import {
   Boxes,
   Atom,
   Pickaxe,
+  User,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -220,7 +221,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         icon: Building,
         href: "/department",
       },
-      { id: "position", label: "Vị trí", icon: MapPin, href: "/position" },
+      { id: "position", label: "Chức vụ", icon: User, href: "/position" },
       { id: "team", label: "Đội nhóm", icon: UsersRound, href: "/team" },
     ],
   },
@@ -358,44 +359,6 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/plan",
       },
       { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
-      {
-        id: "soil-amendment",
-        label: "Cải tạo đất",
-        icon: Pickaxe,
-        href: "/soil-amendment",
-        children: [
-          {
-            id: "amendment-cycle",
-            label: "Chu kỳ cải tạo",
-            href: "/amendment-cycle",
-          },
-          {
-            id: "amendment-method",
-            label: "Phương pháp & Quy trình",
-            href: "/amendment-method",
-          },
-          {
-            id: "amendment-plan",
-            label: "Kế hoạch",
-            href: "/amendment-plan",
-          },
-          {
-            id: "amendment-task",
-            label: "Công việc",
-            href: "/amendment-task",
-          },
-          {
-            id: "soil-amendment-map",
-            label: "Bản đồ",
-            href: "/soil-amendment-map",
-          },
-          {
-            id: "soil-amendment-treatment",
-            label: "Phác đồ cải tạo",
-            href: "/soil-amendment-treatment",
-          },
-        ],
-      },
     ],
   },
   {
