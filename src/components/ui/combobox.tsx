@@ -51,6 +51,34 @@ export function Combobox({
 
   const selectedOption = options.find((opt) => opt.value === value);
 
+  // Vietnamese accent-insensitive filter
+  const commandFilter = (
+    value: string,
+    search: string,
+    keywords?: string[],
+  ) => {
+    const extendValue = (
+      value +
+      " " +
+      (keywords?.join(" ") || "")
+    ).toLowerCase();
+    if (extendValue.includes(search.toLowerCase())) return 1;
+
+    const normalize = (str: string) =>
+      str
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "D")
+        .toLowerCase();
+
+    const normalizedValue = normalize(extendValue);
+    const normalizedSearch = normalize(search);
+
+    if (normalizedValue.includes(normalizedSearch)) return 1;
+    return 0;
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -90,7 +118,7 @@ export function Combobox({
         align="start"
         className={cn("p-0", "w-[--radix-popover-trigger-width]")}
       >
-        <Command>
+        <Command filter={commandFilter}>
           <CommandInput placeholder={searchPlaceholder} />
           <CommandList>
             <CommandEmpty>{emptyText}</CommandEmpty>
@@ -105,6 +133,7 @@ export function Combobox({
                       onChange(isSelected ? "" : opt.value);
                       setOpen(false);
                     }}
+                    keywords={[opt.label, opt.value]}
                     className="flex items-center gap-3 py-3"
                   >
                     <Check
