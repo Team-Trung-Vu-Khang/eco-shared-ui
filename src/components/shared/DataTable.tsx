@@ -332,7 +332,7 @@ export function DataTable<T extends { id: string | number }>({
                   </TableHead>
                 ))}
               {(onView || onEdit || onDelete) && (
-                <TableHead className="w-20 px-4 text-center text-xs">
+                <TableHead className="px-4 text-center text-xs">
                   Thao tác
                 </TableHead>
               )}
@@ -395,7 +395,7 @@ export function DataTable<T extends { id: string | number }>({
                       </TableCell>
                     ))}
                   {(onView || onEdit || onDelete) && (
-                    <TableCell className="px-4 py-3 text-right">
+                    <TableCell className="px-4 py-3 text-center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button

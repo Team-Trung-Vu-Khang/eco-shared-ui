@@ -72,15 +72,15 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
-    title: "Danh mục cơ bản",
+    title: "Dữ liệu liên kết",
     items: [
       {
         id: "terrain",
-        label: "Danh mục địa hình",
+        label: "Đặc điểm địa hình",
         icon: Mountain,
         href: "/terrain",
       },
-      { id: "land", label: "Danh mục đất", icon: Layers, href: "/land" },
+      { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
       {
         id: "farming-method",
         label: "Phương thức canh tác",
@@ -89,43 +89,49 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       {
         id: "certificate",
-        label: "Danh mục tiêu chuẩn",
+        label: "Bộ tiêu chuẩn",
         icon: Award,
         href: "/certificate",
       },
       {
         id: "bank-directory",
-        label: "Danh mục ngân hàng",
+        label: "Ngân hàng",
         icon: Landmark,
         href: "/bank-directory",
       },
       {
         id: "enterprise-type",
-        label: "Danh mục tổ chức",
+        label: "Nhóm tổ chức",
         icon: Building2,
         href: "/enterprise-type",
       },
       {
+        id: "enterprise-form",
+        label: "Loại hình tổ chức",
+        icon: Building2,
+        href: "/enterprise-form",
+      },
+      {
         id: "material-group",
-        label: "Danh mục vật tư",
+        label: "Nhóm vật tư",
         icon: Boxes,
         href: "/material-group",
       },
       {
         id: "fertilizer-group",
-        label: "Danh mục phân bón",
+        label: "Nhóm phân bón",
         icon: Atom,
         href: "/fertilizer-group",
       },
       {
         id: "pesticide-group",
-        label: "Danh mục thuốc bảo vệ thực vật",
+        label: "Nhóm thuốc BVTV",
         icon: Bug,
         href: "/pesticide-group",
       },
       {
         id: "vehicle-group",
-        label: "Danh mục máy móc",
+        label: "Nhóm máy móc - thiết bị",
         icon: Tractor,
         href: "/vehicle-group",
       },
@@ -359,6 +365,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/plan",
       },
       { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
+      {
+        id: "plan-type",
+        label: "Phân loại kế hoạch",
+        icon: CheckSquare,
+        href: "/plan-type",
+      },
     ],
   },
   {
