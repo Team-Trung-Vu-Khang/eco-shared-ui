@@ -1,60 +1,58 @@
-import { useRef, useState, useEffect } from "react";
-import { useLocation } from "wouter";
-import { cn } from "@/lib/utils";
-import {
-  Mountain,
-  Layers,
-  Leaf,
-  Award,
-  Building2,
-  GitBranch,
-  Landmark,
-  Users,
-  Building,
-  MapPin,
-  UsersRound,
-  Map,
-  TreePine,
-  Sprout,
-  Flower2,
-  CalendarDays,
-  Bug,
-  FlaskConical,
-  Package,
-  Wrench,
-  FileText,
-  Scale,
-  ClipboardList,
-  CheckSquare,
-  ChevronDown,
-  ChevronRight,
-  LayoutDashboard,
-  Menu,
-  X,
-  Settings,
-  LogOut,
-  Tractor,
-  Trees,
-  BookOpenText,
-  Heart,
-  Boxes,
-  Atom,
-  Pickaxe,
-  User,
-} from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import {
+  Atom,
+  Award,
+  BookOpenText,
+  Boxes,
+  Bug,
+  Building,
+  Building2,
+  CalendarDays,
+  CheckSquare,
+  ChevronDown,
+  ChevronRight,
+  ClipboardList,
+  FileText,
+  FlaskConical,
+  Flower2,
+  GitBranch,
+  Heart,
+  Landmark,
+  Layers,
+  LayoutDashboard,
+  Leaf,
+  LogOut,
+  Map,
+  Menu,
+  Mountain,
+  Package,
+  Scale,
+  Settings,
+  Sprout,
+  Tractor,
+  TreePine,
+  Trees,
+  User,
+  Users,
+  UsersRound,
+  Wrench,
+  X,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "wouter";
 
 interface MenuItem {
   id: string;
@@ -170,7 +168,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     items: [
       {
         id: "region-chart",
-        label: "Biểu đồ vùng",
+        label: "Địa lý",
         icon: Map,
         href: "/region-chart",
         children: [
@@ -198,7 +196,7 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
       },
       {
         id: "cultivation-zone",
-        label: "Vùng canh tác",
+        label: "Canh tác",
         icon: TreePine,
         href: "/cultivation-zone",
         children: [
@@ -221,6 +219,11 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
             id: "search-zone",
             label: "Tìm kiếm vùng trồng",
             href: "/search-zone",
+          },
+          {
+            id: "crop-identification",
+            label: "Định danh cây trồng",
+            href: "/plant-identification",
           },
         ],
       },
