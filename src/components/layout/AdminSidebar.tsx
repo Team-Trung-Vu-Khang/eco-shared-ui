@@ -206,6 +206,11 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
             href: "/cultivation-area",
           },
           {
+            id: "crop-identification",
+            label: "Định danh cây trồng",
+            href: "/plant-identification",
+          },
+          {
             id: "dist-detail",
             label: "Chi tiết phân bổ",
             href: "/distribution-detail",
@@ -219,11 +224,6 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
             id: "search-zone",
             label: "Tìm kiếm vùng trồng",
             href: "/search-zone",
-          },
-          {
-            id: "crop-identification",
-            label: "Định danh cây trồng",
-            href: "/plant-identification",
           },
         ],
       },
