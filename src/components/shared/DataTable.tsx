@@ -524,6 +524,7 @@ export function DataTable<T extends { id: string | number }>({
                     setCurrentPage(val);
                   }
                 }}
+                clearable={false}
               />
               <span className="text-sm text-muted-foreground">
                 / {totalPages}
