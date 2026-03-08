@@ -201,9 +201,19 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/cultivation-zone",
         children: [
           {
+            id: "cultivation-region",
+            label: "Vùng canh tác",
+            href: "/cultivation-region",
+          },
+          {
             id: "cultivation-area",
             label: "Khu vực canh tác",
             href: "/cultivation-area",
+          },
+          {
+            id: "cultivation-plot",
+            label: "Lô canh tác",
+            href: "/cultivation-plot",
           },
           {
             id: "crop-identification",
