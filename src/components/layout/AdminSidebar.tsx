@@ -205,16 +205,16 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
             label: "Vùng canh tác",
             href: "/cultivation-region",
           },
-          {
-            id: "cultivation-area",
-            label: "Khu vực canh tác",
-            href: "/cultivation-area",
-          },
-          {
-            id: "cultivation-plot",
-            label: "Lô canh tác",
-            href: "/cultivation-plot",
-          },
+          // {
+          //   id: "cultivation-area",
+          //   label: "Khu vực canh tác",
+          //   href: "/cultivation-area",
+          // },
+          // {
+          //   id: "cultivation-plot",
+          //   label: "Lô canh tác",
+          //   href: "/cultivation-plot",
+          // },
           {
             id: "crop-identification",
             label: "Định danh cây trồng",
