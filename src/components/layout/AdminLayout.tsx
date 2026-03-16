@@ -11,13 +11,22 @@ interface AdminLayoutProps {
 }
 
 export function AdminLayout({ children, title, description, actions }: AdminLayoutProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const saved = sessionStorage.getItem("sidebar_collapsed");
+    return saved === "true";
+  });
+
+  const toggleSidebar = () => {
+    const newState = !sidebarCollapsed;
+    setSidebarCollapsed(newState);
+    sessionStorage.setItem("sidebar_collapsed", String(newState));
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <AdminSidebar
         collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        onToggle={toggleSidebar}
       />
       <div
         className={cn(

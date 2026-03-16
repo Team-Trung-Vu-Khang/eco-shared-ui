@@ -466,27 +466,34 @@ export function AdminSidebar({
 
   // Use a standard ref and useEffect for clearer cleanup logic
   const viewportRef = useRef<HTMLDivElement>(null);
+  const [isMounting, setIsMounting] = useState(true);
 
+  // Restore scroll position as early as possible
   useEffect(() => {
-    const element = viewportRef.current;
-    if (!element) return;
+    const root = viewportRef.current;
+    if (!root) return;
 
-    // Restore
+    const viewport = root.querySelector("[data-radix-scroll-area-viewport]");
+    if (!viewport) return;
+
     const savedScroll = sessionStorage.getItem(STORAGE_KEY_SCROLL);
     if (savedScroll) {
-      // Small timeout to ensure content is rendered
-      setTimeout(() => {
-        element.scrollTop = parseInt(savedScroll, 10);
-      }, 0);
+      viewport.scrollTop = parseInt(savedScroll, 10);
     }
 
-    // Save
     const handleScroll = () => {
-      sessionStorage.setItem(STORAGE_KEY_SCROLL, element.scrollTop.toString());
+      sessionStorage.setItem(STORAGE_KEY_SCROLL, viewport.scrollTop.toString());
     };
 
-    element.addEventListener("scroll", handleScroll);
-    return () => element.removeEventListener("scroll", handleScroll);
+    viewport.addEventListener("scroll", handleScroll);
+    
+    // Disable mounting flag after a brief moment
+    const timer = setTimeout(() => setIsMounting(false), 50);
+
+    return () => {
+      viewport.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
   }, []);
 
   // Persist state changes
@@ -525,7 +532,8 @@ export function AdminSidebar({
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen bg-sidebar text-sidebar-foreground transition-all duration-300 flex flex-col",
+        "fixed left-0 top-0 z-40 h-screen bg-sidebar text-sidebar-foreground flex flex-col",
+        !isMounting && "transition-all duration-300",
         collapsed ? "w-16" : "w-64",
       )}
       data-testid="admin-sidebar"
@@ -740,69 +748,67 @@ export function AdminSidebar({
 
       <div className="border-t border-sidebar-border p-3 space-y-1">
         <TooltipProvider delayDuration={0}>
-          <div className="border-t border-sidebar-border p-3 space-y-1">
-            {collapsed ? (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <a
-                    href="/settings"
-                    onClick={handleNavigate("/settings")}
-                    className={cn(
-                      "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all cursor-pointer",
-                      collapsed && "justify-center px-2",
-                    )}
-                    data-testid="menu-settings"
-                  >
-                    <Settings className="w-4.5 h-4.5" />
-                    {!collapsed && <span>Cài đặt</span>}
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent side="right">Cài đặt</TooltipContent>
-              </Tooltip>
-            ) : (
-              <a
-                href="/settings"
-                onClick={handleNavigate("/settings")}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all cursor-pointer",
-                  collapsed && "justify-center px-2",
-                )}
-                data-testid="menu-settings"
-              >
-                <Settings className="w-4.5 h-4.5" />
-                {!collapsed && <span>Cài đặt</span>}
-              </a>
-            )}
+          {collapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <a
+                  href="/settings"
+                  onClick={handleNavigate("/settings")}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all cursor-pointer",
+                    collapsed && "justify-center px-2",
+                  )}
+                  data-testid="menu-settings"
+                >
+                  <Settings className="w-4.5 h-4.5" />
+                  {!collapsed && <span>Cài đặt</span>}
+                </a>
+              </TooltipTrigger>
+              <TooltipContent side="right">Cài đặt</TooltipContent>
+            </Tooltip>
+          ) : (
+            <a
+              href="/settings"
+              onClick={handleNavigate("/settings")}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent transition-all cursor-pointer",
+                collapsed && "justify-center px-2",
+              )}
+              data-testid="menu-settings"
+            >
+              <Settings className="w-4.5 h-4.5" />
+              {!collapsed && <span>Cài đặt</span>}
+            </a>
+          )}
 
-            {collapsed ? (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all",
-                      collapsed && "justify-center px-2",
-                    )}
-                    data-testid="menu-logout"
-                  >
-                    <LogOut className="w-4.5 h-4.5" />
-                    {!collapsed && <span>Đăng xuất</span>}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="right">Đăng xuất</TooltipContent>
-              </Tooltip>
-            ) : (
-              <button
-                className={cn(
-                  "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all",
-                  collapsed && "justify-center px-2",
-                )}
-                data-testid="menu-logout"
-              >
-                <LogOut className="w-4.5 h-4.5" />
-                {!collapsed && <span>Đăng xuất</span>}
-              </button>
-            )}
-          </div>
+          {collapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all",
+                    collapsed && "justify-center px-2",
+                  )}
+                  data-testid="menu-logout"
+                >
+                  <LogOut className="w-4.5 h-4.5" />
+                  {!collapsed && <span>Đăng xuất</span>}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Đăng xuất</TooltipContent>
+            </Tooltip>
+          ) : (
+            <button
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive transition-all",
+                collapsed && "justify-center px-2",
+              )}
+              data-testid="menu-logout"
+            >
+              <LogOut className="w-4.5 h-4.5" />
+              {!collapsed && <span>Đăng xuất</span>}
+            </button>
+          )}
         </TooltipProvider>
       </div>
     </aside>
