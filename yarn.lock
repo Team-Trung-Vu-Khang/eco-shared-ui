@@ -2819,9 +2819,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tankhang1/eco-shared-ui@workspace:.":
+"@Team-Trung-Vu-Khang/eco-shared-ui@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@tankhang1/eco-shared-ui@workspace:."
+  resolution: "@Team-Trung-Vu-Khang/eco-shared-ui@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.39.1"
     "@lexical/code": "npm:^0.39.0"
