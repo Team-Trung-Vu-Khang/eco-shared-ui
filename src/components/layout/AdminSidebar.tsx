@@ -303,18 +303,18 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
-    title: "Canh tác",
+    title: "Kế hoạch & Công việc",
     items: [
       {
         id: "plan",
-        label: "Kế hoạch canh tác",
+        label: "Kế hoạch",
         icon: ClipboardList,
         href: "/plan",
       },
       { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
       {
         id: "plan-type",
-        label: "Phân loại kế hoạch",
+        label: "Phân nhóm kế hoạch",
         icon: CheckSquare,
         href: "/plan-type",
       },
@@ -486,7 +486,7 @@ export function AdminSidebar({
     };
 
     viewport.addEventListener("scroll", handleScroll);
-    
+
     // Disable mounting flag after a brief moment
     const timer = setTimeout(() => setIsMounting(false), 50);
 
