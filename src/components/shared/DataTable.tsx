@@ -513,23 +513,9 @@ export function DataTable<T extends { id: string | number }>({
               <ChevronLeft className="w-4 h-4" />
             </Button>
 
-            <div className="flex items-center gap-1 mx-2">
-              <span className="text-sm">Trang</span>
-              <Input
-                className="h-8 w-12 text-center p-0 border-muted-foreground/20"
-                value={currentPage}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value);
-                  if (!isNaN(val) && val >= 1 && val <= totalPages) {
-                    setCurrentPage(val);
-                  }
-                }}
-                clearable={false}
-              />
-              <span className="text-sm text-muted-foreground">
-                / {totalPages}
-              </span>
-            </div>
+            <span className="text-sm text-muted-foreground">
+              {currentPage} / {totalPages}
+            </span>
 
             <Button
               variant="outline"
