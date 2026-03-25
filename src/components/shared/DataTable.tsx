@@ -407,7 +407,7 @@ export function DataTable<T extends { id: string | number }>({
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuContent align="end" className="w-40 z-50">
                           <DropdownMenuLabel className="text-[10px] uppercase text-muted-foreground px-2 py-1">
                             Tùy chọn
                           </DropdownMenuLabel>
