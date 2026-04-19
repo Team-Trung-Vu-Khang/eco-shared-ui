@@ -160,6 +160,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/department",
       },
       { id: "position", label: "Chức vụ", icon: User, href: "/position" },
+      {
+        id: "role-responsibility",
+        label: "Vai trò & trách nhiệm",
+        icon: Scale,
+        href: "/role-responsibility",
+      },
       { id: "team", label: "Đội nhóm", icon: UsersRound, href: "/team" },
     ],
   },
@@ -365,6 +371,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     title: "Hồ sơ",
     items: [
       { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
+      {
+        id: "document-version",
+        label: "Quản lý phiên bản tài liệu",
+        icon: BookOpenText,
+        href: "/document-version",
+      },
     ],
   },
   {
@@ -571,7 +583,10 @@ export function AdminSidebar({
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 py-4 scrollbar-thin" ref={viewportRef}>
+      <ScrollArea
+        className="flex-1 py-4 scrollbar-thin"
+        ref={viewportRef as any}
+      >
         <TooltipProvider delayDuration={0}>
           <nav className="px-2 space-y-6">
             {menuGroups.map((group) => (
