@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   type InitialConfigType,
   LexicalComposer,
@@ -40,17 +41,21 @@ export function Editor({
   onChange?: (editorState: EditorState) => void;
   onSerializedChange?: (editorSerializedState: SerializedEditorState) => void;
 }) {
+  // Use a ref to store the initial state so it doesn't change on re-renders
+  const memoizedConfig = React.useMemo(() => {
+    const config: InitialConfigType = {
+      ...editorConfig,
+      ...(editorState ? { editorState } : {}),
+      ...(editorSerializedState
+        ? { editorState: JSON.stringify(editorSerializedState) }
+        : {}),
+    };
+    return config;
+  }, []); // Empty dependency array means it's only calculated once on mount
+
   return (
     <div className="bg-background overflow-hidden rounded-lg border shadow">
-      <LexicalComposer
-        initialConfig={{
-          ...editorConfig,
-          ...(editorState ? { editorState } : {}),
-          ...(editorSerializedState
-            ? { editorState: JSON.stringify(editorSerializedState) }
-            : {}),
-        }}
-      >
+      <LexicalComposer initialConfig={memoizedConfig}>
         <TooltipProvider>
           <Plugins
             maxLength={maxLength}

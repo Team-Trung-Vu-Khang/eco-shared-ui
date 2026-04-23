@@ -186,6 +186,7 @@ interface AutoCompleteSelectProps {
   disabled?: boolean;
   clearable?: boolean;
   autocomplete?: boolean;
+  className?: string;
 }
 
 export function AutoCompleteSelect({
@@ -198,6 +199,7 @@ export function AutoCompleteSelect({
   disabled,
   clearable = true,
   autocomplete = true,
+  className,
 }: AutoCompleteSelectProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -249,6 +251,7 @@ export function AutoCompleteSelect({
             "text-sm font-normal shadow-sm border-input bg-transparent",
             !value && "text-muted-foreground",
             disabled && "cursor-not-allowed opacity-50",
+            className,
           )}
         >
           <span className="truncate">
