@@ -50,6 +50,7 @@ import {
   UsersRound,
   Wrench,
   X,
+  Search,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -309,6 +310,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         label: "Dụng cụ – Máy móc",
         icon: Wrench,
         href: "/equipment",
+      },
+      {
+        id: "lookup-material",
+        label: "Tra cứu vật tư",
+        icon: Search,
+        href: "/lookup-material",
       },
       { id: "unit", label: "Đơn vị quy đổi", icon: Scale, href: "/unit" },
     ],
