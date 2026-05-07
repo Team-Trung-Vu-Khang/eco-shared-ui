@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   HoverCard,
@@ -51,6 +52,7 @@ import {
   Wrench,
   X,
   Search,
+  Cpu,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -388,6 +390,17 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         label: "Quản lý phiên bản tài liệu",
         icon: BookOpenText,
         href: "/document-version",
+      },
+    ],
+  },
+  {
+    title: "IoT Nông nghiệp",
+    items: [
+      {
+        id: "iot-device",
+        label: "Thiết bị IoT",
+        icon: Cpu,
+        href: "/iot-device",
       },
     ],
   },
