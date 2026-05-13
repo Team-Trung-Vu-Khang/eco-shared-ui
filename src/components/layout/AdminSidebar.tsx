@@ -405,6 +405,53 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
     ],
   },
   {
+    title: "Báo cáo - thống kê",
+    items: [
+      {
+        id: "production-cultivation-report",
+        label: "Báo cáo sản xuất/canh tác",
+        icon: ClipboardList,
+        href: "/production-cultivation-report",
+      },
+      {
+        id: "treatment-report",
+        label: "Báo cáo điều trị",
+        icon: Heart,
+        href: "/treatment-report",
+      },
+      {
+        id: "amendment-report",
+        label: "Báo cáo cải tạo",
+        icon: Wrench,
+        href: "/amendment-report",
+      },
+      {
+        id: "harvest-report",
+        label: "Báo cáo thu hoạch",
+        icon: Leaf,
+        href: "/harvest-report",
+      },
+      {
+        id: "environment-iot-report",
+        label: "Báo cáo môi trường và IoT",
+        icon: Cpu,
+        href: "/environment-iot-report",
+      },
+      {
+        id: "executive-dashboard",
+        label: "Dashboard điều hành tổng hợp",
+        icon: LayoutDashboard,
+        href: "/executive-dashboard",
+      },
+      {
+        id: "summary-report-export",
+        label: "Xuất báo cáo tổng hợp",
+        icon: FileText,
+        href: "/summary-report-export",
+      },
+    ],
+  },
+  {
     title: "Dữ liệu liên kết",
     items: [
       {
