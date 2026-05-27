@@ -402,6 +402,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         icon: Cpu,
         href: "/iot-device",
       },
+      {
+        id: "iot-device-map",
+        label: "Bản đồ thiết bị IoT",
+        icon: Map,
+        href: "/map-iot-device",
+      },
     ],
   },
   {
