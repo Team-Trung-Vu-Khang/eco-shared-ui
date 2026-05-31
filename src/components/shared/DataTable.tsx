@@ -41,6 +41,7 @@ import {
   Download,
   Settings2,
   X,
+  Copy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -60,6 +61,7 @@ interface DataTableProps<T> {
   selectable?: boolean;
   onView?: (row: T) => void;
   onEdit?: (row: T) => void;
+  onDuplicate?: (row: T) => void;
   onDelete?: (row: T) => void;
   pageSize?: number;
   filters?: {
@@ -77,6 +79,7 @@ export function DataTable<T extends { id: string | number }>({
   selectable = false,
   onView,
   onEdit,
+  onDuplicate,
   onDelete,
   pageSize = 10,
   filters = [],
@@ -331,7 +334,7 @@ export function DataTable<T extends { id: string | number }>({
                     {column.label}
                   </TableHead>
                 ))}
-              {(onView || onEdit || onDelete) && (
+              {(onView || onEdit || onDuplicate || onDelete) && (
                 <TableHead className="px-4 text-center text-xs">
                   Thao tác
                 </TableHead>
@@ -345,7 +348,7 @@ export function DataTable<T extends { id: string | number }>({
                   colSpan={
                     columns.filter((c) => visibleColumns.has(c.key)).length +
                     (selectable ? 1 : 0) +
-                    (onView || onEdit || onDelete ? 1 : 0)
+                    (onView || onEdit || onDuplicate || onDelete ? 1 : 0)
                   }
                   className="h-40 text-center"
                 >
@@ -394,7 +397,7 @@ export function DataTable<T extends { id: string | number }>({
                           : (row as any)[column.key]}
                       </TableCell>
                     ))}
-                  {(onView || onEdit || onDelete) && (
+                  {(onView || onEdit || onDuplicate || onDelete) && (
                     <TableCell className="px-4 py-3 text-center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -429,6 +432,16 @@ export function DataTable<T extends { id: string | number }>({
                             >
                               <Pencil className="w-4 h-4 mr-2" />
                               Chỉnh sửa
+                            </DropdownMenuItem>
+                          )}
+                          {onDuplicate && (
+                            <DropdownMenuItem
+                              onClick={() => onDuplicate(row)}
+                              data-testid={`duplicate-${row.id}`}
+                              className="cursor-pointer"
+                            >
+                              <Copy className="w-4 h-4 mr-2" />
+                              Nhân bản
                             </DropdownMenuItem>
                           )}
                           <DropdownMenuSeparator />
