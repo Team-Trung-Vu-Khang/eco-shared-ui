@@ -283,12 +283,12 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         icon: BookOpenText,
         href: "/docs",
       },
-      {
-        id: "treatment",
-        label: "Phác đồ điều trị",
-        icon: Heart,
-        href: "/treatment",
-      },
+      // {
+      //   id: "treatment",
+      //   label: "Phác đồ điều trị",
+      //   icon: Heart,
+      //   href: "/treatment",
+      // },
     ],
   },
   {
@@ -373,26 +373,26 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         href: "/soil-amendment-map",
         icon: Map,
       },
-      {
-        id: "soil-amendment-treatment",
-        label: "Phác đồ cải tạo",
-        href: "/soil-amendment-treatment",
-        icon: Heart,
-      },
+      // {
+      //   id: "soil-amendment-treatment",
+      //   label: "Phác đồ cải tạo",
+      //   href: "/soil-amendment-treatment",
+      //   icon: Heart,
+      // },
     ],
   },
-  {
-    title: "Hồ sơ",
-    items: [
-      { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
-      {
-        id: "document-version",
-        label: "Quản lý phiên bản tài liệu",
-        icon: BookOpenText,
-        href: "/document-version",
-      },
-    ],
-  },
+  // {
+  //   title: "Hồ sơ",
+  //   items: [
+  //     { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
+  //     {
+  //       id: "document-version",
+  //       label: "Quản lý phiên bản tài liệu",
+  //       icon: BookOpenText,
+  //       href: "/document-version",
+  //     },
+  //   ],
+  // },
   {
     title: "IoT Nông nghiệp",
     items: [
@@ -425,110 +425,110 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
         icon: Heart,
         href: "/treatment-report",
       },
-      {
-        id: "amendment-report",
-        label: "Báo cáo cải tạo",
-        icon: Wrench,
-        href: "/amendment-report",
-      },
-      {
-        id: "harvest-report",
-        label: "Báo cáo thu hoạch",
-        icon: Leaf,
-        href: "/harvest-report",
-      },
-      {
-        id: "environment-iot-report",
-        label: "Báo cáo môi trường và IoT",
-        icon: Cpu,
-        href: "/environment-iot-report",
-      },
-      {
-        id: "executive-dashboard",
-        label: "Dashboard điều hành tổng hợp",
-        icon: LayoutDashboard,
-        href: "/executive-dashboard",
-      },
-      {
-        id: "summary-report-export",
-        label: "Xuất báo cáo tổng hợp",
-        icon: FileText,
-        href: "/summary-report-export",
-      },
+      // {
+      //   id: "amendment-report",
+      //   label: "Báo cáo cải tạo",
+      //   icon: Wrench,
+      //   href: "/amendment-report",
+      // },
+      // {
+      //   id: "harvest-report",
+      //   label: "Báo cáo thu hoạch",
+      //   icon: Leaf,
+      //   href: "/harvest-report",
+      // },
+      // {
+      //   id: "environment-iot-report",
+      //   label: "Báo cáo môi trường và IoT",
+      //   icon: Cpu,
+      //   href: "/environment-iot-report",
+      // },
+      // {
+      //   id: "executive-dashboard",
+      //   label: "Dashboard điều hành tổng hợp",
+      //   icon: LayoutDashboard,
+      //   href: "/executive-dashboard",
+      // },
+      // {
+      //   id: "summary-report-export",
+      //   label: "Xuất báo cáo tổng hợp",
+      //   icon: FileText,
+      //   href: "/summary-report-export",
+      // },
     ],
   },
-  {
-    title: "Dữ liệu liên kết",
-    items: [
-      {
-        id: "terrain",
-        label: "Đặc điểm địa hình",
-        icon: Mountain,
-        href: "/terrain",
-      },
-      { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
-      {
-        id: "farming-method",
-        label: "Phương thức canh tác",
-        icon: Leaf,
-        href: "/farming-method",
-      },
-      {
-        id: "certificate",
-        label: "Bộ tiêu chuẩn",
-        icon: Award,
-        href: "/certificate",
-      },
-      {
-        id: "bank-directory",
-        label: "Ngân hàng",
-        icon: Landmark,
-        href: "/bank-directory",
-      },
-      {
-        id: "enterprise-type",
-        label: "Nhóm tổ chức",
-        icon: Building2,
-        href: "/enterprise-type",
-      },
-      {
-        id: "enterprise-form",
-        label: "Loại hình tổ chức",
-        icon: Building2,
-        href: "/enterprise-form",
-      },
-      {
-        id: "material-group",
-        label: "Nhóm vật tư",
-        icon: Boxes,
-        href: "/material-group",
-      },
-      {
-        id: "fertilizer-group",
-        label: "Nhóm phân bón",
-        icon: Atom,
-        href: "/fertilizer-group",
-      },
-      {
-        id: "pesticide-group",
-        label: "Nhóm thuốc BVTV",
-        icon: Bug,
-        href: "/pesticide-group",
-      },
-      {
-        id: "vehicle-group",
-        label: "Nhóm máy móc - thiết bị",
-        icon: Tractor,
-        href: "/vehicle-group",
-      },
-      {
-        id: "document-category",
-        label: "Danh mục tài liệu",
-        icon: FileText,
-        href: "/document-category",
-      },
-    ],
-  },
+  // {
+  //   title: "Dữ liệu liên kết",
+  //   items: [
+  //     {
+  //       id: "terrain",
+  //       label: "Đặc điểm địa hình",
+  //       icon: Mountain,
+  //       href: "/terrain",
+  //     },
+  //     { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
+  //     {
+  //       id: "farming-method",
+  //       label: "Phương thức canh tác",
+  //       icon: Leaf,
+  //       href: "/farming-method",
+  //     },
+  //     {
+  //       id: "certificate",
+  //       label: "Bộ tiêu chuẩn",
+  //       icon: Award,
+  //       href: "/certificate",
+  //     },
+  //     {
+  //       id: "bank-directory",
+  //       label: "Ngân hàng",
+  //       icon: Landmark,
+  //       href: "/bank-directory",
+  //     },
+  //     {
+  //       id: "enterprise-type",
+  //       label: "Nhóm tổ chức",
+  //       icon: Building2,
+  //       href: "/enterprise-type",
+  //     },
+  //     {
+  //       id: "enterprise-form",
+  //       label: "Loại hình tổ chức",
+  //       icon: Building2,
+  //       href: "/enterprise-form",
+  //     },
+  //     {
+  //       id: "material-group",
+  //       label: "Nhóm vật tư",
+  //       icon: Boxes,
+  //       href: "/material-group",
+  //     },
+  //     {
+  //       id: "fertilizer-group",
+  //       label: "Nhóm phân bón",
+  //       icon: Atom,
+  //       href: "/fertilizer-group",
+  //     },
+  //     {
+  //       id: "pesticide-group",
+  //       label: "Nhóm thuốc BVTV",
+  //       icon: Bug,
+  //       href: "/pesticide-group",
+  //     },
+  //     {
+  //       id: "vehicle-group",
+  //       label: "Nhóm máy móc - thiết bị",
+  //       icon: Tractor,
+  //       href: "/vehicle-group",
+  //     },
+  //     {
+  //       id: "document-category",
+  //       label: "Danh mục tài liệu",
+  //       icon: FileText,
+  //       href: "/document-category",
+  //     },
+  //   ],
+  // },
 ];
 
 interface AdminSidebarProps {
