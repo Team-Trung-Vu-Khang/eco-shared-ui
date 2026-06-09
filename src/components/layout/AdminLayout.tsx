@@ -8,9 +8,16 @@ interface AdminLayoutProps {
   title?: string;
   description?: string;
   actions?: React.ReactNode;
+  isDev?: boolean;
 }
 
-export function AdminLayout({ children, title, description, actions }: AdminLayoutProps) {
+export function AdminLayout({
+  children,
+  title,
+  description,
+  actions,
+  isDev = false,
+}: AdminLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = sessionStorage.getItem("sidebar_collapsed");
     return saved === "true";
@@ -27,11 +34,12 @@ export function AdminLayout({ children, title, description, actions }: AdminLayo
       <AdminSidebar
         collapsed={sidebarCollapsed}
         onToggle={toggleSidebar}
+        isDev
       />
       <div
         className={cn(
           "transition-all duration-300",
-          sidebarCollapsed ? "ml-16" : "ml-64"
+          sidebarCollapsed ? "ml-16" : "ml-64",
         )}
       >
         <AdminHeader />
@@ -40,17 +48,25 @@ export function AdminLayout({ children, title, description, actions }: AdminLayo
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
                 {title && (
-                  <h1 className="text-2xl font-display font-bold text-foreground" data-testid="page-title">
+                  <h1
+                    className="text-2xl font-display font-bold text-foreground"
+                    data-testid="page-title"
+                  >
                     {title}
                   </h1>
                 )}
                 {description && (
-                  <p className="mt-1 text-muted-foreground" data-testid="page-description">
+                  <p
+                    className="mt-1 text-muted-foreground"
+                    data-testid="page-description"
+                  >
                     {description}
                   </p>
                 )}
               </div>
-              {actions && <div className="flex items-center gap-2">{actions}</div>}
+              {actions && (
+                <div className="flex items-center gap-2">{actions}</div>
+              )}
             </div>
           )}
           {children}
