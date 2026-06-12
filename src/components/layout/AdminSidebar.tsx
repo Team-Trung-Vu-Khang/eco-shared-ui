@@ -54,6 +54,7 @@ import {
   Search,
   Cpu,
   MapPin,
+  SquareM,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -531,6 +532,7 @@ const menuProdGroups: { title: string; items: MenuItem[] }[] = [
   //   ],
   // },
 ];
+
 const menuDevGroups: (
   | { title: string; items: MenuItem[] }
   | { note: string }
@@ -728,26 +730,7 @@ const menuDevGroups: (
   {
     title: "Cây trồng",
     items: [
-      { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
-      {
-        id: "variety",
-        label: "Giống cây trồng",
-        icon: Sprout,
-        href: "/variety",
-      },
-      {
-        id: "group-crop",
-        label: "Nhóm cây trồng",
-        icon: Trees,
-        href: "/group-crop",
-      },
       { id: "seed", label: "Hạt giống", icon: Leaf, href: "/seed" },
-      {
-        id: "growth-cycle",
-        label: "Chu kỳ sinh trưởng",
-        icon: CalendarDays,
-        href: "/growth-cycle",
-      },
       { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
       {
         id: "docs",
@@ -942,17 +925,48 @@ const menuDevGroups: (
     title: "Dữ liệu liên kết",
     items: [
       {
+        id: "group-crop",
+        label: "Nhóm cây trồng",
+        icon: Trees,
+        href: "/group-crop",
+      },
+      { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
+      {
+        id: "variety",
+        label: "Giống cây trồng",
+        icon: Sprout,
+        href: "/variety",
+      },
+      {
+        id: "growth-cycle",
+        label: "Chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/growth-cycle",
+      },
+      {
         id: "terrain",
         label: "Đặc điểm địa hình",
         icon: Mountain,
         href: "/terrain",
       },
-      { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
+      {
+        id: "land-specs",
+        label: "Thông số địa hình",
+        icon: SquareM,
+        href: "/land-specs",
+      },
+      { id: "land", label: "Loại đất", icon: Layers, href: "/land" },
       {
         id: "farming-method",
         label: "Phương thức canh tác",
         icon: Leaf,
         href: "/farming-method",
+      },
+      {
+        id: "farming-method-crop",
+        label: "Phương thức canh tác theo cây trồng",
+        icon: Sprout,
+        href: "/farming-method-crop",
       },
       {
         id: "certificate",
