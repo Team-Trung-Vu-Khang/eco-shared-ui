@@ -771,22 +771,10 @@ const menuDevGroups: (
     items: [
       { id: "pesticide", label: "Thuốc BVTV", icon: Bug, href: "/pesticide" },
       {
-        id: "pesticide-group",
-        label: "Thông tin nhóm Thuốc BVTV",
-        icon: Bug,
-        href: "/pesticide-group",
-      },
-      {
         id: "fertilizer",
         label: "Phân bón",
         icon: FlaskConical,
         href: "/fertilizer",
-      },
-      {
-        id: "fertilizer-group",
-        label: "Thông tin nhóm phân bón",
-        icon: Atom,
-        href: "/fertilizer-group",
       },
       {
         id: "material",
@@ -795,22 +783,10 @@ const menuDevGroups: (
         href: "/material",
       },
       {
-        id: "material-group",
-        label: "Thông tin nhóm vật tư trong nông nghiệp",
-        icon: Boxes,
-        href: "/material-group",
-      },
-      {
         id: "equipment",
         label: "Dụng cụ – Máy móc",
         icon: Wrench,
         href: "/equipment",
-      },
-      {
-        id: "vehicle-group",
-        label: "Thông tin nhóm dụng cụ - máy móc trong nông nghiệp",
-        icon: Tractor,
-        href: "/vehicle-group",
       },
       {
         id: "lookup-material",
