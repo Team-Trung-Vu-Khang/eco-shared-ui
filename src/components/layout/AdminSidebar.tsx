@@ -730,7 +730,26 @@ const menuDevGroups: (
   {
     title: "Cây trồng",
     items: [
+      {
+        id: "group-crop",
+        label: "Nhóm cây trồng",
+        icon: Trees,
+        href: "/group-crop",
+      },
+      { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
+      {
+        id: "variety",
+        label: "Giống cây trồng",
+        icon: Sprout,
+        href: "/variety",
+      },
       { id: "seed", label: "Hạt giống", icon: Leaf, href: "/seed" },
+      {
+        id: "growth-cycle",
+        label: "Chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/growth-cycle",
+      },
       { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
       {
         id: "docs",
@@ -930,12 +949,17 @@ const menuDevGroups: (
         icon: Trees,
         href: "/group-crop",
       },
-      { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
       {
-        id: "variety",
-        label: "Giống cây trồng",
+        id: "crop-foundation",
+        label: "Cây trồng",
+        icon: Flower2,
+        href: "/crop-foundation",
+      },
+      {
         icon: Sprout,
-        href: "/variety",
+        id: "variety-foundation",
+        label: "Giống cây trồng",
+        href: "/variety-foudation",
       },
       {
         id: "growth-cycle",
