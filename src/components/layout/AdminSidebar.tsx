@@ -18,6 +18,7 @@ import {
   Award,
   BookOpenText,
   Boxes,
+  Briefcase,
   Bug,
   Building,
   Building2,
@@ -544,8 +545,438 @@ const menuDevGroups: (
     ],
   },
   {
+    note: "Foundation",
+  },
+  {
+    title: "Cây trồng",
+    items: [
+      {
+        id: "fd-group-crop",
+        label: "Nhóm cây trồng",
+        icon: Trees,
+        href: "/group-crop",
+      },
+      {
+        id: "fd-crop",
+        label: "Cây trồng",
+        icon: Flower2,
+        href: "/crop-foundation",
+      },
+      {
+        id: "fd-variety",
+        label: "Giống cây trồng",
+        icon: Sprout,
+        href: "/variety-foudation",
+      },
+    ],
+  },
+  {
+    title: "Canh tác",
+    items: [
+      {
+        id: "fd-farming-method",
+        label: "Phương thức canh tác",
+        icon: Leaf,
+        href: "/farming-method",
+      },
+      {
+        id: "fd-farming-method-crop",
+        label: "Phương thức canh tác theo từng cây trồng",
+        icon: Sprout,
+        href: "/farming-method-crop",
+      },
+      {
+        id: "fd-growth-cycle",
+        label: "Chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/growth-cycle",
+      },
+    ],
+  },
+  {
+    title: "Địa lý & Đất",
+    items: [
+      {
+        id: "fd-land",
+        label: "Loại đất",
+        icon: Layers,
+        href: "/land",
+      },
+      {
+        id: "fd-terrain",
+        label: "Đặc điểm địa hình",
+        icon: Mountain,
+        href: "/terrain",
+      },
+      {
+        id: "fd-land-specs",
+        label: "Thông số địa hình",
+        icon: SquareM,
+        href: "/land-specs",
+      },
+    ],
+  },
+  {
+    note: "Master Data",
+  },
+  {
+    title: "Tổ chức & Nhân sự",
+    items: [
+      {
+        id: "md-department",
+        label: "Thông tin các phòng ban",
+        icon: Building,
+        href: "/department",
+      },
+      {
+        id: "md-position",
+        label: "Thông tin các chức danh - chức vụ",
+        icon: User,
+        href: "/position",
+      },
+      {
+        id: "md-industry",
+        label: "Thông tin các ngành nghề",
+        icon: Briefcase,
+        href: "/enterprise-type",
+      },
+    ],
+  },
+  {
+    title: "Hành chính & Tài chính",
+    items: [
+      {
+        id: "md-province",
+        label: "Thông tin phường/xã và tỉnh/thành",
+        icon: MapPin,
+        href: "/province",
+      },
+      {
+        id: "md-bank",
+        label: "Thông tin các ngân hàng",
+        icon: Landmark,
+        href: "/bank-directory",
+      },
+    ],
+  },
+  {
+    title: "Tiêu chuẩn & Chứng chỉ",
+    items: [
+      {
+        id: "md-certificate",
+        label: "Thông tin các loại chứng chỉ và chứng chỉ trong nông nghiệp",
+        icon: Award,
+        href: "/certificate",
+      },
+    ],
+  },
+  {
+    title: "Nhóm vật tư",
+    items: [
+      {
+        id: "md-pesticide-group",
+        label: "Thông tin nhóm Thuốc BVTV",
+        icon: Bug,
+        href: "/pesticide-group",
+      },
+      {
+        id: "md-material-group",
+        label: "Thông tin nhóm vật tư trong nông nghiệp",
+        icon: Boxes,
+        href: "/material-group",
+      },
+      {
+        id: "md-fertilizer-group",
+        label: "Thông tin nhóm phân bón",
+        icon: Atom,
+        href: "/fertilizer-group",
+      },
+      {
+        id: "md-vehicle-group",
+        label: "Thông tin nhóm dụng cụ - máy móc trong nông nghiệp",
+        icon: Tractor,
+        href: "/vehicle-group",
+      },
+    ],
+  },
+  {
+    title: "IoT & Kế hoạch",
+    items: [
+      {
+        id: "md-iot-device-group",
+        label: "Thông tin nhóm thiết bị IoT",
+        icon: Cpu,
+        href: "/iot-device-group",
+      },
+      {
+        id: "md-plan-type",
+        label: "Thông tin nhóm kế hoạch",
+        icon: ClipboardList,
+        href: "/plan-type",
+      },
+    ],
+  },
+  {
     note: "Data Owner",
   },
+  {
+    title: "Tổ chức & Nhân sự",
+    items: [
+      {
+        id: "do-department",
+        label: "Thông tin phòng ban",
+        icon: Building,
+        href: "/department",
+      },
+      {
+        id: "do-position",
+        label: "Thông tin chức danh - chức vụ",
+        icon: User,
+        href: "/position",
+      },
+      {
+        id: "do-unit",
+        label: "Thông tin đơn vị",
+        icon: Building2,
+        href: "/unit",
+        children: [
+          { id: "do-enterprise", label: "Doanh nghiệp", href: "/enterprise" },
+          { id: "do-farmer", label: "Nông hộ", href: "/farmer" },
+          { id: "do-cooperative", label: "Hợp tác xã", href: "/cooperative" },
+        ],
+      },
+      {
+        id: "do-contact",
+        label: "Thông tin danh bạ liên hệ",
+        icon: Users,
+        href: "/contact",
+      },
+      {
+        id: "do-bank",
+        label: "Thông tin tài khoản ngân hàng",
+        icon: Landmark,
+        href: "/bank",
+      },
+      {
+        id: "do-branch",
+        label: "Thiết lập chi nhánh",
+        icon: GitBranch,
+        href: "/branch",
+      },
+      {
+        id: "do-personnel",
+        label: "Thông tin nhân sự",
+        icon: Users,
+        href: "/personnel",
+      },
+      {
+        id: "do-team",
+        label: "Thông tin đội nhóm",
+        icon: UsersRound,
+        href: "/team",
+      },
+    ],
+  },
+  {
+    title: "Vùng trồng & Canh tác",
+    items: [
+      {
+        id: "do-seed",
+        label: "Thông tin hạt giống",
+        icon: Leaf,
+        href: "/seed",
+      },
+      {
+        id: "do-region-chart",
+        label: "Định danh vùng trồng địa lý",
+        icon: Map,
+        href: "/region-chart",
+        children: [
+          {
+            id: "do-region-dist",
+            label: "Phân bố vùng",
+            href: "/region-distribution",
+          },
+          {
+            id: "do-area-dist",
+            label: "Phân bố khu vực",
+            href: "/area-distribution",
+          },
+          {
+            id: "do-plot-dist",
+            label: "Phân bố lô",
+            href: "/plot-distribution",
+          },
+        ],
+      },
+      {
+        id: "do-cultivation-region",
+        label: "Định danh vùng canh tác",
+        icon: TreePine,
+        href: "/cultivation-region",
+      },
+      {
+        id: "do-plant-identification",
+        label: "Định danh cây trồng",
+        icon: Flower2,
+        href: "/plant-identification",
+      },
+      {
+        id: "do-map-view",
+        label: "Bản đồ vùng trồng",
+        icon: Map,
+        href: "/map-view",
+      },
+    ],
+  },
+  {
+    title: "Thiết lập sản xuất & Kho",
+    items: [
+      {
+        id: "do-growth-cycle",
+        label: "Thiết lập chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/growth-cycle",
+      },
+      {
+        id: "do-season",
+        label: "Thiết lập mùa vụ",
+        icon: CalendarDays,
+        href: "/season",
+      },
+      {
+        id: "do-unit-convert",
+        label: "Đơn vị quy đổi",
+        icon: Scale,
+        href: "/unit",
+      },
+      {
+        id: "do-warehouse",
+        label: "Thông tin kho xưởng",
+        icon: Package,
+        href: "/warehouse",
+      },
+      {
+        id: "do-inventory-in",
+        label: "Nhập kho Thuốc BVTV – Phân bón – Máy móc – Vật tư",
+        icon: Package,
+        href: "/inventory-in",
+      },
+      {
+        id: "do-inventory-out",
+        label: "Xuất kho Thuốc BVTV – Phân bón – Máy móc – Vật tư – Nông sản",
+        icon: Package,
+        href: "/inventory-out",
+      },
+    ],
+  },
+  {
+    title: "Kế hoạch & Phác đồ",
+    items: [
+      {
+        id: "do-plan",
+        label: "Lập kế hoạch",
+        icon: ClipboardList,
+        href: "/plan",
+      },
+      {
+        id: "do-task",
+        label: "Tạo công việc",
+        icon: CheckSquare,
+        href: "/task",
+      },
+      {
+        id: "do-amendment-treatment",
+        label: "Phác đồ cải tạo",
+        icon: Heart,
+        href: "/soil-amendment-treatment",
+      },
+      {
+        id: "do-treatment",
+        label: "Phác đồ điều trị bệnh",
+        icon: Heart,
+        href: "/treatment",
+      },
+    ],
+  },
+  {
+    title: "Báo cáo",
+    items: [
+      {
+        id: "do-inventory-report",
+        label: "Báo cáo nhập – xuất kho",
+        icon: ClipboardList,
+        href: "/inventory-report",
+      },
+      {
+        id: "do-warehouse-report",
+        label:
+          "Báo cáo hiện trạng kho Thuốc BVTV – Phân bón – Máy móc – Vật tư",
+        icon: ClipboardList,
+        href: "/warehouse-report",
+      },
+      {
+        id: "do-plan-task-report",
+        label: "Báo cáo kế hoạch – công việc",
+        icon: ClipboardList,
+        href: "/plan-task-report",
+      },
+      {
+        id: "do-harvest-report",
+        label: "Báo cáo thu hoạch",
+        icon: Leaf,
+        href: "/harvest-report",
+      },
+      {
+        id: "do-amendment-report",
+        label: "Báo cáo quá trình xử lý theo phác đồ cải tạo",
+        icon: Wrench,
+        href: "/amendment-report",
+      },
+      {
+        id: "do-treatment-report",
+        label: "Báo cáo quá trình xử lý theo phác đồ điều trị bệnh",
+        icon: Heart,
+        href: "/treatment-report",
+      },
+    ],
+  },
+  {
+    title: "IoT Nông nghiệp",
+    items: [
+      {
+        id: "do-iot-device",
+        label: "Thiết bị IoT",
+        icon: Cpu,
+        href: "/iot-device",
+      },
+      {
+        id: "do-iot-identification",
+        label: "Định danh IoT",
+        icon: Cpu,
+        href: "/iot-identification",
+      },
+      {
+        id: "do-iot-map",
+        label: "Bản đồ IoT và trình trạng kết nối",
+        icon: Map,
+        href: "/map-iot-device",
+      },
+      {
+        id: "do-iot-maintenance",
+        label: "Lên hạng mục và cảnh báo bảo trì thiết bị IoT",
+        icon: Cpu,
+        href: "/iot-maintenance",
+      },
+      {
+        id: "do-equipment-maintenance",
+        label: "Lên hạng mục và cảnh báo bảo trì thiết bị dụng vụ - máy móc",
+        icon: Wrench,
+        href: "/equipment-maintenance",
+      },
+    ],
+  },
+  { note: "" },
   {
     title: "Tổ chức",
     items: [
@@ -764,9 +1195,6 @@ const menuDevGroups: (
         href: "/treatment",
       },
     ],
-  },
-  {
-    note: "Master Data",
   },
   {
     title: "Vật tư",
@@ -1055,6 +1483,7 @@ const menuDevGroups: (
     ],
   },
 ];
+
 interface AdminSidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
