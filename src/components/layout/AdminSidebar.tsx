@@ -630,7 +630,7 @@ const menuDevGroups: (
       },
       {
         id: "md-position",
-        label: "Thông tin các chức danh - chức vụ",
+        label: "Thông tin vai trò - trách nhiệm",
         icon: User,
         href: "/position",
       },
