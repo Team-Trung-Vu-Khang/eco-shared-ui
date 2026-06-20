@@ -647,13 +647,13 @@ const menuDevGroups: (
     items: [
       {
         id: "md-province",
-        label: "Thông tin phường/xã và tỉnh/thành",
+        label: "Thông tin tỉnh/thành",
         icon: MapPin,
         href: "/province",
       },
       {
         id: "md-bank",
-        label: "Thông tin các ngân hàng",
+        label: "Thông tin ngân hàng",
         icon: Landmark,
         href: "/bank-directory",
       },
