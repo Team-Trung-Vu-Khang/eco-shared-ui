@@ -56,6 +56,7 @@ import {
   Cpu,
   MapPin,
   SquareM,
+  CirclePile,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -627,6 +628,12 @@ const menuDevGroups: (
         label: "Thông tin các phòng ban",
         icon: Building,
         href: "/department",
+      },
+      {
+        id: "md-group-position",
+        label: "Nhóm chức vụ - chức danh",
+        icon: CirclePile,
+        href: "/group-position",
       },
       {
         id: "md-position",
