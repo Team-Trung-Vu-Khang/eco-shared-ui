@@ -534,7 +534,471 @@ const menuProdGroups: { title: string; items: MenuItem[] }[] = [
   //   ],
   // },
 ];
-
+const menuProdRiceGroups: { title: string; items: MenuItem[] }[] = [
+  {
+    title: "Tổng quan",
+    items: [
+      { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/" },
+    ],
+  },
+  {
+    title: "Tổ chức",
+    items: [
+      // {
+      //   id: "region-chart",
+      //   label: "Biểu đồ vùng",
+      //   icon: Map,
+      //   href: "/region-chart",
+      //   children: [
+      //     {
+      //       id: "region-dist",
+      //       label: "Phân bố vùng",
+      //       href: "/region-distribution",
+      //     },
+      //     {
+      //       id: "area-dist",
+      //       label: "Phân bố khu vực",
+      //       href: "/area-distribution",
+      //     },
+      //     {
+      //       id: "plot-dist",
+      //       label: "Phân bố lô",
+      //       href: "/plot-distribution",
+      //     },
+      //     {
+      //       id: "map-view",
+      //       label: "Bản đồ",
+      //       href: "/map-view",
+      //     },
+      //   ],
+      // },
+      {
+        id: "unit",
+        label: "Đơn vị",
+        icon: Building2,
+        href: "/unit",
+        children: [
+          {
+            id: "enterprise",
+            label: "Doanh nghiệp",
+            href: "/enterprise",
+          },
+          {
+            id: "farmer",
+            label: "Nông hộ",
+            href: "/farmer",
+          },
+          {
+            id: "cooperative",
+            label: "Hợp tác xã",
+            href: "/cooperative",
+          },
+          {
+            id: "search-unit",
+            href: "/search-unit",
+            label: "Tìm kiếm đơn vị",
+          },
+        ],
+      },
+      { id: "branch", label: "Chi nhánh", icon: GitBranch, href: "/branch" },
+      {
+        id: "bank",
+        label: "Thông tin ngân hàng",
+        icon: Landmark,
+        href: "/bank",
+      },
+      {
+        id: "contact",
+        label: "Thông tin liên hệ",
+        icon: Users,
+        href: "/contact",
+      },
+      {
+        id: "enterprise-certificate",
+        label: "Chứng nhận - chứng chỉ",
+        icon: Award,
+        href: "/enterprise-certificate",
+      },
+    ],
+  },
+  {
+    title: "Tổ chức & Nhân sự",
+    items: [
+      {
+        id: "personnel",
+        label: "Nhân sự",
+        icon: Users,
+        href: "/personnel",
+      },
+      {
+        id: "department",
+        label: "Phòng ban",
+        icon: Building,
+        href: "/department",
+      },
+      { id: "position", label: "Chức vụ", icon: User, href: "/position" },
+      {
+        id: "role-responsibility",
+        label: "Vai trò & trách nhiệm",
+        icon: Scale,
+        href: "/role-responsibility",
+      },
+      { id: "team", label: "Đội nhóm", icon: UsersRound, href: "/team" },
+    ],
+  },
+  {
+    title: "Vùng trồng",
+    items: [
+      {
+        id: "region-chart",
+        label: "Địa lý",
+        icon: Map,
+        href: "/region-chart",
+        children: [
+          {
+            id: "region-dist",
+            label: "Phân bố vùng",
+            href: "/region-distribution",
+          },
+          {
+            id: "area-dist",
+            label: "Phân bố khu vực",
+            href: "/area-distribution",
+          },
+          {
+            id: "plot-dist",
+            label: "Phân bố lô",
+            href: "/plot-distribution",
+          },
+          {
+            id: "map-view",
+            label: "Bản đồ",
+            href: "/map-view",
+          },
+        ],
+      },
+      {
+        id: "cultivation-zone",
+        label: "Canh tác",
+        icon: TreePine,
+        href: "/cultivation-zone",
+        children: [
+          {
+            id: "cultivation-region",
+            label: "Vùng canh tác",
+            href: "/cultivation-region",
+          },
+          // {
+          //   id: "cultivation-area",
+          //   label: "Khu vực canh tác",
+          //   href: "/cultivation-area",
+          // },
+          // {
+          //   id: "cultivation-plot",
+          //   label: "Lô canh tác",
+          //   href: "/cultivation-plot",
+          // },
+          // {
+          //   id: "crop-identification",
+          //   label: "Định danh cây trồng",
+          //   href: "/plant-identification",
+          // },
+          {
+            id: "dist-detail",
+            label: "Chi tiết phân bổ",
+            href: "/distribution-detail",
+          },
+          {
+            id: "search-crop",
+            label: "Tìm kiếm cây trồng",
+            href: "/search-crop",
+          },
+          {
+            id: "search-zone",
+            label: "Tìm kiếm vùng trồng",
+            href: "/search-zone",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Cây trồng",
+    items: [
+      { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
+      {
+        id: "variety",
+        label: "Giống cây trồng",
+        icon: Sprout,
+        href: "/variety",
+      },
+      {
+        id: "group-crop",
+        label: "Nhóm cây trồng",
+        icon: Trees,
+        href: "/group-crop",
+      },
+      { id: "seed", label: "Hạt giống", icon: Leaf, href: "/seed" },
+      {
+        id: "growth-cycle",
+        label: "Chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/growth-cycle",
+      },
+      { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
+      {
+        id: "docs",
+        label: "Tài liệu kỹ thuật",
+        icon: BookOpenText,
+        href: "/docs",
+      },
+      // {
+      //   id: "treatment",
+      //   label: "Phác đồ điều trị",
+      //   icon: Heart,
+      //   href: "/treatment",
+      // },
+    ],
+  },
+  {
+    title: "Vật tư",
+    items: [
+      { id: "pesticide", label: "Thuốc BVTV", icon: Bug, href: "/pesticide" },
+      {
+        id: "fertilizer",
+        label: "Phân bón",
+        icon: FlaskConical,
+        href: "/fertilizer",
+      },
+      {
+        id: "material",
+        label: "Vật tư khác",
+        icon: Package,
+        href: "/material",
+      },
+      {
+        id: "equipment",
+        label: "Dụng cụ – Máy móc",
+        icon: Wrench,
+        href: "/equipment",
+      },
+      {
+        id: "lookup-material",
+        label: "Tra cứu vật tư",
+        icon: Search,
+        href: "/lookup-material",
+      },
+      { id: "unit", label: "Đơn vị quy đổi", icon: Scale, href: "/unit" },
+    ],
+  },
+  {
+    title: "Kế hoạch & Công việc",
+    items: [
+      {
+        id: "plan",
+        label: "Kế hoạch",
+        icon: ClipboardList,
+        href: "/plan",
+      },
+      { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
+      {
+        id: "plan-type",
+        label: "Thông tin nhóm kế hoạch",
+        icon: CheckSquare,
+        href: "/plan-type",
+      },
+    ],
+  },
+  {
+    title: "Cải tạo đất",
+    items: [
+      {
+        id: "amendment-cycle",
+        label: "Chu kỳ cải tạo",
+        href: "/amendment-cycle",
+        icon: CalendarDays,
+      },
+      {
+        id: "amendment-method",
+        label: "Phương pháp & Quy trình",
+        href: "/amendment-method",
+        icon: Wrench,
+      },
+      {
+        id: "amendment-plan",
+        label: "Kế hoạch",
+        href: "/amendment-plan",
+        icon: ClipboardList,
+      },
+      {
+        id: "amendment-task",
+        label: "Công việc",
+        href: "/amendment-task",
+        icon: CheckSquare,
+      },
+      {
+        id: "soil-amendment-map",
+        label: "Bản đồ",
+        href: "/soil-amendment-map",
+        icon: Map,
+      },
+      // {
+      //   id: "soil-amendment-treatment",
+      //   label: "Phác đồ cải tạo",
+      //   href: "/soil-amendment-treatment",
+      //   icon: Heart,
+      // },
+    ],
+  },
+  // {
+  //   title: "Hồ sơ",
+  //   items: [
+  //     { id: "contract", label: "Hợp đồng", icon: FileText, href: "/contract" },
+  //     {
+  //       id: "document-version",
+  //       label: "Quản lý phiên bản tài liệu",
+  //       icon: BookOpenText,
+  //       href: "/document-version",
+  //     },
+  //   ],
+  // },
+  {
+    title: "IoT Nông nghiệp",
+    items: [
+      {
+        id: "iot-device",
+        label: "Thiết bị IoT",
+        icon: Cpu,
+        href: "/iot-device",
+      },
+      {
+        id: "iot-device-map",
+        label: "Bản đồ thiết bị IoT",
+        icon: Map,
+        href: "/map-iot-device",
+      },
+    ],
+  },
+  {
+    title: "Báo cáo - thống kê",
+    items: [
+      {
+        id: "production-cultivation-report",
+        label: "Báo cáo sản xuất/canh tác",
+        icon: ClipboardList,
+        href: "/production-cultivation-report",
+      },
+      {
+        id: "treatment-report",
+        label: "Báo cáo điều trị",
+        icon: Heart,
+        href: "/treatment-report",
+      },
+      // {
+      //   id: "amendment-report",
+      //   label: "Báo cáo cải tạo",
+      //   icon: Wrench,
+      //   href: "/amendment-report",
+      // },
+      // {
+      //   id: "harvest-report",
+      //   label: "Báo cáo thu hoạch",
+      //   icon: Leaf,
+      //   href: "/harvest-report",
+      // },
+      // {
+      //   id: "environment-iot-report",
+      //   label: "Báo cáo môi trường và IoT",
+      //   icon: Cpu,
+      //   href: "/environment-iot-report",
+      // },
+      // {
+      //   id: "executive-dashboard",
+      //   label: "Dashboard điều hành tổng hợp",
+      //   icon: LayoutDashboard,
+      //   href: "/executive-dashboard",
+      // },
+      // {
+      //   id: "summary-report-export",
+      //   label: "Xuất báo cáo tổng hợp",
+      //   icon: FileText,
+      //   href: "/summary-report-export",
+      // },
+    ],
+  },
+  // {
+  //   title: "Dữ liệu liên kết",
+  //   items: [
+  //     {
+  //       id: "terrain",
+  //       label: "Đặc điểm địa hình",
+  //       icon: Mountain,
+  //       href: "/terrain",
+  //     },
+  //     { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
+  //     {
+  //       id: "farming-method",
+  //       label: "Phương thức canh tác",
+  //       icon: Leaf,
+  //       href: "/farming-method",
+  //     },
+  //     {
+  //       id: "certificate",
+  //       label: "Bộ tiêu chuẩn",
+  //       icon: Award,
+  //       href: "/certificate",
+  //     },
+  //     {
+  //       id: "bank-directory",
+  //       label: "Ngân hàng",
+  //       icon: Landmark,
+  //       href: "/bank-directory",
+  //     },
+  //     {
+  //       id: "enterprise-type",
+  //       label: "Nhóm tổ chức",
+  //       icon: Building2,
+  //       href: "/enterprise-type",
+  //     },
+  //     {
+  //       id: "enterprise-form",
+  //       label: "Loại hình tổ chức",
+  //       icon: Building2,
+  //       href: "/enterprise-form",
+  //     },
+  //     {
+  //       id: "material-group",
+  //       label: "Nhóm vật tư",
+  //       icon: Boxes,
+  //       href: "/material-group",
+  //     },
+  //     {
+  //       id: "fertilizer-group",
+  //       label: "Nhóm phân bón",
+  //       icon: Atom,
+  //       href: "/fertilizer-group",
+  //     },
+  //     {
+  //       id: "pesticide-group",
+  //       label: "Nhóm thuốc BVTV",
+  //       icon: Bug,
+  //       href: "/pesticide-group",
+  //     },
+  //     {
+  //       id: "vehicle-group",
+  //       label: "Nhóm máy móc - thiết bị",
+  //       icon: Tractor,
+  //       href: "/vehicle-group",
+  //     },
+  //     {
+  //       id: "document-category",
+  //       label: "Danh mục tài liệu",
+  //       icon: FileText,
+  //       href: "/document-category",
+  //     },
+  //   ],
+  // },
+];
 const menuDevGroups: (
   | { title: string; items: MenuItem[] }
   | { note: string }
@@ -1495,15 +1959,21 @@ interface AdminSidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
   isDev?: boolean;
+  isRice?: boolean;
 }
 
 export function AdminSidebar({
   collapsed = false,
   onToggle,
   isDev = false,
+  isRice = false,
 }: AdminSidebarProps) {
   const [location, setLocation] = useLocation();
-  const menuGroups = isDev ? menuDevGroups : menuProdGroups;
+  const menuGroups = isDev
+    ? menuDevGroups
+    : isRice
+      ? menuProdRiceGroups
+      : menuProdGroups;
   const defaultExpandedGroups = menuGroups
     .filter((group) => "title" in group)
     .map((group) => group.title);

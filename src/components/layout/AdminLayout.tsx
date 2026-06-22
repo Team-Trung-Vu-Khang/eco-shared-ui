@@ -9,6 +9,7 @@ interface AdminLayoutProps {
   description?: string;
   actions?: React.ReactNode;
   isDev?: boolean;
+  isRice?: boolean;
 }
 
 export function AdminLayout({
@@ -17,6 +18,7 @@ export function AdminLayout({
   description,
   actions,
   isDev = false,
+  isRice = false,
 }: AdminLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = sessionStorage.getItem("sidebar_collapsed");
@@ -34,7 +36,8 @@ export function AdminLayout({
       <AdminSidebar
         collapsed={sidebarCollapsed}
         onToggle={toggleSidebar}
-        isDev
+        isDev={isDev}
+        isRice={isRice}
       />
       <div
         className={cn(
