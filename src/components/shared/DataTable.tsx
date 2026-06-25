@@ -68,6 +68,8 @@ interface DataTableProps<T> {
   onDuplicate?: (row: T) => void;
   onDelete?: (row: T) => void;
   pageSize?: number;
+  totalPages?: number;
+  totalElements?: number;
   filters?: {
     key: string;
     label: string;
@@ -90,6 +92,8 @@ export function DataTable<T extends { id: string | number }>({
   onDuplicate,
   onDelete,
   pageSize = 10,
+  totalPages,
+  totalElements,
   filters = [],
 }: DataTableProps<T>) {
   const [search, setSearch] = useState("");
@@ -131,7 +135,10 @@ export function DataTable<T extends { id: string | number }>({
   const currentPage = currentIndex ?? internalCurrentPage;
 
   const updateCurrentPage = (nextPage: number) => {
-    const normalizedPage = Math.max(1, nextPage);
+    const normalizedPage = Math.max(
+      1,
+      Math.min(nextPage, resolvedTotalPages || 1),
+    );
     onIndexChange?.(normalizedPage);
     if (currentIndex === undefined) {
       setInternalCurrentPage(normalizedPage);
@@ -150,12 +157,15 @@ export function DataTable<T extends { id: string | number }>({
     updateCurrentPage(1);
   };
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const isManualPagination =
+    totalPages !== undefined || totalElements !== undefined;
+  const resolvedTotalElements = totalElements ?? filteredData.length;
+  const resolvedTotalPages =
+    totalPages ?? Math.ceil(resolvedTotalElements / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentPaginatedData = filteredData.slice(
-    startIndex,
-    startIndex + rowsPerPage,
-  );
+  const currentPaginatedData = isManualPagination
+    ? filteredData
+    : filteredData.slice(startIndex, startIndex + rowsPerPage);
 
   const toggleSelectAll = () => {
     if (selectedRows.size === currentPaginatedData.length) {
@@ -517,7 +527,7 @@ export function DataTable<T extends { id: string | number }>({
         </Table>
       </div>
 
-      {totalPages > 1 && (
+      {resolvedTotalPages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           <p className="text-sm text-muted-foreground order-2 sm:order-1">
             Đang hiển thị{" "}
@@ -526,11 +536,11 @@ export function DataTable<T extends { id: string | number }>({
             </span>{" "}
             -{" "}
             <span className="font-medium text-foreground">
-              {Math.min(startIndex + rowsPerPage, filteredData.length)}
+              {Math.min(startIndex + currentPaginatedData.length, resolvedTotalElements)}
             </span>{" "}
             trên{" "}
             <span className="font-medium text-foreground">
-              {filteredData.length}
+              {resolvedTotalElements}
             </span>{" "}
             kết quả
           </p>
@@ -577,7 +587,7 @@ export function DataTable<T extends { id: string | number }>({
             </Button>
 
             <span className="text-sm text-muted-foreground">
-              {currentPage} / {totalPages}
+              {currentPage} / {resolvedTotalPages}
             </span>
 
             <Button
@@ -585,7 +595,7 @@ export function DataTable<T extends { id: string | number }>({
               size="icon"
               className="h-8 w-8 border-muted-foreground/20"
               onClick={() => updateCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
+              disabled={currentPage === resolvedTotalPages}
               data-testid="next-page"
             >
               <ChevronRight className="w-4 h-4" />
@@ -594,8 +604,8 @@ export function DataTable<T extends { id: string | number }>({
               variant="outline"
               size="icon"
               className="h-8 w-8 border-muted-foreground/20"
-              onClick={() => updateCurrentPage(totalPages)}
-              disabled={currentPage === totalPages}
+              onClick={() => updateCurrentPage(resolvedTotalPages)}
+              disabled={currentPage === resolvedTotalPages}
               data-testid="last-page"
             >
               <ChevronsRight className="w-4 h-4" />
