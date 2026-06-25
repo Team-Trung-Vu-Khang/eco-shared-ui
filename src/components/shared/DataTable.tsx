@@ -48,7 +48,7 @@ import { cn } from "@/lib/utils";
 export interface Column<T> {
   key: string;
   label: string;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
   sortable?: boolean;
   width?: string;
 }
@@ -59,6 +59,10 @@ interface DataTableProps<T> {
   searchable?: boolean;
   searchPlaceholder?: string;
   selectable?: boolean;
+  onSearch?: (value: string) => void;
+  onPageSize?: (pageSize: number) => void;
+  currentIndex?: number;
+  onIndexChange?: (index: number) => void;
   onView?: (row: T) => void;
   onEdit?: (row: T) => void;
   onDuplicate?: (row: T) => void;
@@ -77,6 +81,10 @@ export function DataTable<T extends { id: string | number }>({
   searchable = true,
   searchPlaceholder = "Tìm kiếm...",
   selectable = false,
+  onSearch,
+  onPageSize,
+  currentIndex,
+  onIndexChange,
   onView,
   onEdit,
   onDuplicate,
@@ -85,7 +93,9 @@ export function DataTable<T extends { id: string | number }>({
   filters = [],
 }: DataTableProps<T>) {
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [internalCurrentPage, setInternalCurrentPage] = useState(
+    currentIndex ?? 1,
+  );
   const [selectedRows, setSelectedRows] = useState<Set<string | number>>(
     new Set(),
   );
@@ -98,8 +108,10 @@ export function DataTable<T extends { id: string | number }>({
 
   const filteredData = useMemo(() => {
     return data.filter((row) => {
+      const rowValues = Object.values(row as Record<string, unknown>);
+
       // Search filter
-      const matchesSearch = Object.values(row).some((value) =>
+      const matchesSearch = rowValues.some((value) =>
         String(value).toLowerCase().includes(search.toLowerCase()),
       );
 
@@ -107,7 +119,7 @@ export function DataTable<T extends { id: string | number }>({
       const matchesFilters = Object.entries(activeFilters).every(
         ([key, value]) => {
           if (!value || value === "all") return true;
-          return String((row as any)[key]) === value;
+          return String((row as Record<string, unknown>)[key]) === value;
         },
       );
 
@@ -116,6 +128,27 @@ export function DataTable<T extends { id: string | number }>({
   }, [data, search, activeFilters]);
 
   const [rowsPerPage, setRowsPerPage] = useState(pageSize);
+  const currentPage = currentIndex ?? internalCurrentPage;
+
+  const updateCurrentPage = (nextPage: number) => {
+    const normalizedPage = Math.max(1, nextPage);
+    onIndexChange?.(normalizedPage);
+    if (currentIndex === undefined) {
+      setInternalCurrentPage(normalizedPage);
+    }
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    onSearch?.(value);
+    updateCurrentPage(1);
+  };
+
+  const handlePageSizeChange = (value: number) => {
+    setRowsPerPage(value);
+    onPageSize?.(value);
+    updateCurrentPage(1);
+  };
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -144,7 +177,20 @@ export function DataTable<T extends { id: string | number }>({
 
   const clearFilters = () => {
     setActiveFilters({});
-    setSearch("");
+    handleSearchChange("");
+  };
+
+  const renderCellValue = (value: unknown) => {
+    if (value === null || value === undefined) return null;
+    if (
+      typeof value === "string" ||
+      typeof value === "number" ||
+      typeof value === "boolean"
+    ) {
+      return value;
+    }
+
+    return String(value);
   };
 
   return (
@@ -158,7 +204,7 @@ export function DataTable<T extends { id: string | number }>({
                 type="search"
                 placeholder={searchPlaceholder}
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-10 h-10 border-muted-foreground/20 focus:ring-primary/20"
                 data-testid="table-search"
               />
@@ -388,13 +434,18 @@ export function DataTable<T extends { id: string | number }>({
                   {columns
                     .filter((c) => visibleColumns.has(c.key))
                     .map((column) => (
-                      <TableCell
+              <TableCell
                         key={column.key}
                         className="px-4 py-3 whitespace-nowrap"
                       >
-                        {column.render
-                          ? column.render((row as any)[column.key], row)
-                          : (row as any)[column.key]}
+                        {(() => {
+                          const rowRecord = row as Record<string, unknown>;
+                          const value = rowRecord[column.key];
+
+                          return column.render
+                            ? column.render(value, row)
+                            : renderCellValue(value);
+                        })()}
                       </TableCell>
                     ))}
                   {(onView || onEdit || onDuplicate || onDelete) && (
@@ -489,8 +540,7 @@ export function DataTable<T extends { id: string | number }>({
               <Select
                 value={String(rowsPerPage)}
                 onValueChange={(val) => {
-                  setRowsPerPage(Number(val));
-                  setCurrentPage(1);
+                  handlePageSizeChange(Number(val));
                 }}
               >
                 <SelectTrigger className="h-8 w-[70px]">
@@ -509,7 +559,7 @@ export function DataTable<T extends { id: string | number }>({
               variant="outline"
               size="icon"
               className="h-8 w-8 border-muted-foreground/20"
-              onClick={() => setCurrentPage(1)}
+              onClick={() => updateCurrentPage(1)}
               disabled={currentPage === 1}
               data-testid="first-page"
             >
@@ -519,7 +569,7 @@ export function DataTable<T extends { id: string | number }>({
               variant="outline"
               size="icon"
               className="h-8 w-8 border-muted-foreground/20"
-              onClick={() => setCurrentPage((p) => p - 1)}
+              onClick={() => updateCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
               data-testid="prev-page"
             >
@@ -534,7 +584,7 @@ export function DataTable<T extends { id: string | number }>({
               variant="outline"
               size="icon"
               className="h-8 w-8 border-muted-foreground/20"
-              onClick={() => setCurrentPage((p) => p + 1)}
+              onClick={() => updateCurrentPage(currentPage + 1)}
               disabled={currentPage === totalPages}
               data-testid="next-page"
             >
@@ -544,7 +594,7 @@ export function DataTable<T extends { id: string | number }>({
               variant="outline"
               size="icon"
               className="h-8 w-8 border-muted-foreground/20"
-              onClick={() => setCurrentPage(totalPages)}
+              onClick={() => updateCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
               data-testid="last-page"
             >
