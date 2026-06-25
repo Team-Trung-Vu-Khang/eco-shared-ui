@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Search,
+  Loader2,
   MoreHorizontal,
   Eye,
   Pencil,
@@ -67,6 +68,7 @@ interface DataTableProps<T> {
   onEdit?: (row: T) => void;
   onDuplicate?: (row: T) => void;
   onDelete?: (row: T) => void;
+  loading?: boolean;
   pageSize?: number;
   totalPages?: number;
   totalElements?: number;
@@ -91,6 +93,7 @@ export function DataTable<T extends { id: string | number }>({
   onEdit,
   onDuplicate,
   onDelete,
+  loading = false,
   pageSize = 10,
   totalPages,
   totalElements,
@@ -202,6 +205,12 @@ export function DataTable<T extends { id: string | number }>({
 
     return String(value);
   };
+
+  const visibleColumnCount = columns.filter((c) => visibleColumns.has(c.key)).length;
+  const rowSpanCount =
+    visibleColumnCount +
+    (selectable ? 1 : 0) +
+    (onView || onEdit || onDuplicate || onDelete ? 1 : 0);
 
   return (
     <div className="space-y-4">
@@ -361,7 +370,10 @@ export function DataTable<T extends { id: string | number }>({
         </div>
       )}
 
-      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+      <div
+        className="rounded-xl border border-border bg-card shadow-sm overflow-hidden min-h-[420px]"
+        aria-busy={loading}
+      >
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/30 hover:bg-muted/30 border-b border-border">
@@ -398,15 +410,22 @@ export function DataTable<T extends { id: string | number }>({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentPaginatedData.length === 0 ? (
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={Math.max(rowSpanCount, 1)} className="p-0">
+                  <div className="flex min-h-[420px] items-center justify-center">
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>Đang tải dữ liệu...</span>
+                    </div>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : currentPaginatedData.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={
-                    columns.filter((c) => visibleColumns.has(c.key)).length +
-                    (selectable ? 1 : 0) +
-                    (onView || onEdit || onDuplicate || onDelete ? 1 : 0)
-                  }
-                  className="h-40 text-center"
+                  colSpan={Math.max(rowSpanCount, 1)}
+                  className="h-[420px] text-center"
                 >
                   <div className="flex flex-col items-center justify-center text-muted-foreground">
                     <Search className="w-8 h-8 mb-2 opacity-20" />
@@ -444,7 +463,7 @@ export function DataTable<T extends { id: string | number }>({
                   {columns
                     .filter((c) => visibleColumns.has(c.key))
                     .map((column) => (
-              <TableCell
+                      <TableCell
                         key={column.key}
                         className="px-4 py-3 whitespace-nowrap"
                       >
