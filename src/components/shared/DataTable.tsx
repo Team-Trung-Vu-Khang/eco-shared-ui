@@ -72,6 +72,7 @@ interface DataTableProps<T> {
   pageSize?: number;
   totalPages?: number;
   totalElements?: number;
+  onFilterChange?: (key: string, value: string) => void;
   filters?: {
     key: string;
     label: string;
@@ -97,6 +98,7 @@ export function DataTable<T extends { id: string | number }>({
   pageSize = 10,
   totalPages,
   totalElements,
+  onFilterChange,
   filters = [],
 }: DataTableProps<T>) {
   const [search, setSearch] = useState("");
@@ -160,6 +162,22 @@ export function DataTable<T extends { id: string | number }>({
     updateCurrentPage(1);
   };
 
+  const handleFilterChange = (key: string, value: string) => {
+    setActiveFilters((prev) => {
+      if (!value || value === "all") {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      }
+
+      return {
+        ...prev,
+        [key]: value,
+      };
+    });
+    onFilterChange?.(key, value);
+  };
+
   const isManualPagination =
     totalPages !== undefined || totalElements !== undefined;
   const resolvedTotalElements = totalElements ?? filteredData.length;
@@ -193,6 +211,9 @@ export function DataTable<T extends { id: string | number }>({
   };
 
   const clearFilters = () => {
+    Object.keys(activeFilters).forEach((key) => {
+      onFilterChange?.(key, "all");
+    });
     setActiveFilters({});
     handleSearchChange("");
   };
@@ -263,12 +284,7 @@ export function DataTable<T extends { id: string | number }>({
                     </p>
                     <Select
                       value={activeFilters[filter.key] || "all"}
-                      onValueChange={(val) =>
-                        setActiveFilters((prev) => ({
-                          ...prev,
-                          [filter.key]: val,
-                        }))
-                      }
+                      onValueChange={(val) => handleFilterChange(filter.key, val)}
                     >
                       <SelectTrigger className="h-8">
                         <SelectValue placeholder="Tất cả" />
@@ -357,13 +373,7 @@ export function DataTable<T extends { id: string | number }>({
               >
                 {filterDef?.label}: {label}
                 <button
-                  onClick={() =>
-                    setActiveFilters((prev) => {
-                      const next = { ...prev };
-                      delete next[key];
-                      return next;
-                    })
-                  }
+                  onClick={() => handleFilterChange(key, "all")}
                   className="hover:text-destructive"
                 >
                   <X className="w-3 h-3" />
