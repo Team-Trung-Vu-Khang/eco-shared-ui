@@ -41,11 +41,16 @@ export function FormDialog({
     xl: "max-w-2xl",
   };
 
+  const contentAriaProps = description
+    ? {}
+    : { "aria-describedby": undefined as const };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={maxWidth || sizeClasses[size]}
         data-testid="form-dialog"
+        {...contentAriaProps}
       >
         <DialogHeader>
           <DialogTitle className="font-display">{title}</DialogTitle>

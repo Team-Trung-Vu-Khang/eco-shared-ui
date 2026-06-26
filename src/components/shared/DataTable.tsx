@@ -170,6 +170,10 @@ export function DataTable<T extends { id: string | number }>({
     ? filteredData
     : filteredData.slice(startIndex, startIndex + rowsPerPage);
 
+  const runAfterMenuClose = (callback: () => void) => {
+    window.setTimeout(callback, 0);
+  };
+
   const toggleSelectAll = () => {
     if (selectedRows.size === currentPaginatedData.length) {
       setSelectedRows(new Set());
@@ -496,7 +500,9 @@ export function DataTable<T extends { id: string | number }>({
                           </DropdownMenuLabel>
                           {onView && (
                             <DropdownMenuItem
-                              onClick={() => onView(row)}
+                              onSelect={() =>
+                                runAfterMenuClose(() => onView(row))
+                              }
                               data-testid={`view-${row.id}`}
                               className="cursor-pointer"
                             >
@@ -506,7 +512,9 @@ export function DataTable<T extends { id: string | number }>({
                           )}
                           {onEdit && (
                             <DropdownMenuItem
-                              onClick={() => onEdit(row)}
+                              onSelect={() =>
+                                runAfterMenuClose(() => onEdit(row))
+                              }
                               data-testid={`edit-${row.id}`}
                               className="cursor-pointer"
                             >
@@ -516,7 +524,9 @@ export function DataTable<T extends { id: string | number }>({
                           )}
                           {onDuplicate && (
                             <DropdownMenuItem
-                              onClick={() => onDuplicate(row)}
+                              onSelect={() =>
+                                runAfterMenuClose(() => onDuplicate(row))
+                              }
                               data-testid={`duplicate-${row.id}`}
                               className="cursor-pointer"
                             >
@@ -527,7 +537,9 @@ export function DataTable<T extends { id: string | number }>({
                           <DropdownMenuSeparator />
                           {onDelete && (
                             <DropdownMenuItem
-                              onClick={() => onDelete(row)}
+                              onSelect={() =>
+                                runAfterMenuClose(() => onDelete(row))
+                              }
                               className="text-destructive focus:text-destructive cursor-pointer"
                               data-testid={`delete-${row.id}`}
                             >

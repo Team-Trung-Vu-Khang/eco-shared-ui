@@ -29,7 +29,7 @@ export function useEditorModal(): [
     const { title, content } = modalContent
     return (
       <Dialog open={true} onOpenChange={onClose}>
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
           </DialogHeader>

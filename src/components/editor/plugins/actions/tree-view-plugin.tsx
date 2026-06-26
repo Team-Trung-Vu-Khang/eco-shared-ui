@@ -24,7 +24,7 @@ export function TreeViewPlugin(): JSX.Element {
           <NotebookPenIcon className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Tree View</DialogTitle>
         </DialogHeader>
