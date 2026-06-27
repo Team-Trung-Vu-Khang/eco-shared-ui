@@ -49,6 +49,7 @@ export * from "./table";
 export * from "./tabs";
 export * from "./textarea";
 export * from "./toast";
+export { Toaster as RadixToaster } from "./toaster";
 export * from "./toggle-group";
 export * from "./toggle";
 export * from "./tooltip";
