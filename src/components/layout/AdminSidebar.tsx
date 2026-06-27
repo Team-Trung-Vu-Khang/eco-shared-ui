@@ -1031,7 +1031,7 @@ const menuDevGroups: (
         id: "fd-variety",
         label: "Giống cây trồng",
         icon: Sprout,
-        href: "/variety-foudation",
+        href: "/variety-foundation",
       },
     ],
   },
@@ -1858,7 +1858,7 @@ const menuDevGroups: (
         icon: Sprout,
         id: "variety-foundation",
         label: "Giống cây trồng",
-        href: "/variety-foudation",
+        href: "/variety-foundation",
       },
       {
         id: "growth-cycle",
