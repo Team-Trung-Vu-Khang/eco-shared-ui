@@ -36,7 +36,16 @@ export default defineConfig({
     },
     rollupOptions: {
       // 👇 THÊM CÁC THƯ VIỆN NÀY VÀO ĐỂ KHÔNG BUNDLE CHÚNG
-      external: ["react", "react-dom", "react/jsx-runtime", "tailwindcss", "react-is"],
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "tailwindcss",
+        "react-is",
+        "axios",
+        "@tanstack/react-query",
+        "@tanstack/query-core"
+      ],
       output: {
         globals: {
           react: "React",
