@@ -17,8 +17,8 @@ import { Badge } from "@/components/ui/badge";
 export function AdminHeader() {
   const { user, isFetching } = useAuth();
 
-  const displayName = user?.name || "Admin";
-  const displayEmail = user?.email || "admin@farm.vn";
+  const displayName = user?.name || "";
+  const displayPhone = user?.phoneNumber || "";
   const avatarFallback = (displayName || "A")
     .split(" ")
     .filter(Boolean)
@@ -96,7 +96,7 @@ export function AdminHeader() {
                   {displayName}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {isFetching ? "Đang tải..." : displayEmail}
+                  {isFetching ? "Đang tải..." : displayPhone}
                 </p>
               </div>
             </Button>
