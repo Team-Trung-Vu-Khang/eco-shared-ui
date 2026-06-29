@@ -1,32 +1,125 @@
-import { useQuery } from "@tanstack/react-query"
+import * as React from "react"
 
 import { authApi } from "../api/auth.api"
+import type { AuthMeResponse } from "../types/auth.type"
 
 const authKeys = {
   all: ["auth"] as const,
   currentUser: () => [...authKeys.all, "current-user"] as const,
 }
 
-export function useAuth() {
-  const token = authApi.getToken()
+type AuthState = {
+  user: AuthMeResponse | null
+  isLoading: boolean
+  error: Error | null
+}
 
-  const currentUserQuery = useQuery({
-    queryKey: authKeys.currentUser(),
-    queryFn: () => authApi.getCurrentUser(),
-    enabled: Boolean(token),
-    retry: false,
+export function useAuth() {
+  const [state, setState] = React.useState<AuthState>({
+    user: null,
+    isLoading: true,
+    error: null,
   })
 
+  React.useEffect(() => {
+    let active = true
+    const token = authApi.getToken()
+
+    if (!token) {
+      setState({
+        user: null,
+        isLoading: false,
+        error: null,
+      })
+      return
+    }
+
+    setState((currentState) => ({
+      ...currentState,
+      isLoading: true,
+      error: null,
+    }))
+
+    void authApi
+      .getCurrentUser(token)
+      .then((user) => {
+        if (!active) {
+          return
+        }
+
+        setState({
+          user,
+          isLoading: false,
+          error: null,
+        })
+      })
+      .catch((error: unknown) => {
+        if (!active) {
+          return
+        }
+
+        const normalizedError =
+          error instanceof Error ? error : new Error("Failed to load auth user")
+
+        setState({
+          user: null,
+          isLoading: false,
+          error: normalizedError,
+        })
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
   return {
-    user: currentUserQuery.data ?? null,
-    isAuthenticated: Boolean(token && currentUserQuery.data),
-    mustChangePassword: currentUserQuery.data?.mustChangePassword ?? false,
-    token,
-    isLoading: currentUserQuery.isLoading,
-    isFetching: currentUserQuery.isFetching,
-    error: currentUserQuery.error,
-    refetch: currentUserQuery.refetch,
+    user: state.user,
+    isAuthenticated: Boolean(state.user),
+    mustChangePassword: state.user?.mustChangePassword ?? false,
+    token: authApi.getToken(),
+    isLoading: state.isLoading,
+    isFetching: state.isLoading,
+    error: state.error,
+    refetch: async () => {
+      const token = authApi.getToken()
+
+      if (!token) {
+        setState({
+          user: null,
+          isLoading: false,
+          error: null,
+        })
+        return null
+      }
+
+      setState((currentState) => ({
+        ...currentState,
+        isLoading: true,
+        error: null,
+      }))
+
+      try {
+        const user = await authApi.getCurrentUser(token)
+        setState({
+          user,
+          isLoading: false,
+          error: null,
+        })
+        return user
+      } catch (error) {
+        const normalizedError =
+          error instanceof Error ? error : new Error("Failed to load auth user")
+        setState({
+          user: null,
+          isLoading: false,
+          error: normalizedError,
+        })
+        throw normalizedError
+      }
+    },
   }
 }
 
 export { authKeys }
+
