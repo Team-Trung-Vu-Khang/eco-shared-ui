@@ -44,7 +44,7 @@ const verifiedMeviAccounts = [
   },
   {
     value: "mevi-admin-03",
-    label: "Support Team",
+    label: "Đội hỗ trợ",
     email: "support@mevi.vn",
     note: "Đã xác thực",
   },
@@ -54,10 +54,11 @@ type WorkspaceMode = "unit" | "workspace";
 
 type WorkspaceItem = {
   id: string;
-  name: string;
-  domain: string;
-  badge?: string;
-  group: string;
+  organizationName: string;
+  organizationGroup: string;
+  representativeName: string;
+  totalArea: string;
+  cropName: string;
 };
 
 const workspaceGroups: Array<{
@@ -65,59 +66,68 @@ const workspaceGroups: Array<{
   items: WorkspaceItem[];
 }> = [
   {
-    title: "PerfectApps",
+    title: "Cụm tổ chức mẫu 1",
     items: [
       {
         id: "giann-abc",
-        name: "giann-abc",
-        domain: "giann-abc.myshopify.com",
-        badge: "dev",
-        group: "PerfectApps",
+        organizationName: "Nông hộ Giann ABC",
+        organizationGroup: "Nông hộ",
+        representativeName: "Nguyễn Văn A",
+        totalArea: "12.5 ha",
+        cropName: "Lúa",
       },
       {
         id: "ahihi",
-        name: "ahihi",
-        domain: "g-ahihi.myshopify.com",
-        badge: "dev",
-        group: "PerfectApps",
+        organizationName: "Hợp tác xã Ahihi",
+        organizationGroup: "Hợp tác xã",
+        representativeName: "Trần Thị B",
+        totalArea: "28 ha",
+        cropName: "Sầu riêng",
       },
       {
         id: "g-2",
-        name: "g-2",
-        domain: "g-2.myshopify.com",
-        group: "PerfectApps",
+        organizationName: "Doanh nghiệp G-2",
+        organizationGroup: "Doanh nghiệp",
+        representativeName: "Lê Văn C",
+        totalArea: "64 ha",
+        cropName: "Cà phê",
       },
       {
         id: "g-3",
-        name: "g-3",
-        domain: "g-3.myshopify.com",
-        group: "PerfectApps",
+        organizationName: "Nông hộ G-3",
+        organizationGroup: "Nông hộ",
+        representativeName: "Phạm Thị D",
+        totalArea: "8.2 ha",
+        cropName: "Mít",
       },
       {
         id: "test-unit",
-        name: "Test Unit",
-        domain: "test-unit.myshopify.com",
-        badge: "dev",
-        group: "PerfectApps",
+        organizationName: "Đơn vị thử nghiệm",
+        organizationGroup: "Doanh nghiệp",
+        representativeName: "Đội hỗ trợ",
+        totalArea: "--",
+        cropName: "Đang cập nhật",
       },
     ],
   },
   {
-    title: "Demo Dev",
+    title: "Cụm tổ chức mẫu 2",
     items: [
       {
         id: "giann-dev",
-        name: "giann-dev",
-        domain: "giann-dev.myshopify.com",
-        badge: "dev",
-        group: "Demo Dev",
+        organizationName: "Hợp tác xã Giann Dev",
+        organizationGroup: "Hợp tác xã",
+        representativeName: "Nguyễn Văn E",
+        totalArea: "16 ha",
+        cropName: "Thanh long",
       },
       {
         id: "giann-dev-plus",
-        name: "giann-dev-plus",
-        domain: "giann-dev-plus.myshopify.com",
-        badge: "dev",
-        group: "Demo Dev",
+        organizationName: "Doanh nghiệp Giann Dev Plus",
+        organizationGroup: "Doanh nghiệp",
+        representativeName: "Trần Văn F",
+        totalArea: "42 ha",
+        cropName: "Xoài",
       },
     ],
   },
@@ -166,7 +176,6 @@ export function AdminHeader() {
     .map((part) => part[0]?.toUpperCase())
     .join("")
     .slice(0, 2);
-  const isWorkspaceMode = workspaceMode === "workspace";
 
   React.useEffect(() => {
     window.sessionStorage.setItem("admin_workspace_mode", workspaceMode);
@@ -202,7 +211,13 @@ export function AdminHeader() {
       .map((group) => ({
         ...group,
         items: group.items.filter((item) => {
-          const haystack = [item.name, item.domain, item.badge, item.group]
+          const haystack = [
+            item.organizationName,
+            item.organizationGroup,
+            item.representativeName,
+            item.totalArea,
+            item.cropName,
+          ]
             .filter(Boolean)
             .join(" ")
             .toLowerCase();
@@ -216,6 +231,10 @@ export function AdminHeader() {
     setCurrentWorkspace(item);
     setWorkspaceMode("workspace");
     setWorkspaceOpen(false);
+  };
+
+  const toggleWorkspaceMode = () => {
+    setWorkspaceMode((current) => (current === "unit" ? "workspace" : "unit"));
   };
 
   return (
@@ -314,16 +333,12 @@ export function AdminHeader() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className="truncate font-medium">
-                        {currentWorkspace?.name ?? "Đơn vị / Tổ chức"}
+                        {currentWorkspace?.organizationName ?? "Đơn vị / Tổ chức"}
                       </span>
-                      {isWorkspaceMode && (
-                        <Badge variant="secondary" className="h-5 px-1.5 text-[10px]">
-                          Đơn vị
-                        </Badge>
-                      )}
                     </div>
                     <p className="truncate text-xs text-muted-foreground">
-                      {currentWorkspace?.domain ?? "Nhấn để mở popup chọn đơn vị"}
+                      {currentWorkspace?.representativeName ??
+                        "Nhấn để mở popup chọn đơn vị"}
                     </p>
                   </div>
                 </DropdownMenuItem>
@@ -348,15 +363,39 @@ export function AdminHeader() {
               <DialogHeader className="border-b bg-muted/30 px-6 py-5 text-left">
                 <DialogTitle className="text-xl">Chọn đơn vị</DialogTitle>
                 <DialogDescription>
-                  Chọn workspace rồi chọn đơn vị hoặc tổ chức bạn muốn làm việc.
+                  Chọn chế độ làm việc rồi chọn đơn vị hoặc tổ chức bạn muốn sử dụng.
                 </DialogDescription>
               </DialogHeader>
 
               <div className="space-y-5 px-6 py-5">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Badge variant="outline" className="w-fit">
-                    {workspaceMode === "workspace" ? "Workspace" : "Đơn vị"}
-                  </Badge>
+                  <button
+                    type="button"
+                    onClick={toggleWorkspaceMode}
+                    className="inline-flex w-fit items-center rounded-full border border-border/70 bg-muted/40 p-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted"
+                    aria-label="Chuyển chế độ giữa đơn vị và không gian làm việc"
+                  >
+                    <span
+                      className={
+                        "rounded-full px-3 py-1 transition-colors " +
+                        (workspaceMode === "unit"
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground")
+                      }
+                    >
+                      Đơn vị
+                    </span>
+                    <span
+                      className={
+                        "rounded-full px-3 py-1 transition-colors " +
+                        (workspaceMode === "workspace"
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground")
+                      }
+                    >
+                      Không gian làm việc
+                    </span>
+                  </button>
 
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -364,7 +403,11 @@ export function AdminHeader() {
                       type="search"
                       value={workspaceSearch}
                       onChange={(event) => setWorkspaceSearch(event.target.value)}
-                      placeholder="Tìm đơn vị hoặc tổ chức"
+                      placeholder={
+                        workspaceMode === "workspace"
+                          ? "Tìm không gian làm việc"
+                          : "Tìm đơn vị hoặc tổ chức"
+                      }
                       className="h-10 pl-10"
                     />
                   </div>
@@ -379,7 +422,7 @@ export function AdminHeader() {
                         </p>
                         <p className="text-xs text-muted-foreground">
                           Gắn tài khoản xác thực để đánh dấu đây là đơn vị được tạo bởi
-                          mevi admin.
+                          quản trị viên mevi.
                         </p>
                       </div>
                       <Badge variant="outline" className="shrink-0">
@@ -454,35 +497,38 @@ export function AdminHeader() {
                               type="button"
                               onClick={() => openWorkspace(item)}
                               className={
-                                "flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors " +
+                                "flex w-full items-start gap-3 rounded-2xl px-3 py-3 text-left transition-colors " +
                                 (isActive ? "bg-muted" : "hover:bg-muted/60")
                               }
                             >
-                              <div
-                                className={
-                                  "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold text-white " +
-                                  (isActive ? "bg-emerald-500" : "bg-fuchsia-500")
-                                }
-                              >
-                                {item.name.slice(0, 3).toUpperCase()}
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                <Building2 className="h-4 w-4" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-2">
-                                  <span className="truncate text-sm font-semibold text-foreground">
-                                    {item.name}
-                                  </span>
-                                  {item.badge && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="h-5 px-1.5 text-[10px]"
-                                    >
-                                      {item.badge}
-                                    </Badge>
-                                  )}
+                                <div className="flex items-start justify-between gap-3">
+                                  <div className="min-w-0 space-y-1">
+                                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                      <span className="truncate text-sm font-semibold text-foreground">
+                                        {item.organizationName}
+                                      </span>
+                                      <Badge className="h-5 rounded-full border-0 bg-amber-100 px-2 text-[10px] font-semibold text-amber-800 hover:bg-amber-100">
+                                        {item.organizationGroup}
+                                      </Badge>
+                                    </div>
+                                    <p className="truncate text-sm text-muted-foreground">
+                                      {item.representativeName}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex shrink-0 flex-col items-end gap-1 text-right">
+                                    <span className="text-sm font-semibold text-foreground">
+                                      {item.totalArea}
+                                    </span>
+                                    <span className="text-sm text-muted-foreground">
+                                      {item.cropName}
+                                    </span>
+                                  </div>
                                 </div>
-                                <p className="truncate text-sm text-muted-foreground">
-                                  {item.domain}
-                                </p>
                               </div>
                               {isActive && <Check className="h-4 w-4 text-foreground" />}
                             </button>
@@ -499,14 +545,14 @@ export function AdminHeader() {
                     className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
                   >
                     <span className="text-lg leading-none">+</span>
-                    Tạo đơn vị
+                    Tạo đơn vị mới
                   </button>
                   <button
                     type="button"
                     className="text-sm font-medium text-muted-foreground hover:text-foreground"
                     onClick={() => setWorkspaceOpen(false)}
                   >
-                    Close
+                    Đóng
                   </button>
                 </div>
               </div>
