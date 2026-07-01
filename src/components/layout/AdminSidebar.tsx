@@ -1197,13 +1197,13 @@ const menuDevGroups: (
         id: "do-department",
         label: "Thông tin phòng ban",
         icon: Building,
-        href: "/department",
+        href: "/owner-department",
       },
       {
         id: "do-position",
         label: "Thông tin chức danh - chức vụ",
         icon: User,
-        href: "/position",
+        href: "/owner-position",
       },
       {
         id: "do-unit",
