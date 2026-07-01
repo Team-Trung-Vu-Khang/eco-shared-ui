@@ -3,11 +3,19 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tailwindcss from "@tailwindcss/vite";
 import dts from "vite-plugin-dts";
+import { readFileSync } from "node:fs";
 import path from "path";
 import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+const packageJson = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf8")
+);
+const runtimeDependencies = [
+  ...Object.keys(packageJson.dependencies ?? {}),
+  ...Object.keys(packageJson.peerDependencies ?? {})
+];
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
@@ -35,8 +43,12 @@ export default defineConfig({
       formats: ["es", "cjs"]
     },
     rollupOptions: {
-      // 👇 THÊM CÁC THƯ VIỆN NÀY VÀO ĐỂ KHÔNG BUNDLE CHÚNG
-      external: ["react", "react-dom", "react/jsx-runtime", "tailwindcss", "react-is"],
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        ...runtimeDependencies
+      ],
       output: {
         globals: {
           react: "React",
