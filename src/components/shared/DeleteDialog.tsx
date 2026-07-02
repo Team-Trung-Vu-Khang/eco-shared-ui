@@ -8,7 +8,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Loader2 } from "lucide-react";
 
 interface DeleteDialogProps {
   open: boolean;
@@ -40,11 +39,10 @@ export function DeleteDialog({
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            disabled={loading}
+            loading={loading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             data-testid="delete-confirm"
           >
-            {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             Xóa
           </AlertDialogAction>
         </AlertDialogFooter>

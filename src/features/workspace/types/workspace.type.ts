@@ -23,30 +23,39 @@ export interface WorkspaceBusinessLine {
   name: string
 }
 
-export interface Workspace {
+export interface WorkspaceCrop {
   id: number
-  organizationType: WorkspaceOrganizationType
   code: string
   name: string
-  brandName: string
-  taxCode: string
-  taxAuthority: string
-  taxAddress: string
-  issueDate: string
-  businessLines: WorkspaceBusinessLine[]
-  representative: string
-  foundedDate: string
-  website: string
-  province: string
-  district: string
-  ward: string
-  address: string
-  latitude: number
-  longitude: number
-  imageUrl: string
-  description: string
+}
+
+export interface Workspace {
+  id: number
+  displayOrder: number
+  organizationType: WorkspaceOrganizationType | null
+  code: string
+  name: string
+  brandName: string | null
+  taxCode: string | null
+  taxAuthority: string | null
+  taxAddress: string | null
+  issueDate: string | null
+  businessLines: WorkspaceBusinessLine[] | null
+  totalAcreage: number | null
+  mainCrop: WorkspaceCrop | null
+  representative: string | null
+  foundedDate: string | null
+  website: string | null
+  province: string | null
+  district: string | null
+  ward: string | null
+  address: string | null
+  latitude: number | null
+  longitude: number | null
+  imageUrl: string | null
+  description: string | null
   status: WorkspaceStatus
-  metadataJson: Record<string, unknown>
+  metadataJson: Record<string, unknown> | null
   createdAt: string
   updatedAt: string
 }

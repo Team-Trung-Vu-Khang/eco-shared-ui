@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
+import type { Workspace } from "@/features/workspace";
 
 type WorkspaceItem = {
   id: string;
@@ -32,7 +33,29 @@ type WorkspaceItem = {
   representativeName: string;
   taxCode: string;
   businessLineName: string;
+  mainCropName: string;
+  totalAcreage: number;
 };
+
+function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
+  return items.map((item) => ({
+    id: String(item.id),
+    organizationName: item.brandName || item.name,
+    organizationGroup:
+      item.organizationType?.name ?? item.organizationType?.code ?? "Đơn vị",
+    representativeName: item.representative || "Chưa có người đại diện",
+    taxCode: item.taxCode || item.code || "--",
+    businessLineName:
+      item.businessLines
+        ?.map((businessLine) => businessLine?.name)
+        .filter(Boolean)
+        .join(", ") ||
+      item.mainCrop?.name ||
+      "Đang cập nhật",
+    totalAcreage: item.totalAcreage || 0,
+    mainCropName: item.mainCrop?.name || "",
+  }));
+}
 
 function readSessionStorage(key: string) {
   if (typeof window === "undefined") {
@@ -81,6 +104,53 @@ export function AdminHeader() {
   }, [currentWorkspaceId]);
 
   React.useEffect(() => {
+    let isActive = true;
+
+    const initializeWorkspace = async () => {
+      try {
+        const response = await workspaceApi.getWorkspaces({
+          page: 0,
+          size: 100,
+        });
+
+        if (!isActive) {
+          return;
+        }
+
+        const nextItems = mapWorkspaceItems(response.content);
+
+        setWorkspaceItems(nextItems);
+        setCurrentWorkspaceId((currentId) => {
+          const currentExists = nextItems.some((item) => item.id === currentId);
+          if (currentExists) {
+            return currentId;
+          }
+
+          const savedWorkspaceId = readSessionStorage(
+            "admin_selected_workspace",
+          );
+
+          return (
+            nextItems.find((item) => item.id === savedWorkspaceId)?.id ??
+            nextItems[0]?.id ??
+            null
+          );
+        });
+      } catch {
+        if (isActive) {
+          setWorkspaceItems([]);
+        }
+      }
+    };
+
+    void initializeWorkspace();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  React.useEffect(() => {
     if (!workspaceOpen) {
       return;
     }
@@ -101,22 +171,7 @@ export function AdminHeader() {
           return;
         }
 
-        const nextItems: WorkspaceItem[] = response.content.map((item) => ({
-          id: String(item.id),
-          organizationName: item.name,
-          organizationGroup:
-            item.organizationType?.name ??
-            item.organizationType?.code ??
-            "Đơn vị",
-          representativeName: item.representative || "Chưa có người đại diện",
-          taxCode: item.taxCode || item.code || "--",
-          businessLineName:
-            item.businessLines
-              ?.map((businessLine) => businessLine.name)
-              .join(", ") ||
-            item.brandName ||
-            "Đang cập nhật",
-        }));
+        const nextItems = mapWorkspaceItems(response.content);
 
         setWorkspaceItems(nextItems);
         setCurrentWorkspaceId((currentId) => {
@@ -373,10 +428,11 @@ export function AdminHeader() {
 
                                 <div className="flex shrink-0 flex-col items-end gap-1 text-right">
                                   <span className="text-sm font-semibold text-foreground">
-                                    {item.taxCode}
+                                    Tổng diện tích vùng trồng:{" "}
+                                    {item.totalAcreage}
                                   </span>
                                   <span className="text-sm text-muted-foreground">
-                                    {item.businessLineName}
+                                    Cây trồng chính: {item.mainCropName}
                                   </span>
                                 </div>
                               </div>
@@ -401,11 +457,10 @@ export function AdminHeader() {
                     className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
                     onClick={() => {
                       setWorkspaceOpen(false);
-                      setLocation("/enterprise/create");
                     }}
                   >
                     <span className="text-lg leading-none">+</span>
-                    Tạo đơn vị mới
+                    Tạo workspace
                   </button>
                   <button
                     type="button"
