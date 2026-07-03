@@ -399,9 +399,9 @@ export function AdminHeader() {
           >
             <DialogContent className="max-w-4xl gap-0 overflow-hidden p-0 sm:rounded-3xl">
               <DialogHeader className="border-b bg-muted/30 px-6 py-5 text-left">
-                <DialogTitle className="text-xl">Chọn đơn vị</DialogTitle>
+                <DialogTitle className="text-xl">Chọn workspace</DialogTitle>
                 <DialogDescription>
-                  Chọn đơn vị hoặc tổ chức bạn muốn sử dụng.
+                  Chọn workspace hoặc tổ chức bạn muốn sử dụng.
                 </DialogDescription>
               </DialogHeader>
 
@@ -412,7 +412,7 @@ export function AdminHeader() {
                     type="search"
                     value={workspaceSearch}
                     onChange={(event) => setWorkspaceSearch(event.target.value)}
-                    placeholder="Tìm đơn vị hoặc tổ chức"
+                    placeholder="Tìm workspace"
                     className="h-10 pl-10"
                   />
                 </div>
@@ -421,7 +421,7 @@ export function AdminHeader() {
                   <div className="space-y-1 p-3">
                     {workspaceLoading ? (
                       <div className="flex h-24 items-center justify-center rounded-2xl border border-dashed border-border/70 text-sm text-muted-foreground">
-                        Đang tải danh sách đơn vị...
+                        Đang tải danh sách workspace...
                       </div>
                     ) : workspaceError ? (
                       <div className="flex h-24 items-center justify-center rounded-2xl border border-dashed border-destructive/30 text-sm text-destructive">

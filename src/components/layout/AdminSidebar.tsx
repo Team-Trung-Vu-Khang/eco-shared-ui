@@ -2110,18 +2110,36 @@ const menuDevGroups: (
   {
     title: "Cây trồng",
     items: [
+      // {
+      //   id: "group-crop",
+      //   label: "Nhóm cây trồng",
+      //   icon: Trees,
+      //   href: "/group-crop",
+      // },
+      // { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
+      // {
+      //   id: "variety",
+      //   label: "Giống cây trồng",
+      //   icon: Sprout,
+      //   href: "/variety",
+      // },
       {
-        id: "group-crop",
+        id: "fd-group-crop",
         label: "Nhóm cây trồng",
         icon: Trees,
         href: "/group-crop",
       },
-      { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
       {
-        id: "variety",
+        id: "fd-crop",
+        label: "Cây trồng",
+        icon: Flower2,
+        href: "/crop-foundation",
+      },
+      {
+        id: "fd-variety",
         label: "Giống cây trồng",
         icon: Sprout,
-        href: "/variety",
+        href: "/variety-foundation",
       },
       { id: "seed", label: "Hạt giống", icon: Leaf, href: "/seed" },
       {
@@ -2380,6 +2398,12 @@ const menuDevGroups: (
         label: "Danh mục tài liệu",
         icon: FileText,
         href: "/document-category",
+      },
+      {
+        id: "province",
+        label: "Thông tin tỉnh/thành",
+        icon: MapPin,
+        href: "/province",
       },
     ],
   },
