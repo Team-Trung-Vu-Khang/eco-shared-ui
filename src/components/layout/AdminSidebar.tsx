@@ -2346,6 +2346,12 @@ const menuDevGroups: (
         href: "/farming-method",
       },
       {
+        id: "irrigation-systems",
+        label: "Hệ thống tưới tiêu",
+        icon: Leaf,
+        href: "/irrigation-systems",
+      },
+      {
         id: "certificate",
         label: "Bộ tiêu chuẩn",
         icon: Award,
