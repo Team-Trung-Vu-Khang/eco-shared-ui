@@ -3,6 +3,10 @@ import * as React from "react"
 import { authApi } from "../api/auth.api"
 import type { AuthMeResponse } from "../types/auth.type"
 
+let cachedAuthToken: string | null = null
+let cachedAuthUser: AuthMeResponse | null = null
+let cachedAuthPromise: Promise<AuthMeResponse> | null = null
+
 const authKeys = {
   all: ["auth"] as const,
   currentUser: () => [...authKeys.all, "current-user"] as const,
@@ -12,6 +16,39 @@ type AuthState = {
   user: AuthMeResponse | null
   isLoading: boolean
   error: Error | null
+}
+
+async function loadCurrentUser(token: string, force = false) {
+  if (!force && cachedAuthToken === token && cachedAuthUser) {
+    return cachedAuthUser
+  }
+
+  if (!force && cachedAuthToken === token && cachedAuthPromise) {
+    return cachedAuthPromise
+  }
+
+  const request = authApi
+    .getCurrentUser(token)
+    .then((user) => {
+      cachedAuthToken = token
+      cachedAuthUser = user
+      return user
+    })
+    .catch((error) => {
+      cachedAuthToken = null
+      cachedAuthUser = null
+      throw error
+    })
+
+  if (!force) {
+    cachedAuthToken = token
+    cachedAuthPromise = request.finally(() => {
+      cachedAuthPromise = null
+    })
+    return cachedAuthPromise
+  }
+
+  return request
 }
 
 export function useAuth() {
@@ -40,8 +77,7 @@ export function useAuth() {
       error: null,
     }))
 
-    void authApi
-      .getCurrentUser(token)
+    void loadCurrentUser(token)
       .then((user) => {
         if (!active) {
           return
@@ -60,6 +96,9 @@ export function useAuth() {
 
         const normalizedError =
           error instanceof Error ? error : new Error("Failed to load auth user")
+        cachedAuthToken = null
+        cachedAuthUser = null
+        cachedAuthPromise = null
 
         setState({
           user: null,
@@ -85,6 +124,9 @@ export function useAuth() {
       const token = authApi.getToken()
 
       if (!token) {
+        cachedAuthToken = null
+        cachedAuthUser = null
+        cachedAuthPromise = null
         setState({
           user: null,
           isLoading: false,
@@ -100,7 +142,10 @@ export function useAuth() {
       }))
 
       try {
-        const user = await authApi.getCurrentUser(token)
+        const user = await loadCurrentUser(token, true)
+        cachedAuthToken = token
+        cachedAuthUser = user
+        cachedAuthPromise = null
         setState({
           user,
           isLoading: false,
@@ -110,6 +155,9 @@ export function useAuth() {
       } catch (error) {
         const normalizedError =
           error instanceof Error ? error : new Error("Failed to load auth user")
+        cachedAuthToken = null
+        cachedAuthUser = null
+        cachedAuthPromise = null
         setState({
           user: null,
           isLoading: false,
@@ -122,4 +170,3 @@ export function useAuth() {
 }
 
 export { authKeys }
-

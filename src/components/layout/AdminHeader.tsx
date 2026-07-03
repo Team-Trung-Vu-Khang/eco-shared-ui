@@ -37,6 +37,9 @@ type WorkspaceItem = {
   totalAcreage: number;
 };
 
+let cachedDefaultWorkspaceItems: WorkspaceItem[] | null = null;
+let cachedDefaultWorkspacePromise: Promise<WorkspaceItem[]> | null = null;
+
 function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
   return items.map((item) => ({
     id: String(item.id),
@@ -55,6 +58,46 @@ function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
     totalAcreage: item.totalAcreage || 0,
     mainCropName: item.mainCrop?.name || "",
   }));
+}
+
+function resolveWorkspaceId(
+  items: WorkspaceItem[],
+  currentId: string | null,
+): string | null {
+  if (currentId && items.some((item) => item.id === currentId)) {
+    return currentId;
+  }
+
+  const savedWorkspaceId = readSessionStorage("admin_selected_workspace");
+
+  return (
+    items.find((item) => item.id === savedWorkspaceId)?.id ??
+    items[0]?.id ??
+    null
+  );
+}
+
+async function getDefaultWorkspaceItems() {
+  if (cachedDefaultWorkspaceItems) {
+    return cachedDefaultWorkspaceItems;
+  }
+
+  if (!cachedDefaultWorkspacePromise) {
+    cachedDefaultWorkspacePromise = workspaceApi
+      .getWorkspaces({
+        page: 0,
+        size: 100,
+      })
+      .then((response) => {
+        cachedDefaultWorkspaceItems = mapWorkspaceItems(response.content);
+        return cachedDefaultWorkspaceItems;
+      })
+      .finally(() => {
+        cachedDefaultWorkspacePromise = null;
+      });
+  }
+
+  return cachedDefaultWorkspacePromise;
 }
 
 function readSessionStorage(key: string) {
@@ -108,34 +151,16 @@ export function AdminHeader() {
 
     const initializeWorkspace = async () => {
       try {
-        const response = await workspaceApi.getWorkspaces({
-          page: 0,
-          size: 100,
-        });
+        const nextItems = await getDefaultWorkspaceItems();
 
         if (!isActive) {
           return;
         }
 
-        const nextItems = mapWorkspaceItems(response.content);
-
         setWorkspaceItems(nextItems);
-        setCurrentWorkspaceId((currentId) => {
-          const currentExists = nextItems.some((item) => item.id === currentId);
-          if (currentExists) {
-            return currentId;
-          }
-
-          const savedWorkspaceId = readSessionStorage(
-            "admin_selected_workspace",
-          );
-
-          return (
-            nextItems.find((item) => item.id === savedWorkspaceId)?.id ??
-            nextItems[0]?.id ??
-            null
-          );
-        });
+        setCurrentWorkspaceId((currentId) =>
+          resolveWorkspaceId(nextItems, currentId),
+        );
       } catch {
         if (isActive) {
           setWorkspaceItems([]);
@@ -155,40 +180,49 @@ export function AdminHeader() {
       return;
     }
 
+    const trimmedSearch = workspaceSearch.trim();
+
+    const cachedItems = cachedDefaultWorkspaceItems;
+
+    if (!trimmedSearch && cachedItems) {
+      setWorkspaceItems(cachedItems);
+      setCurrentWorkspaceId((currentId) =>
+        resolveWorkspaceId(cachedItems, currentId),
+      );
+      setWorkspaceLoading(false);
+      setWorkspaceError(null);
+      return;
+    }
+
     let isActive = true;
     const timeoutId = window.setTimeout(async () => {
       setWorkspaceLoading(true);
       setWorkspaceError(null);
 
       try {
-        const response = await workspaceApi.getWorkspaces({
-          keyword: workspaceSearch.trim() || undefined,
-          page: 0,
-          size: 100,
-        });
+        const nextItems = trimmedSearch
+          ? mapWorkspaceItems(
+              (
+                await workspaceApi.getWorkspaces({
+                  keyword: trimmedSearch,
+                  page: 0,
+                  size: 100,
+                })
+              ).content,
+            )
+          : await getDefaultWorkspaceItems();
 
         if (!isActive) {
           return;
         }
 
-        const nextItems = mapWorkspaceItems(response.content);
-
         setWorkspaceItems(nextItems);
-        setCurrentWorkspaceId((currentId) => {
-          const currentExists = nextItems.some((item) => item.id === currentId);
-          if (currentExists) {
-            return currentId;
-          }
-
-          const savedWorkspaceId = readSessionStorage(
-            "admin_selected_workspace",
-          );
-          return (
-            nextItems.find((item) => item.id === savedWorkspaceId)?.id ??
-            nextItems[0]?.id ??
-            null
-          );
-        });
+        if (!trimmedSearch) {
+          cachedDefaultWorkspaceItems = nextItems;
+        }
+        setCurrentWorkspaceId((currentId) =>
+          resolveWorkspaceId(nextItems, currentId),
+        );
       } catch {
         if (isActive) {
           setWorkspaceItems([]);
