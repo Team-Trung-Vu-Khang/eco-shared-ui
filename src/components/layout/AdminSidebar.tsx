@@ -2148,7 +2148,7 @@ const menuDevGroups: (
         icon: CalendarDays,
         href: "/growth-cycle",
       },
-      { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
+      // { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
       {
         id: "docs",
         label: "Tài liệu kỹ thuật",
