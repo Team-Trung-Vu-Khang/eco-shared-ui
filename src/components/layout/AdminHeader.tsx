@@ -491,6 +491,7 @@ export function AdminHeader() {
                     className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
                     onClick={() => {
                       setWorkspaceOpen(false);
+                      setLocation("/workspace");
                     }}
                   >
                     <span className="text-lg leading-none">+</span>
