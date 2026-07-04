@@ -2338,6 +2338,12 @@ const menuDevGroups: (
         icon: Mountain,
         href: "/terrain",
       },
+      {
+        id: "fd-land-specs",
+        label: "Thông số địa hình",
+        icon: SquareM,
+        href: "/land-specs",
+      },
       { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
       {
         id: "farming-method",
@@ -2368,6 +2374,12 @@ const menuDevGroups: (
         label: "Nhóm tổ chức",
         icon: Building2,
         href: "/enterprise-type",
+      },
+      {
+        id: "md-group-position",
+        label: "Nhóm chức vụ - chức danh",
+        icon: CirclePile,
+        href: "/group-position",
       },
       {
         id: "enterprise-form",
