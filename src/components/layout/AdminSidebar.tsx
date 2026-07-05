@@ -138,12 +138,12 @@ const menuProdGroups: { title: string; items: MenuItem[] }[] = [
         href: "/department",
       },
       { id: "position", label: "Chức vụ", icon: User, href: "/position" },
-      {
-        id: "role-responsibility",
-        label: "Vai trò & trách nhiệm",
-        icon: Scale,
-        href: "/role-responsibility",
-      },
+      // {
+      //   id: "role-responsibility",
+      //   label: "Vai trò & trách nhiệm",
+      //   icon: Scale,
+      //   href: "/role-responsibility",
+      // },
       { id: "team", label: "Đội nhóm", icon: UsersRound, href: "/team" },
     ],
   },
