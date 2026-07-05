@@ -216,18 +216,18 @@ const menuProdGroups: { title: string; items: MenuItem[] }[] = [
   {
     title: "Cây trồng",
     items: [
-      {
-        id: "fd-group-crop",
-        label: "Nhóm cây trồng",
-        icon: Trees,
-        href: "/group-crop",
-      },
-      {
-        id: "fd-crop",
-        label: "Cây trồng",
-        icon: Flower2,
-        href: "/crop-foundation",
-      },
+      // {
+      //   id: "fd-group-crop",
+      //   label: "Nhóm cây trồng",
+      //   icon: Trees,
+      //   href: "/group-crop",
+      // },
+      // {
+      //   id: "fd-crop",
+      //   label: "Cây trồng",
+      //   icon: Flower2,
+      //   href: "/crop-foundation",
+      // },
       {
         id: "fd-variety",
         label: "Giống cây trồng",
