@@ -2472,7 +2472,7 @@ export function AdminSidebar({
         </TooltipProvider>
       </ScrollArea>
 
-      <div className="border-t border-sidebar-border p-3 space-y-1">
+      {/* <div className="border-t border-sidebar-border p-3 space-y-1">
         <TooltipProvider delayDuration={0}>
           {collapsed ? (
             <Tooltip>
@@ -2536,7 +2536,7 @@ export function AdminSidebar({
             </button>
           )}
         </TooltipProvider>
-      </div>
+      </div> */}
     </aside>
   );
 }
