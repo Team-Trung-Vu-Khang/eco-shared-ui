@@ -1739,7 +1739,12 @@ const menuDevGroups: (
         icon: Building,
         href: "/owner-department",
       },
-      { id: "position", label: "Chức vụ", icon: User, href: "/position" },
+      {
+        id: "owner-position",
+        label: "Chức vụ",
+        icon: User,
+        href: "/owner-position",
+      },
       {
         id: "role-responsibility",
         label: "Vai trò & trách nhiệm",
@@ -2101,6 +2106,7 @@ const menuDevGroups: (
         icon: Building,
         href: "/department",
       },
+      { id: "position", label: "Chức vụ", icon: User, href: "/position" },
       {
         id: "material-group",
         label: "Nhóm vật tư",
