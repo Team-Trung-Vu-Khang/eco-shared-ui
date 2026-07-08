@@ -1734,10 +1734,10 @@ const menuDevGroups: (
         href: "/personnel",
       },
       {
-        id: "department",
+        id: "owner-department",
         label: "Phòng ban",
         icon: Building,
-        href: "/department",
+        href: "/owner-department",
       },
       { id: "position", label: "Chức vụ", icon: User, href: "/position" },
       {
@@ -2096,10 +2096,10 @@ const menuDevGroups: (
         href: "/enterprise-form",
       },
       {
-        id: "owner-department",
+        id: "department",
         label: "Phòng ban",
         icon: Building,
-        href: "/owner-department",
+        href: "/department",
       },
       {
         id: "material-group",
