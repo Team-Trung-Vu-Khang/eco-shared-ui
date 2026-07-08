@@ -2096,10 +2096,10 @@ const menuDevGroups: (
         href: "/enterprise-form",
       },
       {
-        id: "department-master",
+        id: "owner-department",
         label: "Phòng ban",
         icon: Building,
-        href: "/department-master",
+        href: "/owner-department",
       },
       {
         id: "material-group",
