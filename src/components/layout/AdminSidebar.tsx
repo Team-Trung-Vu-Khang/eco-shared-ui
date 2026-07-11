@@ -1797,6 +1797,11 @@ const menuDevGroups: (
             href: "/cultivation-region",
           },
           {
+            id: "legal-identification",
+            label: "Định danh pháp lý",
+            href: "/legal-identification",
+          },
+          {
             id: "crop-identification",
             label: "Định danh cây trồng",
             href: "/plant-identification",
@@ -1823,19 +1828,6 @@ const menuDevGroups: (
   {
     title: "Cây trồng",
     items: [
-      // {
-      //   id: "group-crop",
-      //   label: "Nhóm cây trồng",
-      //   icon: Trees,
-      //   href: "/group-crop",
-      // },
-      // { id: "crop", label: "Cây trồng", icon: Flower2, href: "/crop" },
-      // {
-      //   id: "variety",
-      //   label: "Giống cây trồng",
-      //   icon: Sprout,
-      //   href: "/variety",
-      // },
       {
         id: "fd-group-crop",
         label: "Nhóm cây trồng",
@@ -1861,7 +1853,6 @@ const menuDevGroups: (
         icon: CalendarDays,
         href: "/growth-cycle",
       },
-      // { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
       {
         id: "docs",
         label: "Tài liệu kỹ thuật",
