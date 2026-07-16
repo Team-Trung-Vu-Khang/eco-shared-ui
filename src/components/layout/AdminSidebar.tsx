@@ -55,6 +55,7 @@ import {
   MapPin,
   SquareM,
   CirclePile,
+  IdCardIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -1745,12 +1746,12 @@ const menuDevGroups: (
         icon: User,
         href: "/owner-position",
       },
-      {
-        id: "role-responsibility",
-        label: "Vai trò & trách nhiệm",
-        icon: Scale,
-        href: "/role-responsibility",
-      },
+      // {
+      //   id: "role-responsibility",
+      //   label: "Vai trò & trách nhiệm",
+      //   icon: Scale,
+      //   href: "/role-responsibility",
+      // },
       { id: "team", label: "Đội nhóm", icon: UsersRound, href: "/team" },
     ],
   },
@@ -1797,11 +1798,6 @@ const menuDevGroups: (
             href: "/cultivation-region",
           },
           {
-            id: "legal-identification",
-            label: "Định danh pháp lý",
-            href: "/legal-identification",
-          },
-          {
             id: "crop-identification",
             label: "Định danh cây trồng",
             href: "/plant-identification",
@@ -1822,6 +1818,12 @@ const menuDevGroups: (
             href: "/search-zone",
           },
         ],
+      },
+      {
+        id: "legal-identification",
+        label: "Định danh pháp lý",
+        icon: IdCardIcon,
+        href: "/legal-identification",
       },
     ],
   },
