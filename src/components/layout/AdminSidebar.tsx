@@ -1798,6 +1798,11 @@ const menuDevGroups: (
             href: "/cultivation-region",
           },
           {
+            id: "region-basic-distribution",
+            label: "Định danh cơ bản",
+            href: "/region-basic-distribution",
+          },
+          {
             id: "crop-identification",
             label: "Định danh cây trồng",
             href: "/plant-identification",
