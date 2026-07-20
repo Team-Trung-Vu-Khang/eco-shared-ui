@@ -56,6 +56,8 @@ import {
   SquareM,
   CirclePile,
   IdCardIcon,
+  Shell,
+  Fish,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -1756,7 +1758,7 @@ const menuDevGroups: (
     ],
   },
   {
-    title: "Vùng trồng",
+    title: "Vùng sản xuất",
     items: [
       {
         id: "region-chart",
@@ -1788,7 +1790,7 @@ const menuDevGroups: (
       },
       {
         id: "cultivation-zone",
-        label: "Canh tác",
+        label: "Trồng trọt",
         icon: TreePine,
         href: "/cultivation-zone",
         children: [
@@ -1797,11 +1799,11 @@ const menuDevGroups: (
             label: "Vùng canh tác",
             href: "/cultivation-region",
           },
-          {
-            id: "region-basic-distribution",
-            label: "Định danh cơ bản",
-            href: "/region-basic-distribution",
-          },
+          // {
+          //   id: "region-basic-distribution",
+          //   label: "Định danh cơ bản",
+          //   href: "/region-basic-distribution",
+          // },
           {
             id: "crop-identification",
             label: "Định danh cây trồng",
@@ -1821,6 +1823,110 @@ const menuDevGroups: (
             id: "search-zone",
             label: "Tìm kiếm vùng trồng",
             href: "/search-zone",
+          },
+          {
+            id: "growth-cycle",
+            label: "Vụ mùa",
+            href: "/growth-cycle",
+          },
+        ],
+      },
+      {
+        id: "animal-husbandry",
+        label: "Chăn nuôi",
+        icon: Shell,
+        href: "/animal-husbandry",
+        children: [
+          {
+            label: "Vùng chăn nuôi",
+            id: "animal-husbandry-region",
+            href: "/animal-husbandry-region",
+          },
+          {
+            label: "Định danh cá thể",
+            id: "animal-identification",
+            href: "/animal-identification",
+          },
+          {
+            label: "Tìm kiếm cá thể",
+            id: "animal-identification-search",
+            href: "/animal-identification/search",
+          },
+          {
+            label: "Tìm kiếm trang trại",
+            id: "animal-identification-search-farm",
+            href: "/animal-identification/search-farm",
+          },
+          {
+            id: "animal-distribution-detail",
+            label: "Chi tiết phân bổ",
+            href: "/animal-distribution-detail",
+          },
+          {
+            id: "animal-growth-cycle",
+            label: "Vụ nuôi",
+            href: "/animal-growth-cycle",
+          },
+        ],
+      },
+      {
+        id: "aquaculture",
+        label: "Nuôi trồng thuỷ sản",
+        icon: Fish,
+        href: "/aquaculture",
+        children: [
+          {
+            label: "Vùng nuôi trồng",
+            id: "aquaculture-region",
+            href: "/aquaculture-region",
+          },
+          {
+            label: "Định danh cá thể",
+            id: "aquaculture-identification",
+            href: "/aquaculture-identification",
+          },
+          {
+            label: "Tìm kiếm cá thể",
+            id: "aquaculture-identification-search",
+            href: "/aquaculture-identification/search",
+          },
+          {
+            label: "Tìm kiếm trang trại",
+            id: "aquaculture-search-farm",
+            href: "/aquaculture-search-farm",
+          },
+          {
+            id: "aquaculture-distribution-detail",
+            label: "Chi tiết phân bổ",
+            href: "/aquaculture-distribution-detail",
+          },
+          {
+            id: "aquaculture-growth-cycle",
+            label: "Vụ nuôi",
+            href: "/aquaculture-growth-cycle",
+          },
+        ],
+      },
+      {
+        id: "cultivation-region-identification",
+        label: "Định danh vùng canh tác",
+        icon: IdCardIcon,
+        href: "/cultivation-region-identification",
+        children: [
+          {
+            id: "cultivation-region-identification-crop",
+            label: "Trồng trọt",
+            href: "/cultivation-region-identification/crop",
+          },
+          {
+            id: "animal-identification",
+            label: "Chăn nuôi",
+            href: "/cultivation-region-identification/animal",
+          },
+          {
+            id: "aquaculture-identification",
+            label: "Nuôi trồng thuỷ sản",
+            href: "/cultivation-region-identification/aquaculture",
           },
         ],
       },
@@ -2144,6 +2250,7 @@ const menuDevGroups: (
     ],
   },
 ];
+
 interface AdminSidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
