@@ -2018,22 +2018,21 @@ const menuDevGroups: (
         id: "plan",
         label: "Quản lý canh tác",
         icon: ClipboardList,
-        href: "/plan",
         children: [
           {
             id: "plan-crop",
             label: "Kế hoạch mùa vụ",
-            href: "/growth-cycle",
+            href: "/plan-growth",
           },
           {
             id: "plan-animal",
             label: "Kế hoạch chăn nuôi",
-            href: "/animal-growth-cycle",
+            href: "/plan-animal-growth",
           },
           {
             id: "plan-aquaculture",
             label: "Kế hoạch nuôi trồng thủy sản",
-            href: "/aquaculture-growth-cycle",
+            href: "/plan-aquaculture-growth",
           },
         ],
       },
