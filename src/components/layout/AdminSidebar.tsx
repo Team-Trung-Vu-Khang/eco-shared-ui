@@ -2016,9 +2016,26 @@ const menuDevGroups: (
     items: [
       {
         id: "plan",
-        label: "Kế hoạch",
+        label: "Quản lý canh tác",
         icon: ClipboardList,
         href: "/plan",
+        children: [
+          {
+            id: "plan-crop",
+            label: "Kế hoạch mùa vụ",
+            href: "/growth-cycle",
+          },
+          {
+            id: "plan-animal",
+            label: "Kế hoạch chăn nuôi",
+            href: "/animal-growth-cycle",
+          },
+          {
+            id: "plan-aquaculture",
+            label: "Kế hoạch nuôi trồng thủy sản",
+            href: "/aquaculture-growth-cycle",
+          },
+        ],
       },
       { id: "task", label: "Công việc", icon: CheckSquare, href: "/task" },
       {
