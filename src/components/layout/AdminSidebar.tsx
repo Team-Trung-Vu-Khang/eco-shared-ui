@@ -58,6 +58,7 @@ import {
   IdCardIcon,
   Shell,
   Fish,
+  PiggyBank,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -1834,7 +1835,7 @@ const menuDevGroups: (
       {
         id: "animal-husbandry",
         label: "Chăn nuôi",
-        icon: Shell,
+        icon: PiggyBank,
         href: "/animal-husbandry",
         children: [
           {
