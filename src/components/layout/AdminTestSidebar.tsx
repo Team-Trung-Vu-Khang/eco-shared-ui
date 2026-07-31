@@ -19,16 +19,17 @@ import {
   LogOut,
   Menu,
   Settings,
-  Tractor,
   X,
 } from "lucide-react";
+import type { ElementType, MouseEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
+import { AdminSidebarBrand } from "./AdminSidebarBrand";
 
 interface MenuItem {
   id: string;
   label: string;
-  icon: React.ElementType;
+  icon: ElementType;
   href?: string;
   children?: { id: string; label: string; href: string }[];
 }
@@ -47,14 +48,20 @@ const menuGroups: { title: string; items: MenuItem[] }[] = [
   },
 ];
 
-interface AdminTestSidebarProps {
+export interface AdminTestSidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
+  brandIcon?: ElementType;
+  brandTitle?: ReactNode;
+  brandSubtitle?: ReactNode;
 }
 
 export function AdminTestSidebar({
   collapsed = false,
   onToggle,
+  brandIcon,
+  brandTitle,
+  brandSubtitle,
 }: AdminTestSidebarProps) {
   const [location, setLocation] = useLocation();
 
@@ -133,12 +140,12 @@ export function AdminTestSidebar({
 
   // Custom navigation handler to prevent auto-scroll of the main window,
   // sidebar scroll is handled by the persistence logic above.
-  const handleNavigate = (href: string) => (e: React.MouseEvent) => {
+  const handleNavigate = (href: string) => (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     // Navigate
-    setLocation(href as any); // Type assertion for wouter issue if any
+    setLocation(href);
   };
 
   return (
@@ -157,17 +164,11 @@ export function AdminTestSidebar({
         )}
       >
         {!collapsed && (
-          <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap animation-fade-in">
-            <div className="w-9 h-9 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
-              <Tractor className="w-5 h-5 text-sidebar-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-lg leading-tight">
-                FARM
-              </h1>
-              <p className="text-xs text-sidebar-foreground/60">Admin Portal</p>
-            </div>
-          </div>
+          <AdminSidebarBrand
+            icon={brandIcon}
+            title={brandTitle}
+            subtitle={brandSubtitle}
+          />
         )}
         <Button
           variant="ghost"

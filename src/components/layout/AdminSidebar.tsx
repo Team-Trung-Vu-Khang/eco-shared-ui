@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   HoverCard,
@@ -13,7 +12,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronRight, Menu, Tractor, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
+import type { ElementType, MouseEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import {
@@ -23,13 +23,17 @@ import {
   menuProdRiceGroups,
   type MenuSection,
 } from "./adminSidebarMenus";
+import { AdminSidebarBrand } from "./AdminSidebarBrand";
 
-interface AdminSidebarProps {
+export interface AdminSidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
   isDev?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
+  brandIcon?: ElementType;
+  brandTitle?: ReactNode;
+  brandSubtitle?: ReactNode;
 }
 
 export function AdminSidebar({
@@ -38,6 +42,9 @@ export function AdminSidebar({
   isDev = false,
   isRice = false,
   isEcoSystemAdmin = false,
+  brandIcon,
+  brandTitle,
+  brandSubtitle,
 }: AdminSidebarProps) {
   const [location, setLocation] = useLocation();
   const menuGroups: MenuSection[] = isDev
@@ -125,7 +132,7 @@ export function AdminSidebar({
 
   // Custom navigation handler to prevent auto-scroll of the main window,
   // sidebar scroll is handled by the persistence logic above.
-  const handleNavigate = (href: string) => (e: React.MouseEvent) => {
+  const handleNavigate = (href: string) => (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -149,17 +156,11 @@ export function AdminSidebar({
         )}
       >
         {!collapsed && (
-          <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap animation-fade-in">
-            <div className="w-9 h-9 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
-              <Tractor className="w-5 h-5 text-sidebar-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-lg leading-tight">
-                FARM
-              </h1>
-              <p className="text-xs text-sidebar-foreground/60">Admin Portal</p>
-            </div>
-          </div>
+          <AdminSidebarBrand
+            icon={brandIcon}
+            title={brandTitle}
+            subtitle={brandSubtitle}
+          />
         )}
         <Button
           variant="ghost"

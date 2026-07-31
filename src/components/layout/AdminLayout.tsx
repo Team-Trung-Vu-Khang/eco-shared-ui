@@ -1,16 +1,20 @@
+import type { ElementType, ReactNode } from "react";
 import { useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { cn } from "@/lib/utils";
 
-interface AdminLayoutProps {
-  children: React.ReactNode;
+export interface AdminLayoutProps {
+  children: ReactNode;
   title?: string;
   description?: string;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
   isDev?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
+  brandIcon?: ElementType;
+  brandTitle?: ReactNode;
+  brandSubtitle?: ReactNode;
 }
 
 export function AdminLayout({
@@ -21,6 +25,9 @@ export function AdminLayout({
   isDev = false,
   isRice = false,
   isEcoSystemAdmin = false,
+  brandIcon,
+  brandTitle,
+  brandSubtitle,
 }: AdminLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = sessionStorage.getItem("sidebar_collapsed");
@@ -41,6 +48,9 @@ export function AdminLayout({
         isDev={isDev}
         isRice={isRice}
         isEcoSystemAdmin={isEcoSystemAdmin}
+        brandIcon={brandIcon}
+        brandTitle={brandTitle}
+        brandSubtitle={brandSubtitle}
       />
       <div
         className={cn(

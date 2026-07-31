@@ -1,13 +1,17 @@
+import type { ElementType, ReactNode } from "react";
 import { useState } from "react";
 import { AdminHeader } from "./AdminHeader";
 import { cn } from "@/lib/utils";
 import { AdminTestSidebar } from "./AdminTestSidebar";
 
-interface AdminTestLayoutProps {
-  children: React.ReactNode;
+export interface AdminTestLayoutProps {
+  children: ReactNode;
   title?: string;
   description?: string;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
+  brandIcon?: ElementType;
+  brandTitle?: ReactNode;
+  brandSubtitle?: ReactNode;
 }
 
 export function AdminTestLayout({
@@ -15,6 +19,9 @@ export function AdminTestLayout({
   title,
   description,
   actions,
+  brandIcon,
+  brandTitle,
+  brandSubtitle,
 }: AdminTestLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = sessionStorage.getItem("sidebar_collapsed");
@@ -29,7 +36,13 @@ export function AdminTestLayout({
 
   return (
     <div className="min-h-screen bg-background">
-      <AdminTestSidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} />
+      <AdminTestSidebar
+        collapsed={sidebarCollapsed}
+        onToggle={toggleSidebar}
+        brandIcon={brandIcon}
+        brandTitle={brandTitle}
+        brandSubtitle={brandSubtitle}
+      />
       <div
         className={cn(
           "transition-all duration-300",
