@@ -10,6 +10,7 @@ interface AdminLayoutProps {
   actions?: React.ReactNode;
   isDev?: boolean;
   isRice?: boolean;
+  isEcoSystemAdmin?: boolean;
 }
 
 export function AdminLayout({
@@ -19,6 +20,7 @@ export function AdminLayout({
   actions,
   isDev = false,
   isRice = false,
+  isEcoSystemAdmin = false,
 }: AdminLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     const saved = sessionStorage.getItem("sidebar_collapsed");
@@ -38,6 +40,7 @@ export function AdminLayout({
         onToggle={toggleSidebar}
         isDev={isDev}
         isRice={isRice}
+        isEcoSystemAdmin={isEcoSystemAdmin}
       />
       <div
         className={cn(
