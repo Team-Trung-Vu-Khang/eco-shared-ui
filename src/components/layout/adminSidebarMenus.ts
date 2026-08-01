@@ -1305,7 +1305,7 @@ export const menuDevGroups: MenuSection[] = [
   },
 ];
 
-export const menuEcoSystemAdminGroups = [
+export const menuEcoSystemAdminGroups: MenuSection[] = [
   {
     title: "Quản trị hệ thống",
     items: [
@@ -1320,6 +1320,12 @@ export const menuEcoSystemAdminGroups = [
         label: "Quản trị viên",
         icon: UserCog,
         href: "/admins",
+      },
+      {
+        id: "system-referral",
+        label: "Quản lý người giới thiệu",
+        icon: UserCog,
+        href: "/referrals",
       },
     ],
   },
