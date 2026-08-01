@@ -1,5 +1,13 @@
 import * as React from "react";
-import { Bell, Check, Building2, LogOut, Search, User } from "lucide-react";
+import {
+  Bell,
+  Building2,
+  ExternalLink,
+  Check,
+  LogOut,
+  Search,
+  User,
+} from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { authApi } from "@/features/auth/api/auth.api";
 import { workspaceApi } from "@/features/workspace";
@@ -368,6 +376,19 @@ export function AdminHeader() {
                       "Nhấn để mở popup chọn đơn vị"}
                   </p>
                 </div>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onSelect={() => {
+                  window.open(
+                    "https://mevi-center.otechz.com/dashboard",
+                    "_blank",
+                    "noopener,noreferrer",
+                  );
+                }}
+              >
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Mevi Center
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

@@ -1321,12 +1321,6 @@ export const menuEcoSystemAdminGroups = [
         icon: UserCog,
         href: "/admins",
       },
-      {
-        id: "system-permission",
-        label: "Phân quyền",
-        icon: ShieldCheck,
-        href: "/permissions",
-      },
     ],
   },
 ];
