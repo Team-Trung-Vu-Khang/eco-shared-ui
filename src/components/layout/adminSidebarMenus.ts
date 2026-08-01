@@ -1310,16 +1310,10 @@ export const menuEcoSystemAdminGroups: MenuSection[] = [
     title: "Quản trị hệ thống",
     items: [
       {
-        id: "system-user",
-        label: "Quản lý người dùng",
+        id: "system-account",
+        label: "Quản lý tài khoản",
         icon: Users,
         href: "/users",
-      },
-      {
-        id: "system-admin",
-        label: "Quản trị viên",
-        icon: UserCog,
-        href: "/admins",
       },
       {
         id: "system-referral",
