@@ -272,7 +272,7 @@ export function AdminHeader() {
     <header className="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur-md">
       <div className="flex min-h-16 flex-col gap-3 px-6 py-3 xl:flex-row xl:items-center xl:justify-between">
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
+          {/* <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
             <div className="relative w-full max-w-md">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -282,11 +282,11 @@ export function AdminHeader() {
                 data-testid="search-input"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex items-center gap-3 self-start xl:self-center">
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
@@ -322,7 +322,7 @@ export function AdminHeader() {
                 </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
           <DropdownMenu
             open={accountMenuOpen}
