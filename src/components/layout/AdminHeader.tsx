@@ -242,6 +242,7 @@ export function AdminHeader() {
 
   const currentWorkspace =
     workspaceItems.find((item) => item.id === currentWorkspaceId) ?? null;
+  const phoneNumber = user?.phoneNumber || "";
 
   const openWorkspace = (itemId: string) => {
     setCurrentWorkspaceId(itemId);
@@ -266,8 +267,7 @@ export function AdminHeader() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              size="icon"
-              className="h-10 w-10 rounded-full"
+              className="h-auto gap-3 rounded-full px-2 py-1.5"
               data-testid="user-menu"
             >
               <Avatar className="h-8 w-8">
@@ -276,6 +276,14 @@ export function AdminHeader() {
                   {avatarFallback || "A"}
                 </AvatarFallback>
               </Avatar>
+              <div className="hidden min-w-0 flex-col items-start text-left sm:flex">
+                <span className="max-w-40 truncate text-sm font-medium">
+                  {displayName || "Người dùng"}
+                </span>
+                <span className="max-w-40 truncate text-xs text-muted-foreground">
+                  {phoneNumber || "Chưa có số điện thoại"}
+                </span>
+              </div>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-72">
