@@ -4,8 +4,6 @@ import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
 
 export interface AdminLayoutProps {
   children: ReactNode;
@@ -88,19 +86,6 @@ export function AdminLayout({
           onClick={() => setMobileSidebarOpen(false)}
         />
       )}
-      {isMobile && !mobileSidebarOpen && (
-        <Button
-          type="button"
-          variant="secondary"
-          size="icon"
-          className="fixed left-4 top-4 z-50 shadow-lg"
-          onClick={() => setMobileSidebarOpen(true)}
-          aria-label="Open sidebar"
-          data-testid="open-sidebar"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
-      )}
       <AdminSidebar
         collapsed={sidebarCollapsed}
         onToggle={toggleSidebar}
@@ -119,7 +104,10 @@ export function AdminLayout({
           isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64",
         )}
       >
-        <AdminHeader isEcoSystemAdmin={isEcoSystemAdmin} />
+        <AdminHeader
+          isEcoSystemAdmin={isEcoSystemAdmin}
+          onToggleSidebar={isMobile ? () => setMobileSidebarOpen(true) : undefined}
+        />
         <main className="p-6">
           {(title || actions) && (
             <div className="mb-6 flex items-start justify-between gap-4">

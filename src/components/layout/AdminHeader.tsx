@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Building2, ExternalLink, Check, LogOut, Search } from "lucide-react";
+import { Building2, ExternalLink, Check, LogOut, Menu, Search } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { authApi } from "@/features/auth/api/auth.api";
 import { workspaceApi } from "@/features/workspace";
@@ -25,6 +25,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
 import type { Workspace } from "@/features/workspace";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type WorkspaceItem = {
   id: string;
@@ -110,10 +111,13 @@ function readSessionStorage(key: string) {
 
 export function AdminHeader({
   isEcoSystemAdmin = false,
+  onToggleSidebar,
 }: {
   isEcoSystemAdmin?: boolean;
+  onToggleSidebar?: () => void;
 }) {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [, setLocation] = useLocation();
   const [workspaceOpen, setWorkspaceOpen] = React.useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = React.useState(false);
@@ -266,25 +270,39 @@ export function AdminHeader({
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur-md">
-      <div className="flex min-h-16 items-center justify-end px-6 py-1">
+      <div className="flex min-h-16 items-center gap-3 px-4 py-1 sm:px-6">
+        {isMobile && onToggleSidebar && (
+          <Button
+            type="button"
+            variant="secondary"
+            size="icon"
+            className="shrink-0 shadow-sm"
+            onClick={onToggleSidebar}
+            aria-label="Open sidebar"
+            data-testid="open-sidebar"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+        )}
+
         <DropdownMenu open={accountMenuOpen} onOpenChange={setAccountMenuOpen}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="h-auto gap-3 rounded-full px-2 py-1.5"
+              className="ml-auto h-auto gap-2 rounded-full px-2 py-1.5 sm:gap-3"
               data-testid="user-menu"
             >
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
                 <AvatarImage src="" alt={displayName} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-sm">
                   {avatarFallback || "A"}
                 </AvatarFallback>
               </Avatar>
-              <div className="hidden min-w-0 flex-col items-start text-left sm:flex">
-                <span className="max-w-40 truncate text-sm font-medium">
+              <div className="min-w-0 flex max-w-[11rem] flex-col items-start text-left">
+                <span className="truncate text-[13px] font-medium leading-tight sm:text-sm">
                   {displayName || "Người dùng"}
                 </span>
-                <span className="max-w-40 truncate text-xs text-muted-foreground">
+                <span className="truncate text-[11px] text-muted-foreground sm:text-xs">
                   {phoneNumber || "Chưa có số điện thoại"}
                 </span>
               </div>
