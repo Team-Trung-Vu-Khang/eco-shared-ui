@@ -33,15 +33,16 @@ export function AdminLayout({
   brandSubtitle,
 }: AdminLayoutProps) {
   const isMobile = useIsMobile();
-  const [sidebarPreferenceCollapsed, setSidebarPreferenceCollapsed] =
-    useState(() => {
+  const [sidebarPreferenceCollapsed, setSidebarPreferenceCollapsed] = useState(
+    () => {
       if (typeof window === "undefined") {
         return false;
       }
 
       const saved = window.sessionStorage.getItem("sidebar_collapsed");
       return saved === "true";
-    });
+    },
+  );
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -118,7 +119,7 @@ export function AdminLayout({
           isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64",
         )}
       >
-        <AdminHeader />
+        <AdminHeader isEcoSystemAdmin={isEcoSystemAdmin} />
         <main className="p-6">
           {(title || actions) && (
             <div className="mb-6 flex items-start justify-between gap-4">
