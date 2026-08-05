@@ -108,7 +108,11 @@ function readSessionStorage(key: string) {
   return window.sessionStorage.getItem(key);
 }
 
-export function AdminHeader() {
+export function AdminHeader({
+  isEcoSystemAdmin = false,
+}: {
+  isEcoSystemAdmin?: boolean;
+}) {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const [workspaceOpen, setWorkspaceOpen] = React.useState(false);
@@ -289,31 +293,33 @@ export function AdminHeader() {
           <DropdownMenuContent align="end" className="w-72">
             <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="flex items-start gap-3 py-3"
-              onSelect={() => {
-                setAccountMenuOpen(false);
-                window.setTimeout(() => {
-                  setWorkspaceOpen(true);
-                }, 0);
-              }}
-            >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Building2 className="h-4 w-4" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="truncate font-medium">
-                    {currentWorkspace?.organizationName ?? "Đơn vị / Tổ chức"}
-                  </span>
+            {!isEcoSystemAdmin && (
+              <DropdownMenuItem
+                className="flex items-start gap-3 py-3"
+                onSelect={() => {
+                  setAccountMenuOpen(false);
+                  window.setTimeout(() => {
+                    setWorkspaceOpen(true);
+                  }, 0);
+                }}
+              >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Building2 className="h-4 w-4" />
                 </div>
-                <p className="truncate text-xs text-muted-foreground">
-                  {currentWorkspace?.representativeName ??
-                    "Nhấn để mở popup chọn đơn vị"}
-                </p>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="truncate font-medium">
+                      {currentWorkspace?.organizationName ?? "Đơn vị / Tổ chức"}
+                    </span>
+                  </div>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {currentWorkspace?.representativeName ??
+                      "Nhấn để mở popup chọn đơn vị"}
+                  </p>
+                </div>
+              </DropdownMenuItem>
+            )}
+            {!isEcoSystemAdmin && <DropdownMenuSeparator />}
             <DropdownMenuItem
               onSelect={() => {
                 window.open(

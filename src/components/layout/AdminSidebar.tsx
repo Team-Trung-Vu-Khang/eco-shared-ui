@@ -28,6 +28,8 @@ import { AdminSidebarBrand } from "./AdminSidebarBrand";
 export interface AdminSidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
+  isMobile?: boolean;
+  mobileOpen?: boolean;
   isDev?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
@@ -39,6 +41,8 @@ export interface AdminSidebarProps {
 export function AdminSidebar({
   collapsed = false,
   onToggle,
+  isMobile = false,
+  mobileOpen = false,
   isDev = false,
   isRice = false,
   isEcoSystemAdmin = false,
@@ -143,19 +147,27 @@ export function AdminSidebar({
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen bg-sidebar text-sidebar-foreground flex flex-col",
+        "fixed left-0 top-0 bg-sidebar text-sidebar-foreground flex flex-col",
         !isMounting && "transition-all duration-300",
-        collapsed ? "w-16" : "w-64",
+        isMobile
+          ? cn(
+              "z-50 h-screen w-screen",
+              mobileOpen
+                ? "translate-x-0 pointer-events-auto"
+                : "-translate-x-full pointer-events-none",
+            )
+          : cn("z-40 h-screen", collapsed ? "w-16" : "w-64"),
       )}
       data-testid="admin-sidebar"
+      aria-hidden={isMobile && !mobileOpen}
     >
       <div
         className={cn(
           "flex items-center h-16 border-b border-sidebar-border transition-all duration-300",
-          collapsed ? "justify-center px-2" : "px-4",
+          isMobile || collapsed ? "justify-center px-2" : "px-4",
         )}
       >
-        {!collapsed && (
+        {(!collapsed || isMobile) && (
           <AdminSidebarBrand
             icon={brandIcon}
             title={brandTitle}
@@ -167,7 +179,7 @@ export function AdminSidebar({
           size="icon"
           className={cn(
             "text-sidebar-foreground hover:bg-sidebar-accent transition-all",
-            !collapsed && "ml-auto",
+            (!collapsed || isMobile) && "ml-auto",
           )}
           onClick={onToggle}
           data-testid="toggle-sidebar"

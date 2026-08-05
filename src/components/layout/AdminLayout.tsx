@@ -1,8 +1,11 @@
 import type { ElementType, ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
 
 export interface AdminLayoutProps {
   children: ReactNode;
@@ -29,22 +32,79 @@ export function AdminLayout({
   brandTitle,
   brandSubtitle,
 }: AdminLayoutProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    const saved = sessionStorage.getItem("sidebar_collapsed");
-    return saved === "true";
-  });
+  const isMobile = useIsMobile();
+  const [sidebarPreferenceCollapsed, setSidebarPreferenceCollapsed] =
+    useState(() => {
+      if (typeof window === "undefined") {
+        return false;
+      }
+
+      const saved = window.sessionStorage.getItem("sidebar_collapsed");
+      return saved === "true";
+    });
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    window.sessionStorage.setItem(
+      "sidebar_collapsed",
+      String(sidebarPreferenceCollapsed),
+    );
+  }, [sidebarPreferenceCollapsed]);
+
+  useEffect(() => {
+    if (!isMobile) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = mobileSidebarOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobile, mobileSidebarOpen]);
+
+  const sidebarCollapsed = isMobile
+    ? !mobileSidebarOpen
+    : sidebarPreferenceCollapsed;
 
   const toggleSidebar = () => {
-    const newState = !sidebarCollapsed;
-    setSidebarCollapsed(newState);
-    sessionStorage.setItem("sidebar_collapsed", String(newState));
+    if (isMobile) {
+      setMobileSidebarOpen((current) => !current);
+      return;
+    }
+
+    setSidebarPreferenceCollapsed((current) => !current);
   };
 
   return (
     <div className="min-h-screen bg-background">
+      {isMobile && mobileSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close sidebar overlay"
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px]"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      )}
+      {isMobile && !mobileSidebarOpen && (
+        <Button
+          type="button"
+          variant="secondary"
+          size="icon"
+          className="fixed left-4 top-4 z-50 shadow-lg"
+          onClick={() => setMobileSidebarOpen(true)}
+          aria-label="Open sidebar"
+          data-testid="open-sidebar"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+      )}
       <AdminSidebar
         collapsed={sidebarCollapsed}
         onToggle={toggleSidebar}
+        isMobile={isMobile}
+        mobileOpen={mobileSidebarOpen}
         isDev={isDev}
         isRice={isRice}
         isEcoSystemAdmin={isEcoSystemAdmin}
@@ -55,7 +115,7 @@ export function AdminLayout({
       <div
         className={cn(
           "transition-all duration-300",
-          sidebarCollapsed ? "ml-16" : "ml-64",
+          isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64",
         )}
       >
         <AdminHeader />
