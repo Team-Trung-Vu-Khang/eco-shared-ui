@@ -1218,13 +1218,13 @@ export const menuDevGroups: MenuSection[] = [
       { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
       {
         id: "farming-method",
-        label: "Phương thức canh tác",
+        label: "Phương pháp sản xuất",
         icon: Leaf,
         href: "/farming-method",
       },
       {
         id: "irrigation-systems",
-        label: "Hệ thống tưới tiêu",
+        label: "Phương pháp tưới tiêu",
         icon: Leaf,
         href: "/irrigation-systems",
       },
@@ -1267,7 +1267,7 @@ export const menuDevGroups: MenuSection[] = [
       { id: "position", label: "Chức vụ", icon: User, href: "/position" },
       {
         id: "material-group",
-        label: "Nhóm vật tư",
+        label: "Nhóm vật tư khác",
         icon: Boxes,
         href: "/material-group",
       },
