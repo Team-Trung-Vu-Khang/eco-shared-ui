@@ -1284,6 +1284,18 @@ export const menuDevGroups: MenuSection[] = [
         href: "/pesticide-group",
       },
       {
+        id: "livestock-medicine-group",
+        label: "Nhóm thuốc (Chăn nuôi)",
+        icon: ShieldCheck,
+        href: "/livestock-medicine-group",
+      },
+      {
+        id: "aquaculture-medicine-group",
+        label: "Nhóm thuốc (Thủy sản)",
+        icon: Fish,
+        href: "/aquaculture-medicine-group",
+      },
+      {
         id: "vehicle-group",
         label: "Nhóm máy móc - thiết bị",
         icon: Tractor,
@@ -1300,6 +1312,12 @@ export const menuDevGroups: MenuSection[] = [
         label: "Thông tin tỉnh/thành",
         icon: MapPin,
         href: "/province",
+      },
+      {
+        id: "iot-device-group",
+        label: "Nhóm thiết bị IOT",
+        icon: Cpu,
+        href: "/iot-device-group",
       },
     ],
   },
