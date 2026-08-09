@@ -43,6 +43,8 @@ import {
   UserCog,
   ShieldCheck,
   PiggyBank,
+  Download,
+  Upload,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1021,25 +1023,6 @@ export const menuDevGroups: MenuSection[] = [
   {
     title: "Vật tư",
     items: [
-      { id: "pesticide", label: "Thuốc BVTV", icon: Bug, href: "/pesticide" },
-      {
-        id: "fertilizer",
-        label: "Phân bón",
-        icon: FlaskConical,
-        href: "/fertilizer",
-      },
-      {
-        id: "material",
-        label: "Vật tư khác",
-        icon: Package,
-        href: "/material",
-      },
-      {
-        id: "equipment",
-        label: "Dụng cụ – Máy móc",
-        icon: Wrench,
-        href: "/equipment",
-      },
       {
         id: "lookup-material",
         label: "Tra cứu vật tư",
@@ -1047,6 +1030,80 @@ export const menuDevGroups: MenuSection[] = [
         href: "/lookup-material",
       },
       { id: "unit", label: "Đơn vị quy đổi", icon: Scale, href: "/unit" },
+      {
+        id: "cultivation-material",
+        label: "Vật tư trồng trọt",
+        icon: TreePine,
+        href: "/cultivation-zone",
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc BVTV",
+            href: "/cultivation-material/pesticide",
+          },
+          {
+            id: "fertilizer",
+            label: "Phân bón",
+            href: "/cultivation-material/fertilizer",
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/cultivation-material/material",
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/cultivation-material/equipment",
+          },
+        ],
+      },
+      {
+        id: "animal-husbandry-material",
+        label: "Vật tư chăn nuôi",
+        icon: PiggyBank,
+        href: "/animal-husbandry-material",
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc",
+            href: "/animal-husbandry-material/pesticide",
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/animal-husbandry-material/material",
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/animal-husbandry-material/equipment",
+          },
+        ],
+      },
+      {
+        id: "aquaculture-material",
+        label: "Vật tư nuôi trồng thủy sản",
+        icon: Fish,
+        href: "/aquaculture-material",
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc",
+            href: "/aquaculture-material/pesticide",
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/aquaculture-material/material",
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/aquaculture-material/equipment",
+          },
+        ],
+      },
     ],
   },
   {
@@ -1150,6 +1207,53 @@ export const menuDevGroups: MenuSection[] = [
         label: "Bản đồ thiết bị IoT",
         icon: Map,
         href: "/map-iot-device",
+      },
+    ],
+  },
+  {
+    title: "Kho vật tư",
+    items: [
+      {
+        id: "inventory-area",
+        label: "Khu vực kho",
+        icon: Map,
+        href: "/inventory-area",
+      },
+      {
+        id: "crop-material-inventory",
+        label: "Kho vật tư trồng trọt",
+        icon: TreePine,
+        href: "/crop-material-inventory",
+      },
+      {
+        id: "livestock-material-inventory",
+        label: "Kho vật tư chăn nuôi",
+        icon: PiggyBank,
+        href: "/livestock-material-inventory",
+      },
+      {
+        id: "aquaculture-material-inventory",
+        label: "Kho vật tư nuôi trồng thuỷ sản",
+        icon: Fish,
+        href: "/aquaculture-material-inventory",
+      },
+      {
+        id: "inventory-lookup",
+        label: "Tra cứu tồn kho",
+        icon: Search,
+        href: "/inventory-lookup",
+      },
+      {
+        id: "inventory-in",
+        label: "Nhập kho",
+        icon: Download,
+        href: "/inventory-in",
+      },
+      {
+        id: "inventory-out",
+        label: "Xuất kho",
+        icon: Upload,
+        href: "/inventory-out",
       },
     ],
   },
