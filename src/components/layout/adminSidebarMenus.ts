@@ -1406,6 +1406,12 @@ export const menuDevGroups: MenuSection[] = [
         href: "/vehicle-group",
       },
       {
+        id: "task-category",
+        label: "Hạng mục công việc",
+        icon: ClipboardList,
+        href: "/task-category",
+      },
+      {
         id: "document-category",
         label: "Danh mục tài liệu",
         icon: FileText,
