@@ -1029,7 +1029,12 @@ export const menuDevGroups: MenuSection[] = [
         icon: Search,
         href: "/lookup-material",
       },
-      { id: "unit", label: "Đơn vị quy đổi", icon: Scale, href: "/unit" },
+      {
+        id: "supply-conversion-rules",
+        label: "Đơn vị quy đổi",
+        icon: Scale,
+        href: "/supply-conversion-rules",
+      },
       {
         id: "cultivation-material",
         label: "Vật tư trồng trọt",
