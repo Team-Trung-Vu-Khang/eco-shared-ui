@@ -1438,16 +1438,27 @@ export const menuEcoSystemAdminGroups: MenuSection[] = [
     title: "Quản trị hệ thống",
     items: [
       {
+        id: "system-referral",
+        label: "Quản lý người giới thiệu",
+        icon: UserCog,
+        children: [
+          {
+            href: "/referrals",
+            id: "referrals",
+            label: "Danh sách người giới thiệu",
+          },
+          {
+            id: "referrals-update",
+            href: "/referrals/update-user",
+            label: "Cập nhật người được giới thiệu",
+          },
+        ],
+      },
+      {
         id: "system-account",
         label: "Quản lý tài khoản",
         icon: Users,
         href: "/users",
-      },
-      {
-        id: "system-referral",
-        label: "Quản lý người giới thiệu",
-        icon: UserCog,
-        href: "/referrals",
       },
     ],
   },
