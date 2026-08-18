@@ -1312,6 +1312,7 @@ export const menuDevGroups: MenuSection[] = [
   {
     title: "Dữ liệu liên kết",
     items: [
+      { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
       {
         id: "terrain",
         label: "Đặc điểm địa hình",
