@@ -45,6 +45,8 @@ import {
   PiggyBank,
   Download,
   Upload,
+  List,
+  UserRoundPlus,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1441,24 +1443,19 @@ export const menuDevGroups: MenuSection[] = [
 
 export const menuEcoSystemAdminGroups: MenuSection[] = [
   {
-    title: "Quản trị hệ thống",
+    title: "Quản lý người giới thiệu",
     items: [
       {
-        id: "system-referral",
-        label: "Quản lý người giới thiệu",
-        icon: UserCog,
-        children: [
-          {
-            href: "/referrals",
-            id: "referrals",
-            label: "Danh sách người giới thiệu",
-          },
-          {
-            id: "referrals-update",
-            href: "/referrals/update-user",
-            label: "Cập nhật người được giới thiệu",
-          },
-        ],
+        href: "/referrals",
+        id: "referrals",
+        icon: Users,
+        label: "Danh sách người giới thiệu",
+      },
+      {
+        id: "referrals-update",
+        href: "/referrals/update-user",
+        icon: UserRoundPlus,
+        label: "Cập nhật người được giới thiệu",
       },
       // {
       //   id: "system-account",
