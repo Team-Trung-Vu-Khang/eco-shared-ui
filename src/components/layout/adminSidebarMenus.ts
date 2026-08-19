@@ -1460,12 +1460,12 @@ export const menuEcoSystemAdminGroups: MenuSection[] = [
           },
         ],
       },
-      {
-        id: "system-account",
-        label: "Quản lý tài khoản",
-        icon: Users,
-        href: "/users",
-      },
+      // {
+      //   id: "system-account",
+      //   label: "Quản lý tài khoản",
+      //   icon: Users,
+      //   href: "/users",
+      // },
     ],
   },
 ];
