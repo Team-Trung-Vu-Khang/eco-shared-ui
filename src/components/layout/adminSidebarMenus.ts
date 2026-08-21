@@ -1437,6 +1437,80 @@ export const menuDevGroups: MenuSection[] = [
         icon: Cpu,
         href: "/iot-device-group",
       },
+      {
+        id: "admin-crop-supplies",
+        label: "Vật tư trồng trọt (Hệ thống)",
+        icon: TreePine,
+        href: "/admin/material",
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc BVTV",
+            href: "/admin/pesticide",
+          },
+          {
+            id: "fertilizer",
+            label: "Phân bón",
+            href: "/admin/fertilizer",
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/admin/material",
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/admin/equipment",
+          },
+        ],
+      },
+      {
+        id: "admin-livestock-supplies",
+        label: "Vật tư chăn nuôi (Hệ thống)",
+        icon: PiggyBank,
+        href: "/admin/ah-material",
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc",
+            href: "/admin/ah-pesticide",
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/admin/ah-material",
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/admin/ah-equipment",
+          },
+        ],
+      },
+      {
+        id: "admin-aquaculture-supplies",
+        label: "Vật tư thủy sản (Hệ thống)",
+        icon: Fish,
+        href: "/admin/aq-material",
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc",
+            href: "/admin/aq-pesticide",
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/admin/aq-material",
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/admin/aq-equipment",
+          },
+        ],
+      },
     ],
   },
 ];
