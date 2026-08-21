@@ -1309,6 +1309,24 @@ export const menuDevGroups: MenuSection[] = [
         icon: FileText,
         href: "/summary-report-export",
       },
+      {
+        id: "link-report-group",
+        label: "Báo cáo",
+        icon: ClipboardList,
+        href: "/link-report-group",
+        children: [
+          {
+            id: "admin-farmer-report",
+            label: "Báo cáo nông hộ liên kết",
+            href: "/admin-farmer-report",
+          },
+          {
+            id: "material-consumption-report",
+            label: "Tiêu thụ vật tư canh tác",
+            href: "/material-consumption-report",
+          },
+        ],
+      },
     ],
   },
   {
