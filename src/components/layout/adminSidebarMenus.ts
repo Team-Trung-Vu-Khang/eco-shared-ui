@@ -47,6 +47,7 @@ import {
   Upload,
   List,
   UserRoundPlus,
+  Beef,
 } from "lucide-react";
 
 interface MenuItem {
@@ -597,6 +598,12 @@ export const menuProdRiceGroups: MenuSection[] = [
         label: "Báo cáo sản xuất/canh tác",
         icon: ClipboardList,
         href: "/production-cultivation-report",
+      },
+      {
+        id: "admin-report",
+        label: "Báo cáo quản trị Admin",
+        icon: UserCog,
+        href: "/admin-report",
       },
       {
         id: "treatment-report",
@@ -1274,6 +1281,12 @@ export const menuDevGroups: MenuSection[] = [
         href: "/production-cultivation-report",
       },
       {
+        id: "admin-report",
+        label: "Báo cáo quản trị Admin",
+        icon: UserCog,
+        href: "/admin-report",
+      },
+      {
         id: "treatment-report",
         label: "Báo cáo điều trị",
         icon: Heart,
@@ -1310,20 +1323,101 @@ export const menuDevGroups: MenuSection[] = [
         href: "/summary-report-export",
       },
       {
-        id: "link-report-group",
-        label: "Báo cáo",
-        icon: ClipboardList,
-        href: "/link-report-group",
+        id: "report-crops",
+        label: "Canh tác trồng trọt",
+        icon: Sprout,
+        href: "/reports/crops/overview",
         children: [
           {
-            id: "admin-farmer-report",
-            label: "Báo cáo nông hộ liên kết",
-            href: "/admin-farmer-report",
+            id: "rc-overview",
+            label: "Tổng quan",
+            href: "/reports/crops/overview",
           },
           {
-            id: "material-consumption-report",
-            label: "Tiêu thụ vật tư canh tác",
-            href: "/material-consumption-report",
+            id: "rc-plan-work",
+            label: "Kế hoạch - công việc",
+            href: "/reports/crops/plan-work",
+          },
+          {
+            id: "rc-harvest",
+            label: "Thu hoạch",
+            href: "/reports/crops/harvest",
+          },
+          {
+            id: "rc-materials",
+            label: "Vật tư",
+            href: "/reports/crops/materials",
+          },
+          {
+            id: "rc-inventory",
+            label: "Tồn kho",
+            href: "/reports/crops/inventory",
+          },
+        ],
+      },
+      {
+        id: "report-livestock",
+        label: "Canh tác chăn nuôi",
+        icon: Beef,
+        href: "/reports/livestock/overview",
+        children: [
+          {
+            id: "rl-overview",
+            label: "Tổng quan",
+            href: "/reports/livestock/overview",
+          },
+          {
+            id: "rl-plan-work",
+            label: "Kế hoạch - công việc",
+            href: "/reports/livestock/plan-work",
+          },
+          {
+            id: "rl-harvest",
+            label: "Thu hoạch",
+            href: "/reports/livestock/harvest",
+          },
+          {
+            id: "rl-materials",
+            label: "Vật tư",
+            href: "/reports/livestock/materials",
+          },
+          {
+            id: "rl-inventory",
+            label: "Tồn kho",
+            href: "/reports/livestock/inventory",
+          },
+        ],
+      },
+      {
+        id: "report-aqua",
+        label: "Canh tác nuôi trồng thủy sản",
+        icon: Fish,
+        href: "/reports/aqua/overview",
+        children: [
+          {
+            id: "ra-overview",
+            label: "Tổng quan",
+            href: "/reports/aqua/overview",
+          },
+          {
+            id: "ra-plan-work",
+            label: "Kế hoạch - công việc",
+            href: "/reports/aqua/plan-work",
+          },
+          {
+            id: "ra-harvest",
+            label: "Thu hoạch",
+            href: "/reports/aqua/harvest",
+          },
+          {
+            id: "ra-materials",
+            label: "Vật tư",
+            href: "/reports/aqua/materials",
+          },
+          {
+            id: "ra-inventory",
+            label: "Tồn kho",
+            href: "/reports/aqua/inventory",
           },
         ],
       },
@@ -1332,7 +1426,12 @@ export const menuDevGroups: MenuSection[] = [
   {
     title: "Dữ liệu liên kết",
     items: [
-      { id: "season", label: "Mùa vụ", icon: CalendarDays, href: "/season" },
+      {
+        id: "season",
+        label: "Chu kỳ sinh trưởng",
+        icon: CalendarDays,
+        href: "/season",
+      },
       {
         id: "terrain",
         label: "Đặc điểm địa hình",
