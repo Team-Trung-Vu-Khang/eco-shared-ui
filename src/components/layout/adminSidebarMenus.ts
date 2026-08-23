@@ -46,6 +46,7 @@ import {
   Upload,
   UserRoundPlus,
   Beef,
+  Clock,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1246,6 +1247,25 @@ export const menuDevGroups: MenuSection[] = [
         icon: CheckSquare,
         href: "/plan-type",
         roles: ["MEVI_FARM_MEMBER"],
+      },
+    ],
+  },
+  {
+    title: "Nhật ký canh tác",
+    items: [
+      {
+        label: "Lịch sử canh tác",
+        id: "farm-history",
+        icon: Clock,
+        roles: ["MEVI_FARM_MEMBER"],
+        href: "/history",
+      },
+      {
+        icon: FileText,
+        id: "farm-history-create",
+        label: "Cập nhật canh tác",
+        roles: ["MEVI_FARM_MEMBER"],
+        href: "/history/create",
       },
     ],
   },
