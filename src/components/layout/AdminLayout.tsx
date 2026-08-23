@@ -95,7 +95,7 @@ export function AdminLayout({
   };
 
   const [location, setLocation] = useLocation();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
   const userContext = useMemo(() => {
     return {
@@ -168,7 +168,16 @@ export function AdminLayout({
             isMobile ? () => setMobileSidebarOpen(true) : undefined
           }
         />
-        {isAuthorized ? (
+        {isLoading ? (
+          <main className="p-6 flex-1 flex items-center justify-center bg-slate-50/30 dark:bg-slate-900/30">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-muted-foreground font-semibold animate-pulse">
+                Đang kiểm tra quyền truy cập...
+              </p>
+            </div>
+          </main>
+        ) : isAuthorized ? (
           <main className="p-6 flex-1">
             {(title || actions) && (
               <div className="mb-6 flex items-start justify-between gap-4">
