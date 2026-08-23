@@ -1628,6 +1628,12 @@ export const menuDevGroups: MenuSection[] = [
           },
         ],
       },
+      {
+        label: "Phương thức canh tác theo cây trồng",
+        id: "farming-method-crop",
+        href: "/farming-method-crop",
+        icon: Leaf,
+      },
     ],
   },
 ];
