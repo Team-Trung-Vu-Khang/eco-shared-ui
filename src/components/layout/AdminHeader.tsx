@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Building2, ExternalLink, Check, LogOut, Menu, Search } from "lucide-react";
+import { Building2, ExternalLink, Check, Menu, Search } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { authApi } from "@/features/auth/api/auth.api";
+import { SUPER_ADMIN_ROLE } from "./sidebar/types";
 import { workspaceApi } from "@/features/workspace";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -133,6 +133,17 @@ export function AdminHeader({
     string | null
   >(() => readSessionStorage("admin_selected_workspace"));
 
+  const isSuperAdmin = React.useMemo(() => {
+    const roleList = (user?.roles ||
+      (Array.isArray(user?.role)
+        ? user.role
+        : user?.role
+          ? [user.role]
+          : [])) as Array<string>;
+
+    return roleList.includes(SUPER_ADMIN_ROLE);
+  }, [user]);
+
   const displayName = user?.name || "";
   const avatarFallback = (displayName || "A")
     .split(" ")
@@ -192,12 +203,14 @@ export function AdminHeader({
     const cachedItems = cachedDefaultWorkspaceItems;
 
     if (!trimmedSearch && cachedItems) {
-      setWorkspaceItems(cachedItems);
-      setCurrentWorkspaceId((currentId) =>
-        resolveWorkspaceId(cachedItems, currentId),
-      );
-      setWorkspaceLoading(false);
-      setWorkspaceError(null);
+      Promise.resolve().then(() => {
+        setWorkspaceItems(cachedItems);
+        setCurrentWorkspaceId((currentId) =>
+          resolveWorkspaceId(cachedItems, currentId),
+        );
+        setWorkspaceLoading(false);
+        setWorkspaceError(null);
+      });
       return;
     }
 
@@ -351,13 +364,13 @@ export function AdminHeader({
               Mevi Center
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               className="text-destructive"
               onClick={() => authApi.logout()}
             >
               <LogOut className="mr-2 h-4 w-4" />
               Đăng xuất
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
 
@@ -460,17 +473,19 @@ export function AdminHeader({
               </ScrollArea>
 
               <div className="flex items-center justify-between gap-3 border-t pt-2">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
-                  onClick={() => {
-                    setWorkspaceOpen(false);
-                    setLocation("/workspace");
-                  }}
-                >
-                  <span className="text-lg leading-none">+</span>
-                  Tạo workspace
-                </button>
+                {isSuperAdmin && (
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-foreground hover:bg-muted"
+                    onClick={() => {
+                      setWorkspaceOpen(false);
+                      setLocation("/workspace");
+                    }}
+                  >
+                    <span className="text-lg leading-none">+</span>
+                    Tạo workspace
+                  </button>
+                )}
                 <button
                   type="button"
                   className="text-sm font-medium text-muted-foreground hover:text-foreground"
