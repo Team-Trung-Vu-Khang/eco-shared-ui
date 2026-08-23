@@ -1421,6 +1421,18 @@ export const menuDevGroups: MenuSection[] = [
         href: "/group-crop",
       },
       {
+        id: "fd-group-livestock",
+        label: "Nhóm vật nuôi",
+        icon: PiggyBank,
+        href: "/group-livestock",
+      },
+      {
+        id: "fd-group-aqua",
+        label: "Nhóm thủy sản",
+        icon: Fish,
+        href: "/group-aqua",
+      },
+      {
         id: "fd-crop",
         label: "Cây trồng",
         icon: Flower2,
