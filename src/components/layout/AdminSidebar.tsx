@@ -116,23 +116,21 @@ export function AdminSidebar({
           ? menuEcoSystemAdminGroups
           : menuProdGroups;
 
-    const initialRoles = (user?.roles ||
-      (user?.role
-        ? Array.isArray(user.role)
-          ? user.role
-          : [user.role]
-        : [])) as string[];
-    const rawMenu = filterMenuByContext(
-      masterConfig as unknown as SidebarMenuSection[],
-      {
-        roles: initialRoles,
-        isFirstOnboard: !!(user as Record<string, unknown>)?.isFirstOnboard,
-      },
-    );
-    const initialGroups = rawMenu
+    const initialGroups = masterConfig
       .filter((group) => "title" in group)
       .map((group) => group.title);
-    return saved ? JSON.parse(saved) : initialGroups;
+
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return initialGroups;
   });
 
   // Adjust expandedGroups when defaultExpandedGroups changes during render
@@ -142,7 +140,18 @@ export function AdminSidebar({
   ) {
     setPrevDefaultGroups(defaultExpandedGroups);
     const saved = sessionStorage.getItem(STORAGE_KEY_GROUPS);
-    if (!saved) {
+    let hasSavedPreference = false;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          hasSavedPreference = true;
+        }
+      } catch {
+        // ignore
+      }
+    }
+    if (!hasSavedPreference) {
       setExpandedGroups(defaultExpandedGroups);
     }
   }
@@ -188,8 +197,9 @@ export function AdminSidebar({
 
   // Persist state changes
   useEffect(() => {
+    if (!user) return;
     sessionStorage.setItem(STORAGE_KEY_GROUPS, JSON.stringify(expandedGroups));
-  }, [expandedGroups]);
+  }, [expandedGroups, user]);
 
   useEffect(() => {
     sessionStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(expandedItems));

@@ -1,10 +1,8 @@
 import type { ElementType } from "react";
 import type { FarmRole, MenuCondition } from "./sidebar/types";
 import {
-  Atom,
   Award,
   BookOpenText,
-  Boxes,
   Bug,
   Building,
   Building2,
@@ -25,7 +23,6 @@ import {
   Package,
   Scale,
   Sprout,
-  Tractor,
   TreePine,
   Trees,
   User,
@@ -40,13 +37,13 @@ import {
   IdCardIcon,
   Fish,
   UserCog,
-  ShieldCheck,
   PiggyBank,
   Download,
   Upload,
   UserRoundPlus,
   Beef,
   Clock,
+  Package2,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1709,60 +1706,78 @@ export const menuDevGroups: MenuSection[] = [
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
-        id: "material-group",
-        label: "Nhóm vật tư khác",
-        icon: Boxes,
-        href: "/material-group",
+        id: "group-material",
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+        label: "Nhóm vật tư",
+        icon: Package2,
+        href: "/group-material",
+        children: [
+          {
+            id: "material-group",
+            label: "Nhóm vật tư khác",
+            // icon: Boxes,
+            href: "/material-group",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+          {
+            id: "fertilizer-group",
+            label: "Nhóm phân bón",
+            // icon: Atom,
+            href: "/fertilizer-group",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+          {
+            id: "pesticide-group",
+            label: "Nhóm thuốc BVTV",
+            // icon: Bug,
+            href: "/pesticide-group",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+          {
+            id: "livestock-medicine-group",
+            label: "Nhóm thuốc (Chăn nuôi)",
+            // icon: ShieldCheck,
+            href: "/livestock-medicine-group",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+          {
+            id: "aquaculture-medicine-group",
+            label: "Nhóm thuốc (Thủy sản)",
+            // icon: Fish,
+            href: "/aquaculture-medicine-group",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+          {
+            id: "vehicle-group",
+            label: "Nhóm máy móc - thiết bị",
+            // icon: Tractor,
+            href: "/vehicle-group",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+        ],
       },
       {
-        id: "fertilizer-group",
-        label: "Nhóm phân bón",
-        icon: Atom,
-        href: "/fertilizer-group",
+        id: "plan-and-task",
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-      },
-      {
-        id: "pesticide-group",
-        label: "Nhóm thuốc BVTV",
-        icon: Bug,
-        href: "/pesticide-group",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-      },
-      {
-        id: "livestock-medicine-group",
-        label: "Nhóm thuốc (Chăn nuôi)",
-        icon: ShieldCheck,
-        href: "/livestock-medicine-group",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-      },
-      {
-        id: "aquaculture-medicine-group",
-        label: "Nhóm thuốc (Thủy sản)",
-        icon: Fish,
-        href: "/aquaculture-medicine-group",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-      },
-      {
-        id: "vehicle-group",
-        label: "Nhóm máy móc - thiết bị",
-        icon: Tractor,
-        href: "/vehicle-group",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-      },
-      {
-        id: "task-category",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-        label: "Hạng mục công việc",
+        label: "Kế hoạch & Công việc",
         icon: ClipboardList,
-        href: "/task-category",
-      },
-      {
-        id: "document-category",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-        label: "Danh mục tài liệu",
-        icon: FileText,
-        href: "/document-category",
+        href: "/plan-and-task",
+        children: [
+          {
+            id: "task-category",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+            label: "Hạng mục công việc",
+            // icon: ClipboardList,
+            href: "/task-category",
+          },
+          {
+            id: "document-category",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+            label: "Danh mục tài liệu",
+            // icon: FileText,
+            href: "/document-category",
+          },
+        ],
       },
       {
         id: "province",
@@ -1781,7 +1796,7 @@ export const menuDevGroups: MenuSection[] = [
       {
         id: "admin-crop-supplies",
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-        label: "Vật tư trồng trọt (Hệ thống)",
+        label: "Vật tư trồng trọt",
         icon: TreePine,
         href: "/admin/material",
         children: [
@@ -1814,7 +1829,7 @@ export const menuDevGroups: MenuSection[] = [
       {
         id: "admin-livestock-supplies",
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-        label: "Vật tư chăn nuôi (Hệ thống)",
+        label: "Vật tư chăn nuôi",
         icon: PiggyBank,
         href: "/admin/ah-material",
         children: [
@@ -1841,7 +1856,7 @@ export const menuDevGroups: MenuSection[] = [
       {
         id: "admin-aquaculture-supplies",
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
-        label: "Vật tư thủy sản (Hệ thống)",
+        label: "Vật tư thủy sản",
         icon: Fish,
         href: "/admin/aq-material",
         children: [

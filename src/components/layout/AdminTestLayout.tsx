@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AdminHeader } from "./AdminHeader";
 import { cn } from "@/lib/utils";
 import { AdminTestSidebar } from "./AdminTestSidebar";
+import { WorkspaceProvider } from "@/features/workspace";
 
 export interface AdminTestLayoutProps {
   children: ReactNode;
@@ -14,7 +15,15 @@ export interface AdminTestLayoutProps {
   brandSubtitle?: ReactNode;
 }
 
-export function AdminTestLayout({
+export function AdminTestLayout(props: AdminTestLayoutProps) {
+  return (
+    <WorkspaceProvider>
+      <AdminTestLayoutContent {...props} />
+    </WorkspaceProvider>
+  );
+}
+
+function AdminTestLayoutContent({
   children,
   title,
   description,

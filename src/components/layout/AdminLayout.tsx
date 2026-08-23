@@ -6,13 +6,12 @@ import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocation } from "wouter";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
 
 import { ShieldAlert } from "lucide-react";
 
 import {
   isRouteAuthorized,
-  getCachedFilteredMenu,
-  getCachedMasterMenu,
   filterMenuByContext,
 } from "./sidebar/menuUtils";
 import type { MenuSection as SidebarMenuSection } from "./sidebar/types";
@@ -36,7 +35,15 @@ export interface AdminLayoutProps {
   brandSubtitle?: ReactNode;
 }
 
-export function AdminLayout({
+export function AdminLayout(props: AdminLayoutProps) {
+  return (
+    <WorkspaceProvider>
+      <AdminLayoutContent {...props} />
+    </WorkspaceProvider>
+  );
+}
+
+function AdminLayoutContent({
   children,
   title,
   description,
@@ -94,8 +101,9 @@ export function AdminLayout({
     setSidebarPreferenceCollapsed((current) => !current);
   };
 
-  const [location, setLocation] = useLocation();
+  const [location] = useLocation();
   const { user, isLoading } = useAuth();
+  const { workspaces, isLoading: isWorkspaceLoading } = useWorkspace();
 
   const userContext = useMemo(() => {
     return {
@@ -110,21 +118,17 @@ export function AdminLayout({
   }, [user]);
 
   const isAuthorized = useMemo(() => {
-    const masterMenu =
-      getCachedMasterMenu() ||
-      (isDev
-        ? menuDevGroups
-        : isRice
-          ? menuProdRiceGroups
-          : isEcoSystemAdmin
-            ? menuEcoSystemAdminGroups
-            : menuProdGroups);
-    const filteredMenu =
-      (getCachedFilteredMenu() as unknown as SidebarMenuSection[]) ||
-      filterMenuByContext(
-        masterMenu as unknown as SidebarMenuSection[],
-        userContext,
-      );
+    const masterMenu = isDev
+      ? menuDevGroups
+      : isRice
+        ? menuProdRiceGroups
+        : isEcoSystemAdmin
+          ? menuEcoSystemAdminGroups
+          : menuProdGroups;
+    const filteredMenu = filterMenuByContext(
+      masterMenu as unknown as SidebarMenuSection[],
+      userContext,
+    );
 
     return isRouteAuthorized(
       location,
@@ -168,12 +172,24 @@ export function AdminLayout({
             isMobile ? () => setMobileSidebarOpen(true) : undefined
           }
         />
-        {isLoading ? (
+        {isLoading || (!isEcoSystemAdmin && isWorkspaceLoading) ? (
           <main className="p-6 flex-1 flex items-center justify-center bg-slate-50/30 dark:bg-slate-900/30">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
               <p className="text-sm text-muted-foreground font-semibold animate-pulse">
-                Đang kiểm tra quyền truy cập...
+                {isLoading
+                  ? "Đang kiểm tra quyền truy cập..."
+                  : "Đang tải danh sách không gian làm việc..."}
+              </p>
+            </div>
+          </main>
+        ) : !isEcoSystemAdmin && workspaces.length === 0 ? (
+          <main className="p-6 flex-1 flex items-center justify-center bg-slate-50/30 dark:bg-slate-900/30">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center max-w-md p-6">
+              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-muted-foreground font-semibold animate-pulse">
+                Hệ thống đang khởi tạo không gian làm việc, vui lòng đợi trong
+                giây lát...
               </p>
             </div>
           </main>
@@ -224,7 +240,13 @@ export function AdminLayout({
               <div className="pt-2">
                 <button
                   type="button"
-                  onClick={() => setLocation("/")}
+                  onClick={() => {
+                    window.open(
+                      "https://mevi-center.otechz.com/dashboard",
+                      "_blank",
+                      "noopener,noreferrer",
+                    );
+                  }}
                   className="w-full py-2.5 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer"
                 >
                   Quay lại Trang chủ

@@ -2,7 +2,12 @@ import * as React from "react";
 import { Building2, ExternalLink, Check, Menu, Search } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { SUPER_ADMIN_ROLE } from "./sidebar/types";
-import { workspaceApi } from "@/features/workspace";
+import {
+  workspaceApi,
+  useWorkspace,
+  mapWorkspaceItems,
+} from "@/features/workspace";
+import type { WorkspaceItem } from "@/features/workspace";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -24,90 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
-import type { Workspace } from "@/features/workspace";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-type WorkspaceItem = {
-  id: string;
-  organizationName: string;
-  organizationGroup: string;
-  representativeName: string;
-  taxCode: string;
-  businessLineName: string;
-  mainCropName: string;
-  totalAcreage: number;
-};
-
-let cachedDefaultWorkspaceItems: WorkspaceItem[] | null = null;
-let cachedDefaultWorkspacePromise: Promise<WorkspaceItem[]> | null = null;
-
-function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
-  return items.map((item) => ({
-    id: String(item.id),
-    organizationName: item.brandName || item.name,
-    organizationGroup:
-      item.organizationType?.name ?? item.organizationType?.code ?? "Đơn vị",
-    representativeName: item.representative || "Chưa có người đại diện",
-    taxCode: item.taxCode || item.code || "--",
-    businessLineName:
-      item.businessLines
-        ?.map((businessLine) => businessLine?.name)
-        .filter(Boolean)
-        .join(", ") ||
-      item.mainCrop?.name ||
-      "Đang cập nhật",
-    totalAcreage: item.totalAcreage || 0,
-    mainCropName: item.mainCrop?.name || "",
-  }));
-}
-
-function resolveWorkspaceId(
-  items: WorkspaceItem[],
-  currentId: string | null,
-): string | null {
-  if (currentId && items.some((item) => item.id === currentId)) {
-    return currentId;
-  }
-
-  const savedWorkspaceId = readSessionStorage("admin_selected_workspace");
-
-  return (
-    items.find((item) => item.id === savedWorkspaceId)?.id ??
-    items[0]?.id ??
-    null
-  );
-}
-
-async function getDefaultWorkspaceItems() {
-  if (cachedDefaultWorkspaceItems) {
-    return cachedDefaultWorkspaceItems;
-  }
-
-  if (!cachedDefaultWorkspacePromise) {
-    cachedDefaultWorkspacePromise = workspaceApi
-      .getWorkspaces({
-        page: 0,
-        size: 100,
-      })
-      .then((response) => {
-        cachedDefaultWorkspaceItems = mapWorkspaceItems(response.content);
-        return cachedDefaultWorkspaceItems;
-      })
-      .finally(() => {
-        cachedDefaultWorkspacePromise = null;
-      });
-  }
-
-  return cachedDefaultWorkspacePromise;
-}
-
-function readSessionStorage(key: string) {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  return window.sessionStorage.getItem(key);
-}
 
 export function AdminHeader({
   isEcoSystemAdmin = false,
@@ -119,19 +41,31 @@ export function AdminHeader({
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [, setLocation] = useLocation();
+
+  const {
+    workspaces: defaultWorkspaces,
+    isLoading: defaultLoading,
+    error: defaultError,
+    currentWorkspaceId,
+    currentWorkspace,
+    setCurrentWorkspaceId,
+    selectWorkspace,
+  } = useWorkspace();
+
   const [workspaceOpen, setWorkspaceOpen] = React.useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = React.useState(false);
   const [workspaceSearch, setWorkspaceSearch] = React.useState("");
-  const [workspaceItems, setWorkspaceItems] = React.useState<WorkspaceItem[]>(
-    [],
+  const [searchResults, setSearchResults] = React.useState<WorkspaceItem[]>([]);
+  const [searchLoading, setSearchLoading] = React.useState(false);
+  const [searchError, setSearchError] = React.useState<string | null>(null);
+
+  const isSearchActive = React.useMemo(
+    () => Boolean(workspaceSearch.trim()),
+    [workspaceSearch],
   );
-  const [workspaceLoading, setWorkspaceLoading] = React.useState(false);
-  const [workspaceError, setWorkspaceError] = React.useState<string | null>(
-    null,
-  );
-  const [currentWorkspaceId, setCurrentWorkspaceId] = React.useState<
-    string | null
-  >(() => readSessionStorage("admin_selected_workspace"));
+  const workspaceItems = isSearchActive ? searchResults : defaultWorkspaces;
+  const workspaceLoading = isSearchActive ? searchLoading : defaultLoading;
+  const workspaceError = isSearchActive ? searchError : defaultError;
 
   const isSuperAdmin = React.useMemo(() => {
     const roleList = (user?.roles ||
@@ -154,103 +88,45 @@ export function AdminHeader({
     .slice(0, 2);
 
   React.useEffect(() => {
-    if (!currentWorkspaceId) {
-      return;
-    }
-
-    window.sessionStorage.setItem(
-      "admin_selected_workspace",
-      currentWorkspaceId,
-    );
-  }, [currentWorkspaceId]);
-
-  React.useEffect(() => {
-    let isActive = true;
-
-    const initializeWorkspace = async () => {
-      try {
-        const nextItems = await getDefaultWorkspaceItems();
-
-        if (!isActive) {
-          return;
-        }
-
-        setWorkspaceItems(nextItems);
-        setCurrentWorkspaceId((currentId) =>
-          resolveWorkspaceId(nextItems, currentId),
-        );
-      } catch {
-        if (isActive) {
-          setWorkspaceItems([]);
-        }
-      }
-    };
-
-    void initializeWorkspace();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
-
-  React.useEffect(() => {
     if (!workspaceOpen) {
       return;
     }
 
     const trimmedSearch = workspaceSearch.trim();
 
-    const cachedItems = cachedDefaultWorkspaceItems;
-
-    if (!trimmedSearch && cachedItems) {
-      Promise.resolve().then(() => {
-        setWorkspaceItems(cachedItems);
-        setCurrentWorkspaceId((currentId) =>
-          resolveWorkspaceId(cachedItems, currentId),
-        );
-        setWorkspaceLoading(false);
-        setWorkspaceError(null);
-      });
+    if (!trimmedSearch) {
       return;
     }
 
     let isActive = true;
     const timeoutId = window.setTimeout(async () => {
-      setWorkspaceLoading(true);
-      setWorkspaceError(null);
+      setSearchLoading(true);
+      setSearchError(null);
 
       try {
-        const nextItems = trimmedSearch
-          ? mapWorkspaceItems(
-              (
-                await workspaceApi.getWorkspaces({
-                  keyword: trimmedSearch,
-                  page: 0,
-                  size: 100,
-                })
-              ).content,
-            )
-          : await getDefaultWorkspaceItems();
+        const nextItems = mapWorkspaceItems(
+          (
+            await workspaceApi.getWorkspaces({
+              keyword: trimmedSearch,
+              page: 0,
+              size: 100,
+            })
+          ).content,
+        );
 
         if (!isActive) {
           return;
         }
 
-        setWorkspaceItems(nextItems);
-        if (!trimmedSearch) {
-          cachedDefaultWorkspaceItems = nextItems;
-        }
-        setCurrentWorkspaceId((currentId) =>
-          resolveWorkspaceId(nextItems, currentId),
-        );
+        setSearchResults(nextItems);
       } catch {
         if (isActive) {
-          setWorkspaceItems([]);
-          setWorkspaceError("Không tải được danh sách đơn vị.");
+          setSearchResults([]);
+          setSearchError("Không tải được danh sách đơn vị.");
         }
       } finally {
         if (isActive) {
-          setWorkspaceLoading(false);
+          setSearchLoading(false);
         }
       }
     }, 250);
@@ -261,12 +137,23 @@ export function AdminHeader({
     };
   }, [workspaceOpen, workspaceSearch]);
 
-  const currentWorkspace =
-    workspaceItems.find((item) => item.id === currentWorkspaceId) ?? null;
+  const activeWorkspace = React.useMemo(() => {
+    return (
+      currentWorkspace ||
+      workspaceItems.find((item) => item.id === currentWorkspaceId) ||
+      null
+    );
+  }, [currentWorkspace, workspaceItems, currentWorkspaceId]);
+
   const phoneNumber = user?.phoneNumber || "";
 
   const openWorkspace = (itemId: string) => {
-    setCurrentWorkspaceId(itemId);
+    const selected = workspaceItems.find((item) => item.id === itemId);
+    if (selected) {
+      selectWorkspace(selected);
+    } else {
+      setCurrentWorkspaceId(itemId);
+    }
     closeWorkspaceDialog();
   };
 
@@ -340,11 +227,11 @@ export function AdminHeader({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium">
-                      {currentWorkspace?.organizationName ?? "Đơn vị / Tổ chức"}
+                      {activeWorkspace?.organizationName ?? "Đơn vị / Tổ chức"}
                     </span>
                   </div>
                   <p className="truncate text-xs text-muted-foreground">
-                    {currentWorkspace?.representativeName ??
+                    {activeWorkspace?.representativeName ??
                       "Nhấn để mở popup chọn đơn vị"}
                   </p>
                 </div>
@@ -417,7 +304,7 @@ export function AdminHeader({
                     </div>
                   ) : workspaceItems.length > 0 ? (
                     workspaceItems.map((item) => {
-                      const isActive = currentWorkspace?.id === item.id;
+                      const isActive = activeWorkspace?.id === item.id;
 
                       return (
                         <button
