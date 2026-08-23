@@ -1,10 +1,10 @@
 import type { ElementType } from "react";
+import type { FarmRole, MenuCondition } from "./sidebar/types";
 import {
   Atom,
   Award,
   BookOpenText,
   Boxes,
-  Briefcase,
   Bug,
   Building,
   Building2,
@@ -38,14 +38,12 @@ import {
   SquareM,
   CirclePile,
   IdCardIcon,
-  Shell,
   Fish,
   UserCog,
   ShieldCheck,
   PiggyBank,
   Download,
   Upload,
-  List,
   UserRoundPlus,
   Beef,
 } from "lucide-react";
@@ -55,12 +53,21 @@ interface MenuItem {
   label: string;
   icon: ElementType;
   href?: string;
-  children?: { id: string; label: string; href: string }[];
+  roles?: FarmRole[];
+  conditions?: MenuCondition[];
+  children?: {
+    id: string;
+    label: string;
+    href: string;
+    roles?: FarmRole[];
+    conditions?: MenuCondition[];
+  }[];
 }
 
 export type MenuGroup = {
   title: string;
   items: MenuItem[];
+  roles?: FarmRole[];
 };
 
 export type MenuNote = {
@@ -721,7 +728,12 @@ export const menuDevGroups: MenuSection[] = [
   {
     title: "Tổng quan",
     items: [
-      { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/" },
+      {
+        id: "dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard,
+        href: "/",
+      },
     ],
   },
   {
@@ -735,21 +747,25 @@ export const menuDevGroups: MenuSection[] = [
         children: [
           {
             id: "enterprise",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN", "MEVI_FARM_MEMBER"],
             label: "Doanh nghiệp",
             href: "/enterprise",
           },
           {
             id: "farmer",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN", "MEVI_FARM_MEMBER"],
             label: "Nông hộ",
             href: "/farmer",
           },
           {
             id: "cooperative",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN", "MEVI_FARM_MEMBER"],
             label: "Hợp tác xã",
             href: "/cooperative",
           },
           {
             id: "search-unit",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN", "MEVI_FARM_MEMBER"],
             href: "/search-unit",
             label: "Tìm kiếm đơn vị",
           },
@@ -770,6 +786,7 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "enterprise-certificate",
+        roles: ["MEVI_FARM_MEMBER"],
         label: "Chứng nhận - chứng chỉ",
         icon: Award,
         href: "/enterprise-certificate",
@@ -839,12 +856,14 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "cultivation-zone",
+        roles: ["MEVI_FARM_MEMBER"],
         label: "Trồng trọt",
         icon: TreePine,
         href: "/cultivation-zone",
         children: [
           {
             id: "cultivation-region",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Vùng canh tác",
             href: "/cultivation-region",
           },
@@ -855,26 +874,31 @@ export const menuDevGroups: MenuSection[] = [
           // },
           {
             id: "crop-identification",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Định danh cây trồng",
             href: "/plant-identification",
           },
           {
             id: "dist-detail",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Chi tiết phân bổ",
             href: "/distribution-detail",
           },
           {
             id: "search-crop",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Tìm kiếm cây trồng",
             href: "/search-crop",
           },
           {
             id: "search-zone",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Tìm kiếm vùng trồng",
             href: "/search-zone",
           },
           {
             id: "growth-cycle",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Vụ mùa",
             href: "/growth-cycle",
           },
@@ -882,6 +906,7 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "animal-husbandry",
+        roles: ["MEVI_FARM_MEMBER"],
         label: "Chăn nuôi",
         icon: PiggyBank,
         href: "/animal-husbandry",
@@ -889,30 +914,36 @@ export const menuDevGroups: MenuSection[] = [
           {
             label: "Vùng chăn nuôi",
             id: "animal-husbandry-region",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/animal-husbandry-region",
           },
           {
             label: "Định danh cá thể",
             id: "animal-identification",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/animal-identification",
           },
           {
             label: "Tìm kiếm cá thể",
             id: "animal-identification-search",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/animal-identification/search",
           },
           {
             label: "Tìm kiếm trang trại",
             id: "animal-identification-search-farm",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/animal-identification/search-farm",
           },
           {
             id: "animal-distribution-detail",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Chi tiết phân bổ",
             href: "/animal-distribution-detail",
           },
           {
             id: "animal-growth-cycle",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Vụ nuôi",
             href: "/animal-growth-cycle",
           },
@@ -920,6 +951,7 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "aquaculture",
+        roles: ["MEVI_FARM_MEMBER"],
         label: "Nuôi trồng thuỷ sản",
         icon: Fish,
         href: "/aquaculture",
@@ -927,30 +959,36 @@ export const menuDevGroups: MenuSection[] = [
           {
             label: "Vùng nuôi trồng",
             id: "aquaculture-region",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/aquaculture-region",
           },
           {
             label: "Định danh cá thể",
             id: "aquaculture-identification",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/aquaculture-identification",
           },
           {
             label: "Tìm kiếm cá thể",
             id: "aquaculture-identification-search",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/aquaculture-identification/search",
           },
           {
             label: "Tìm kiếm trang trại",
             id: "aquaculture-search-farm",
+            roles: ["MEVI_FARM_MEMBER"],
             href: "/aquaculture-search-farm",
           },
           {
             id: "aquaculture-distribution-detail",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Chi tiết phân bổ",
             href: "/aquaculture-distribution-detail",
           },
           {
             id: "aquaculture-growth-cycle",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Vụ nuôi",
             href: "/aquaculture-growth-cycle",
           },
@@ -958,22 +996,30 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "cultivation-region-identification",
+        roles: ["MEVI_FARM_MEMBER"],
+        conditions: ["REQUIRE_FIRST_ONBOARD"],
         label: "Định danh vùng canh tác",
         icon: IdCardIcon,
         href: "/cultivation-region-identification",
         children: [
           {
             id: "cultivation-region-identification-crop",
+            roles: ["MEVI_FARM_MEMBER"],
+            conditions: ["REQUIRE_FIRST_ONBOARD"],
             label: "Trồng trọt",
             href: "/cultivation-region-identification/crop",
           },
           {
             id: "animal-identification",
+            roles: ["MEVI_FARM_MEMBER"],
+            conditions: ["REQUIRE_FIRST_ONBOARD"],
             label: "Chăn nuôi",
             href: "/cultivation-region-identification/animal",
           },
           {
             id: "aquaculture-identification",
+            roles: ["MEVI_FARM_MEMBER"],
+            conditions: ["REQUIRE_FIRST_ONBOARD"],
             label: "Nuôi trồng thuỷ sản",
             href: "/cultivation-region-identification/aquaculture",
           },
@@ -981,6 +1027,7 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "legal-identification",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN", "MEVI_FARM_MEMBER"],
         label: "Định danh pháp lý",
         icon: IdCardIcon,
         href: "/legal-identification",
@@ -992,6 +1039,7 @@ export const menuDevGroups: MenuSection[] = [
     items: [
       {
         id: "fd-variety",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Giống cây trồng",
         icon: Sprout,
         href: "/variety-foundation",
@@ -1005,12 +1053,14 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "docs",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Tài liệu kỹ thuật",
         icon: BookOpenText,
         href: "/docs",
       },
       {
         id: "treatment",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Phác đồ điều trị",
         icon: Heart,
         href: "/treatment",
@@ -1113,21 +1163,25 @@ export const menuDevGroups: MenuSection[] = [
     items: [
       {
         id: "plan",
+        roles: ["MEVI_FARM_MEMBER"],
         label: "Quản lý canh tác",
         icon: ClipboardList,
         children: [
           {
             id: "plan-crop",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Kế hoạch mùa vụ",
             href: "/plan-growth",
           },
           {
             id: "plan-animal",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Kế hoạch chăn nuôi",
             href: "/plan-animal-growth",
           },
           {
             id: "plan-aquaculture",
+            roles: ["MEVI_FARM_MEMBER"],
             label: "Kế hoạch nuôi trồng thủy sản",
             href: "/plan-aquaculture-growth",
           },
@@ -1416,6 +1470,7 @@ export const menuDevGroups: MenuSection[] = [
     items: [
       {
         id: "fd-group-crop",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Nhóm cây trồng",
         icon: Trees,
         href: "/group-crop",
@@ -1425,170 +1480,211 @@ export const menuDevGroups: MenuSection[] = [
         label: "Nhóm vật nuôi",
         icon: PiggyBank,
         href: "/group-livestock",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "fd-group-aqua",
         label: "Nhóm thủy sản",
         icon: Fish,
         href: "/group-aqua",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "fd-crop",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Cây trồng",
         icon: Flower2,
         href: "/crop-foundation",
       },
       {
         id: "season",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Chu kỳ sinh trưởng",
         icon: CalendarDays,
         href: "/season",
       },
       {
         id: "terrain",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Đặc điểm địa hình",
         icon: Mountain,
         href: "/terrain",
       },
       {
         id: "fd-land-specs",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Thông số địa hình",
         icon: SquareM,
         href: "/land-specs",
       },
-      { id: "land", label: "Chất đất", icon: Layers, href: "/land" },
+      {
+        id: "land",
+        label: "Chất đất",
+        icon: Layers,
+        href: "/land",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+      },
       {
         id: "farming-method",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Phương pháp sản xuất",
         icon: Leaf,
         href: "/farming-method",
       },
       {
         id: "irrigation-systems",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Phương pháp tưới tiêu",
         icon: Leaf,
         href: "/irrigation-systems",
       },
       {
         id: "certificate",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Bộ tiêu chuẩn",
         icon: Award,
         href: "/certificate",
       },
       {
         id: "bank-directory",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Ngân hàng",
         icon: Landmark,
         href: "/bank-directory",
       },
       {
         id: "enterprise-type",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Nhóm tổ chức",
         icon: Building2,
         href: "/enterprise-type",
       },
       {
         id: "md-group-position",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Nhóm chức vụ - chức danh",
         icon: CirclePile,
         href: "/group-position",
       },
       {
         id: "enterprise-form",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Loại hình tổ chức",
         icon: Building2,
         href: "/enterprise-form",
       },
       {
         id: "department",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Phòng ban",
         icon: Building,
         href: "/department",
       },
-      { id: "position", label: "Chức vụ", icon: User, href: "/position" },
+      {
+        id: "position",
+        label: "Chức vụ",
+        icon: User,
+        href: "/position",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+      },
       {
         id: "material-group",
         label: "Nhóm vật tư khác",
         icon: Boxes,
         href: "/material-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "fertilizer-group",
         label: "Nhóm phân bón",
         icon: Atom,
         href: "/fertilizer-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "pesticide-group",
         label: "Nhóm thuốc BVTV",
         icon: Bug,
         href: "/pesticide-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "livestock-medicine-group",
         label: "Nhóm thuốc (Chăn nuôi)",
         icon: ShieldCheck,
         href: "/livestock-medicine-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "aquaculture-medicine-group",
         label: "Nhóm thuốc (Thủy sản)",
         icon: Fish,
         href: "/aquaculture-medicine-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "vehicle-group",
         label: "Nhóm máy móc - thiết bị",
         icon: Tractor,
         href: "/vehicle-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
       {
         id: "task-category",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Hạng mục công việc",
         icon: ClipboardList,
         href: "/task-category",
       },
       {
         id: "document-category",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Danh mục tài liệu",
         icon: FileText,
         href: "/document-category",
       },
       {
         id: "province",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Thông tin tỉnh/thành",
         icon: MapPin,
         href: "/province",
       },
       {
         id: "iot-device-group",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Nhóm thiết bị IOT",
         icon: Cpu,
         href: "/iot-device-group",
       },
       {
         id: "admin-crop-supplies",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Vật tư trồng trọt (Hệ thống)",
         icon: TreePine,
         href: "/admin/material",
         children: [
           {
             id: "pesticide",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Thuốc BVTV",
             href: "/admin/pesticide",
           },
           {
             id: "fertilizer",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Phân bón",
             href: "/admin/fertilizer",
           },
           {
             id: "material",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Vật tư khác",
             href: "/admin/material",
           },
           {
             id: "equipment",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Dụng cụ – Máy móc",
             href: "/admin/equipment",
           },
@@ -1596,22 +1692,26 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "admin-livestock-supplies",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Vật tư chăn nuôi (Hệ thống)",
         icon: PiggyBank,
         href: "/admin/ah-material",
         children: [
           {
             id: "pesticide",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Thuốc",
             href: "/admin/ah-pesticide",
           },
           {
             id: "material",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Vật tư khác",
             href: "/admin/ah-material",
           },
           {
             id: "equipment",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Dụng cụ – Máy móc",
             href: "/admin/ah-equipment",
           },
@@ -1619,22 +1719,26 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "admin-aquaculture-supplies",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Vật tư thủy sản (Hệ thống)",
         icon: Fish,
         href: "/admin/aq-material",
         children: [
           {
             id: "pesticide",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Thuốc",
             href: "/admin/aq-pesticide",
           },
           {
             id: "material",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Vật tư khác",
             href: "/admin/aq-material",
           },
           {
             id: "equipment",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
             label: "Dụng cụ – Máy móc",
             href: "/admin/aq-equipment",
           },
@@ -1645,6 +1749,7 @@ export const menuDevGroups: MenuSection[] = [
         id: "farming-method-crop",
         href: "/farming-method-crop",
         icon: Leaf,
+        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
     ],
   },

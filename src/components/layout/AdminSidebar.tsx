@@ -14,16 +14,23 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import type { ElementType, MouseEvent, ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import {
   menuDevGroups,
   menuEcoSystemAdminGroups,
   menuProdGroups,
   menuProdRiceGroups,
-  type MenuSection,
 } from "./adminSidebarMenus";
 import { AdminSidebarBrand } from "./AdminSidebarBrand";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import {
+  filterMenuByContext,
+  getIconComponent,
+  setCachedFilteredMenu,
+  setCachedMasterMenu,
+} from "./sidebar/menuUtils";
+import type { MenuSection as SidebarMenuSection } from "./sidebar/types";
 
 export interface AdminSidebarProps {
   collapsed?: boolean;
@@ -38,6 +45,11 @@ export interface AdminSidebarProps {
   brandSubtitle?: ReactNode;
 }
 
+// State persistence keys
+const STORAGE_KEY_GROUPS = "sidebar_expanded_groups";
+const STORAGE_KEY_ITEMS = "sidebar_expanded_items";
+const STORAGE_KEY_SCROLL = "sidebar_scroll_position";
+
 export function AdminSidebar({
   collapsed = false,
   onToggle,
@@ -51,26 +63,89 @@ export function AdminSidebar({
   brandSubtitle,
 }: AdminSidebarProps) {
   const [location, setLocation] = useLocation();
-  const menuGroups: MenuSection[] = isDev
-    ? menuDevGroups
-    : isRice
-      ? menuProdRiceGroups
-      : isEcoSystemAdmin
-        ? menuEcoSystemAdminGroups
-        : menuProdGroups;
-  const defaultExpandedGroups = menuGroups
-    .filter((group) => "title" in group)
-    .map((group) => group.title);
-  // State persistence keys
-  const STORAGE_KEY_GROUPS = "sidebar_expanded_groups";
-  const STORAGE_KEY_ITEMS = "sidebar_expanded_items";
-  const STORAGE_KEY_SCROLL = "sidebar_scroll_position";
+
+  const { user } = useAuth();
+
+  const userContext = useMemo(() => {
+    return {
+      roles: (user?.roles ||
+        (user?.role
+          ? Array.isArray(user.role)
+            ? user.role
+            : [user.role]
+          : [])) as string[],
+      isFirstOnboard: !!(user as Record<string, unknown>)?.isFirstOnboard,
+    };
+  }, [user]);
+
+  const masterMenuConfig = useMemo(() => {
+    return isDev
+      ? menuDevGroups
+      : isRice
+        ? menuProdRiceGroups
+        : isEcoSystemAdmin
+          ? menuEcoSystemAdminGroups
+          : menuProdGroups;
+  }, [isDev, isRice, isEcoSystemAdmin]);
+
+  const menuGroups = useMemo(() => {
+    // Save to global caches
+    setCachedMasterMenu(masterMenuConfig as unknown as SidebarMenuSection[]);
+    const filtered = filterMenuByContext(
+      masterMenuConfig as unknown as SidebarMenuSection[],
+      userContext,
+    );
+    setCachedFilteredMenu(filtered as unknown as SidebarMenuSection[]);
+    return filtered;
+  }, [masterMenuConfig, userContext]);
+
+  const defaultExpandedGroups = useMemo(() => {
+    return menuGroups
+      .filter((group) => "title" in group)
+      .map((group) => group.title);
+  }, [menuGroups]);
 
   // Initialize state from storage or defaults
   const [expandedGroups, setExpandedGroups] = useState<string[]>(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY_GROUPS);
-    return saved ? JSON.parse(saved) : defaultExpandedGroups;
+    const masterConfig = isDev
+      ? menuDevGroups
+      : isRice
+        ? menuProdRiceGroups
+        : isEcoSystemAdmin
+          ? menuEcoSystemAdminGroups
+          : menuProdGroups;
+
+    const initialRoles = (user?.roles ||
+      (user?.role
+        ? Array.isArray(user.role)
+          ? user.role
+          : [user.role]
+        : [])) as string[];
+    const rawMenu = filterMenuByContext(
+      masterConfig as unknown as SidebarMenuSection[],
+      {
+        roles: initialRoles,
+        isFirstOnboard: !!(user as Record<string, unknown>)?.isFirstOnboard,
+      },
+    );
+    const initialGroups = rawMenu
+      .filter((group) => "title" in group)
+      .map((group) => group.title);
+    return saved ? JSON.parse(saved) : initialGroups;
   });
+
+  // Adjust expandedGroups when defaultExpandedGroups changes during render
+  const [prevDefaultGroups, setPrevDefaultGroups] = useState<string[]>([]);
+  if (
+    JSON.stringify(defaultExpandedGroups) !== JSON.stringify(prevDefaultGroups)
+  ) {
+    setPrevDefaultGroups(defaultExpandedGroups);
+    const saved = sessionStorage.getItem(STORAGE_KEY_GROUPS);
+    if (!saved) {
+      setExpandedGroups(defaultExpandedGroups);
+    }
+  }
 
   const [expandedItems, setExpandedItems] = useState<string[]>(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY_ITEMS);
@@ -222,7 +297,7 @@ export function AdminSidebar({
                   {(collapsed || expandedGroups.includes(group.title)) && (
                     <div className="mt-1 space-y-0.5">
                       {group.items.map((item) => {
-                        const Icon = item.icon;
+                        const Icon = getIconComponent(item.icon);
                         const hasChildren =
                           item.children && item.children.length > 0;
                         const isExpanded = expandedItems.includes(item.id);
