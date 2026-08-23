@@ -273,7 +273,7 @@ export function AdminSidebar({
                     key={`${group.note}-${index}`}
                     className="px-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-sidebar-foreground/35"
                   >
-                    ----- {group.note} -----
+                    ----- {group.note as string} -----
                   </div>
                 );
               }
@@ -361,7 +361,11 @@ export function AdminSidebar({
                                           <a
                                             key={child.id}
                                             href={child.href}
-                                            onClick={handleNavigate(child.href)}
+                                            onClick={
+                                              child.href
+                                                ? handleNavigate(child.href)
+                                                : () => {}
+                                            }
                                             className={cn(
                                               "block px-3 py-2 rounded-md text-sm transition-colors cursor-pointer",
                                               isItemActive
@@ -388,7 +392,11 @@ export function AdminSidebar({
                                           <a
                                             key={child.id}
                                             href={child.href}
-                                            onClick={handleNavigate(child.href)}
+                                            onClick={
+                                              child?.href
+                                                ? handleNavigate(child.href)
+                                                : () => {}
+                                            }
                                             className={cn(
                                               "block px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer",
                                               isItemActive
