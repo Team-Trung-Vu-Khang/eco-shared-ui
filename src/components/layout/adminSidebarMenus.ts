@@ -1647,7 +1647,21 @@ export const menuDevGroups: MenuSection[] = [
         roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
         label: "Phương pháp sản xuất",
         icon: Leaf,
-        href: "/farming-method",
+        // href: "/farming-method",
+        children: [
+          {
+            id: "farming-method",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+            label: "Định nghĩa",
+            href: "/farming-method",
+          },
+          {
+            label: "Liên kết giống",
+            id: "farming-method-crop",
+            href: "/farming-method-crop",
+            roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
+          },
+        ],
       },
       {
         id: "irrigation-systems",
@@ -1879,13 +1893,6 @@ export const menuDevGroups: MenuSection[] = [
             href: "/admin/aq-equipment",
           },
         ],
-      },
-      {
-        label: "Phương thức canh tác theo cây trồng",
-        id: "farming-method-crop",
-        href: "/farming-method-crop",
-        icon: Leaf,
-        roles: ["MEVI_FARM_ADMIN", "MEVI_ADMIN"],
       },
     ],
   },
