@@ -55,3 +55,4 @@ export * from "./toggle";
 export * from "./tooltip";
 export * from "./multiselect";
 export * from "./combobox";
+export * from "./remote-autocomplete-select";
