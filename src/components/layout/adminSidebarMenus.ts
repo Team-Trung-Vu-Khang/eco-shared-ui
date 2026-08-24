@@ -727,11 +727,25 @@ export const menuDevGroups: MenuSection[] = [
   {
     title: "Tổng quan",
     items: [
+      // {
+      //   id: "dashboard",
+      //   label: "Dashboard",
+      //   icon: LayoutDashboard,
+      //   href: "/",
+      //   roles: ["MEVI_FARM_MEMBER"],
+      // },
       {
-        id: "dashboard",
-        label: "Dashboard",
+        id: "admin-report",
+        label: "Báo cáo quản trị Admin",
+        icon: UserCog,
+        href: "/admin-report",
+        roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
+      },
+      {
+        id: "rc-overview",
+        label: "Tổng quan",
         icon: LayoutDashboard,
-        href: "/",
+        href: "/reports/crops/overview",
         roles: ["MEVI_FARM_MEMBER"],
       },
     ],
@@ -744,7 +758,12 @@ export const menuDevGroups: MenuSection[] = [
         label: "Đơn vị",
         icon: Building2,
         href: "/unit",
-        roles: ["MEVI_FARM_MEMBER"],
+        roles: [
+          "MEVI_FARM_ADMIN",
+          "MEVI_SUPER_ADMIN",
+          "MEVI_ADMIN",
+          "MEVI_FARM_MEMBER",
+        ],
         children: [
           {
             id: "enterprise",
