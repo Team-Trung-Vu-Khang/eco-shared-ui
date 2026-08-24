@@ -743,8 +743,8 @@ export const menuDevGroups: MenuSection[] = [
       },
       {
         id: "rc-overview",
-        label: "Tổng quan",
         icon: LayoutDashboard,
+        label: "Báo cáo quản trị",
         href: "/reports/crops/overview",
         roles: ["MEVI_FARM_MEMBER"],
       },
