@@ -15,6 +15,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  AutoCompleteSelect,
 } from "@/components/ui/select";
 import {
   DropdownMenu,
@@ -282,22 +283,19 @@ export function DataTable<T extends { id: string | number }>({
                     <p className="text-xs font-medium text-muted-foreground">
                       {filter.label}
                     </p>
-                    <Select
+                    <AutoCompleteSelect
+                      options={[
+                        { label: "Tất cả", value: "all" },
+                        ...filter.options,
+                      ]}
                       value={activeFilters[filter.key] || "all"}
-                      onValueChange={(val) => handleFilterChange(filter.key, val)}
-                    >
-                      <SelectTrigger className="h-8">
-                        <SelectValue placeholder="Tất cả" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Tất cả</SelectItem>
-                        {filter.options.map((opt) => (
-                          <SelectItem key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      onChange={(val) => handleFilterChange(filter.key, val)}
+                      placeholder="Tất cả"
+                      searchPlaceholder="Tìm kiếm..."
+                      clearable={false}
+                      autocomplete={filter.options.length > 10}
+                      className="h-8 min-h-8 px-2 text-xs"
+                    />
                   </div>
                 ))}
                 <DropdownMenuSeparator />
