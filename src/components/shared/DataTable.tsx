@@ -232,7 +232,9 @@ export function DataTable<T extends { id: string | number }>({
     return String(value);
   };
 
-  const visibleColumnCount = columns.filter((c) => visibleColumns.has(c.key)).length;
+  const visibleColumnCount = columns.filter((c) =>
+    visibleColumns.has(c.key),
+  ).length;
   const rowSpanCount =
     visibleColumnCount +
     (selectable ? 1 : 0) +
@@ -294,7 +296,7 @@ export function DataTable<T extends { id: string | number }>({
                       searchPlaceholder="Tìm kiếm..."
                       clearable={false}
                       autocomplete={filter.options.length > 10}
-                      className="h-8 min-h-8 px-2 text-xs"
+                      className="h-8 min-h-8 w-full max-w-[250px] px-2 text-xs"
                     />
                   </div>
                 ))}
@@ -575,7 +577,10 @@ export function DataTable<T extends { id: string | number }>({
             </span>{" "}
             -{" "}
             <span className="font-medium text-foreground">
-              {Math.min(startIndex + currentPaginatedData.length, resolvedTotalElements)}
+              {Math.min(
+                startIndex + currentPaginatedData.length,
+                resolvedTotalElements,
+              )}
             </span>{" "}
             trên{" "}
             <span className="font-medium text-foreground">
