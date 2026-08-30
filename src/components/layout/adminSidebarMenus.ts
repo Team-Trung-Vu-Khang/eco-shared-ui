@@ -847,17 +847,10 @@ export const menuDevGroups: MenuSection[] = [
           "MEVI_FARM_MEMBER",
         ],
       },
-      {
-        id: "enterprise-certificate",
-        roles: ["MEVI_FARM_MEMBER"],
-        label: "Chứng nhận - chứng chỉ",
-        icon: Award,
-        href: "/enterprise-certificate",
-      },
     ],
   },
   {
-    title: "Nguồn nhân lực",
+    title: "Tổ chức - Đội ngũ",
     items: [
       {
         id: "personnel",
@@ -912,6 +905,13 @@ export const menuDevGroups: MenuSection[] = [
           "MEVI_ADMIN",
           "MEVI_FARM_MEMBER",
         ],
+      },
+      {
+        id: "enterprise-certificate",
+        roles: ["MEVI_FARM_MEMBER"],
+        label: "Chứng nhận - chứng chỉ",
+        icon: Award,
+        href: "/enterprise-certificate",
       },
     ],
   },
@@ -1326,9 +1326,22 @@ export const menuDevGroups: MenuSection[] = [
       {
         icon: FileText,
         id: "farm-history-create",
-        label: "Cập nhật canh tác",
+        label: "Nhật ký canh tác",
         roles: ["MEVI_FARM_MEMBER"],
-        href: "/history/create",
+        children: [
+          {
+            id: "farm-history-plan",
+            label: "Nhật ký theo kế hoạch",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/history",
+          },
+          {
+            id: "farm-history-incident",
+            label: "Nhật ký phát sinh",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/history/create",
+          },
+        ],
       },
     ],
   },
