@@ -200,7 +200,7 @@ export function AutoCompleteSelect({
   onChange,
   placeholder = "Chọn...",
   searchPlaceholder = "Tìm kiếm...",
-  emptyText = "Không có dữ liệu",
+  emptyText = "Chưa có thông tin",
   disabled,
   clearable = true,
   autocomplete = true,
