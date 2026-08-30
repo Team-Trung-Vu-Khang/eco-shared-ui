@@ -84,7 +84,7 @@ const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
 >(({ className, children, position = "popper", ...props }, ref) => {
-  const container = useDialogContentContainer()
+  const container = useDialogContentContainer();
 
   return (
     <SelectPrimitive.Portal container={container ?? undefined}>
@@ -112,7 +112,7 @@ const SelectContent = React.forwardRef<
         <SelectScrollDownButton />
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
-  )
+  );
 });
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
@@ -277,7 +277,7 @@ export function AutoCompleteSelect({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[--radix-popover-trigger-width] p-0"
+        className="w-[--radix-popover-trigger-width] p-0 z-[9999]"
         align="start"
       >
         <Command filter={commandFilter}>
