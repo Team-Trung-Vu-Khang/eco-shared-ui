@@ -1326,20 +1326,32 @@ export const menuDevGroups: MenuSection[] = [
       {
         icon: FileText,
         id: "farm-history-create",
-        label: "Nhật ký canh tác",
+        label: "Nhật ký ra đồng",
         roles: ["MEVI_FARM_MEMBER"],
         children: [
+          {
+            id: "diary-lookup",
+            label: "Tra cứu thông tin",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/lookup",
+          },
+          {
+            id: "farm-history-incident",
+            label: "Cập nhật thông tin",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/incident",
+          },
           {
             id: "farm-history-plan",
             label: "Nhật ký theo kế hoạch",
             roles: ["MEVI_FARM_MEMBER"],
-            href: "/history",
+            href: "/diary/plan",
           },
           {
-            id: "farm-history-incident",
-            label: "Nhật ký phát sinh",
+            id: "farm-history-update",
+            label: "Lịch sử cập nhật",
             roles: ["MEVI_FARM_MEMBER"],
-            href: "/history/create",
+            href: "/diary/update",
           },
         ],
       },
