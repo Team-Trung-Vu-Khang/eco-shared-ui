@@ -17,4 +17,17 @@ export const workspaceApi = {
 
     return response.data
   },
+
+  async getCurrentWorkspace(workspaceId: string | number) {
+    const response = await apiClient.get<Workspace>(
+      "/api/center/workspaces/current",
+      {
+        headers: {
+          "X-Workspace-Id": String(workspaceId),
+        },
+      },
+    )
+
+    return response.data
+  },
 }

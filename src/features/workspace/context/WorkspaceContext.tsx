@@ -45,15 +45,14 @@ function resolveWorkspaceId(
   items: WorkspaceItem[],
   currentId: string | null,
 ): string | null {
-  if (currentId && items.some((item) => item.id === currentId)) {
+  // Keep an already-selected id even if it's outside the default page —
+  // it may belong to a workspace found via search, which gets hydrated
+  // separately by fetching /api/center/workspaces/current.
+  if (currentId) {
     return currentId;
   }
   const savedWorkspaceId = readSessionStorage("admin_selected_workspace");
-  return (
-    items.find((item) => item.id === savedWorkspaceId)?.id ??
-    items[0]?.id ??
-    null
-  );
+  return savedWorkspaceId || items[0]?.id || null;
 }
 
 export interface WorkspaceContextType {
@@ -107,9 +106,8 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     string | null
   >(() => readSessionStorage("admin_selected_workspace"));
 
-  const currentWorkspace = React.useMemo(() => {
-    return workspaces.find((item) => item.id === currentWorkspaceId) ?? null;
-  }, [workspaces, currentWorkspaceId]);
+  const [currentWorkspace, setCurrentWorkspace] =
+    React.useState<WorkspaceItem | null>(null);
 
   React.useEffect(() => {
     if (currentWorkspaceId) {
@@ -118,6 +116,35 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
         currentWorkspaceId,
       );
     }
+  }, [currentWorkspaceId]);
+
+  // Always trust the API for the currently selected workspace's details —
+  // it may not be part of the default (first 100) list, e.g. found via
+  // search — instead of looking it up locally in `workspaces`.
+  React.useEffect(() => {
+    if (!currentWorkspaceId) {
+      setCurrentWorkspace(null);
+      return;
+    }
+
+    let isActive = true;
+
+    workspaceApi
+      .getCurrentWorkspace(currentWorkspaceId)
+      .then((workspace) => {
+        if (!isActive) return;
+        const [item] = mapWorkspaceItems([workspace]);
+        setCurrentWorkspace(item ?? null);
+      })
+      .catch(() => {
+        if (isActive) {
+          setCurrentWorkspace(null);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
   }, [currentWorkspaceId]);
 
   const loadWorkspaces = React.useCallback(async (isRefetch = false) => {
@@ -199,12 +226,6 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
 
   const selectWorkspace = React.useCallback((workspace: WorkspaceItem) => {
     setCurrentWorkspaceId(workspace.id);
-    setWorkspaces((prev) => {
-      if (prev.some((item) => item.id === workspace.id)) {
-        return prev;
-      }
-      return [workspace, ...prev];
-    });
   }, []);
 
   const refetchWorkspaces = React.useCallback(() => {
