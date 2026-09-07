@@ -34,37 +34,11 @@ export function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
   }));
 }
 
-const SELECTED_WORKSPACE_ID_KEY = "admin_selected_workspace";
-const SELECTED_WORKSPACE_ITEM_KEY = "admin_selected_workspace_item";
-
 function readSessionStorage(key: string) {
   if (typeof window === "undefined") {
     return null;
   }
   return window.sessionStorage.getItem(key);
-}
-
-// Fallback used when the selected workspace isn't part of the default
-// (first 100) list — e.g. found via search — so there's no local list to
-// look it up in if the `getCurrentWorkspace` API call is slow or fails.
-function readCachedWorkspaceItem(workspaceId: string | null): WorkspaceItem | null {
-  if (!workspaceId) return null;
-  const raw = readSessionStorage(SELECTED_WORKSPACE_ITEM_KEY);
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw) as WorkspaceItem;
-    return parsed.id === workspaceId ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeCachedWorkspaceItem(item: WorkspaceItem) {
-  if (typeof window === "undefined") return;
-  window.sessionStorage.setItem(
-    SELECTED_WORKSPACE_ITEM_KEY,
-    JSON.stringify(item),
-  );
 }
 
 function resolveWorkspaceId(
@@ -77,7 +51,7 @@ function resolveWorkspaceId(
   if (currentId) {
     return currentId;
   }
-  const savedWorkspaceId = readSessionStorage(SELECTED_WORKSPACE_ID_KEY);
+  const savedWorkspaceId = readSessionStorage("admin_selected_workspace");
   return savedWorkspaceId || items[0]?.id || null;
 }
 
@@ -130,20 +104,15 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = React.useState<string | null>(null);
   const [currentWorkspaceId, setCurrentWorkspaceId] = React.useState<
     string | null
-  >(() => readSessionStorage(SELECTED_WORKSPACE_ID_KEY));
+  >(() => readSessionStorage("admin_selected_workspace"));
 
-  // Seed from the cached item so a workspace found via search (not part of
-  // the default 100 list) still renders immediately after a reload, instead
-  // of showing blank until — or if — the API call below resolves.
   const [currentWorkspace, setCurrentWorkspace] =
-    React.useState<WorkspaceItem | null>(() =>
-      readCachedWorkspaceItem(readSessionStorage(SELECTED_WORKSPACE_ID_KEY)),
-    );
+    React.useState<WorkspaceItem | null>(null);
 
   React.useEffect(() => {
     if (currentWorkspaceId) {
       window.sessionStorage.setItem(
-        SELECTED_WORKSPACE_ID_KEY,
+        "admin_selected_workspace",
         currentWorkspaceId,
       );
     }
@@ -151,8 +120,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
 
   // Always trust the API for the currently selected workspace's details —
   // it may not be part of the default (first 100) list, e.g. found via
-  // search — instead of looking it up locally in `workspaces`. If the call
-  // fails, keep whatever was last cached/known rather than blanking it out.
+  // search — instead of looking it up locally in `workspaces`.
   React.useEffect(() => {
     if (!currentWorkspaceId) {
       setCurrentWorkspace(null);
@@ -166,16 +134,12 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
       .then((workspace) => {
         if (!isActive) return;
         const [item] = mapWorkspaceItems([workspace]);
-        if (item) {
-          writeCachedWorkspaceItem(item);
-        }
         setCurrentWorkspace(item ?? null);
       })
       .catch(() => {
-        if (!isActive) return;
-        setCurrentWorkspace(
-          (prev) => prev ?? readCachedWorkspaceItem(currentWorkspaceId),
-        );
+        if (isActive) {
+          setCurrentWorkspace(null);
+        }
       });
 
     return () => {
@@ -261,8 +225,6 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   }, [workspaces.length, isLoading, error]);
 
   const selectWorkspace = React.useCallback((workspace: WorkspaceItem) => {
-    writeCachedWorkspaceItem(workspace);
-    setCurrentWorkspace(workspace);
     setCurrentWorkspaceId(workspace.id);
   }, []);
 
