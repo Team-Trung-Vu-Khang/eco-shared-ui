@@ -45,6 +45,7 @@ import {
   Clock,
   Package2,
   Group,
+  Zap,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1314,44 +1315,45 @@ export const menuDevGroups: MenuSection[] = [
     ],
   },
   {
-    title: "Nhật ký canh tác",
+    title: "Nhật ký ra đồng",
     items: [
       {
-        label: "Lịch sử canh tác",
-        id: "farm-history",
-        icon: Clock,
-        roles: ["MEVI_FARM_MEMBER"],
-        href: "/history",
-      },
-      {
-        icon: FileText,
-        id: "farm-history-create",
-        label: "Nhật ký ra đồng",
+        id: "farm-diary-planned",
+        label: "Nhật ký theo kế hoạch",
+        icon: ClipboardList,
         roles: ["MEVI_FARM_MEMBER"],
         children: [
           {
-            id: "diary-lookup",
-            label: "Tra cứu thông tin",
+            id: "planned-diary-update",
+            label: "Cập nhật thông tin",
             roles: ["MEVI_FARM_MEMBER"],
-            href: "/diary/lookup",
+            href: "/diary/plan",
           },
           {
-            id: "farm-history-incident",
+            id: "planned-diary-history",
+            label: "Lịch sử cập nhật",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/plan-history",
+          },
+        ],
+      },
+      {
+        id: "farm-diary-daily",
+        label: "Nhật ký thường nhật",
+        icon: Zap,
+        roles: ["MEVI_FARM_MEMBER"],
+        children: [
+          {
+            id: "daily-diary-update",
             label: "Cập nhật thông tin",
             roles: ["MEVI_FARM_MEMBER"],
             href: "/diary/incident",
           },
           {
-            id: "farm-history-plan",
-            label: "Nhật ký theo kế hoạch",
-            roles: ["MEVI_FARM_MEMBER"],
-            href: "/diary/plan",
-          },
-          {
-            id: "farm-history-update",
+            id: "daily-diary-history",
             label: "Lịch sử cập nhật",
             roles: ["MEVI_FARM_MEMBER"],
-            href: "/diary/update",
+            href: "/diary/daily-history",
           },
         ],
       },
