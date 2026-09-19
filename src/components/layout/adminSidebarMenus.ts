@@ -46,6 +46,7 @@ import {
   Package2,
   Group,
   Zap,
+  HeartPulse,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1354,6 +1355,26 @@ export const menuDevGroups: MenuSection[] = [
             label: "Lịch sử cập nhật",
             roles: ["MEVI_FARM_MEMBER"],
             href: "/diary/daily-history",
+          },
+        ],
+      },
+      {
+        id: "farm-diary-health",
+        label: "Nhật ký sức khoẻ",
+        icon: HeartPulse,
+        roles: ["MEVI_FARM_MEMBER"],
+        children: [
+          {
+            id: "health-diary-update",
+            label: "Cập nhật thông tin",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/health",
+          },
+          {
+            id: "health-diary-history",
+            label: "Lịch sử cập nhật",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/health-history",
           },
         ],
       },
