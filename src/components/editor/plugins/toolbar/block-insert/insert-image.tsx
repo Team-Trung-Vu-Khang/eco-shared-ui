@@ -11,7 +11,7 @@ export function InsertImage() {
     <SelectItem
       value="image"
       onPointerUp={(e) => {
-        showModal("Insert Image", (onClose) => (
+        showModal("Chèn hình ảnh", (onClose) => (
           <InsertImageDialog activeEditor={activeEditor} onClose={onClose} />
         ))
       }}
@@ -19,7 +19,7 @@ export function InsertImage() {
     >
       <div className="flex items-center gap-1">
         <ImageIcon className="size-4" />
-        <span>Image</span>
+        <span>Hình ảnh</span>
       </div>
     </SelectItem>
   )

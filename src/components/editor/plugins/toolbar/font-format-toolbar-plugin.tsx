@@ -21,10 +21,10 @@ import {
 } from "@/components/ui/toggle-group"
 
 const FORMATS = [
-  { format: "bold", icon: BoldIcon, label: "Bold" },
-  { format: "italic", icon: ItalicIcon, label: "Italic" },
-  { format: "underline", icon: UnderlineIcon, label: "Underline" },
-  { format: "strikethrough", icon: StrikethroughIcon, label: "Strikethrough" },
+  { format: "bold", icon: BoldIcon, label: "In đậm" },
+  { format: "italic", icon: ItalicIcon, label: "In nghiêng" },
+  { format: "underline", icon: UnderlineIcon, label: "Gạch chân" },
+  { format: "strikethrough", icon: StrikethroughIcon, label: "Gạch ngang" },
 ] as const
 
 export function FontFormatToolbarPlugin() {

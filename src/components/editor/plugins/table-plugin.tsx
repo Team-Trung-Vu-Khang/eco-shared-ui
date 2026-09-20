@@ -123,7 +123,7 @@ export function InsertTableDialog({
     <>
       <div className="grid gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="rows">Number of rows</Label>
+          <Label htmlFor="rows">Số dòng</Label>
           <Input
             id="rows"
             placeholder={"# of rows (1-500)"}
@@ -134,7 +134,7 @@ export function InsertTableDialog({
           />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="columns">Number of columns</Label>
+          <Label htmlFor="columns">Số cột</Label>
           <Input
             id="columns"
             placeholder={"# of columns (1-50)"}

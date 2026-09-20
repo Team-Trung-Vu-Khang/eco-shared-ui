@@ -78,7 +78,7 @@ export function LinkToolbarPlugin({
       variant={"outline"}
       size="sm"
       className="!size-8"
-      aria-label="Toggle link"
+      aria-label="Bật/tắt liên kết"
       onClick={insertLink}
     >
       <LinkIcon className="h-4 w-4" />

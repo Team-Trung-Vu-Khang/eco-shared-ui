@@ -18,15 +18,15 @@ export function ImportExportPlugin() {
           <Button
             variant={"ghost"}
             onClick={() => importFile(editor)}
-            title="Import"
-            aria-label="Import editor state from JSON"
+            title="Nhập"
+            aria-label="Nhập nội dung trình soạn thảo từ JSON"
             size={"sm"}
             className="p-2"
           >
             <UploadIcon className="size-4" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Import Content</TooltipContent>
+        <TooltipContent>Nhập nội dung</TooltipContent>
       </Tooltip>
 
       <Tooltip>
@@ -39,15 +39,15 @@ export function ImportExportPlugin() {
                 source: "Playground",
               })
             }
-            title="Export"
-            aria-label="Export editor state to JSON"
+            title="Xuất"
+            aria-label="Xuất nội dung trình soạn thảo ra JSON"
             size={"sm"}
             className="p-2"
           >
             <DownloadIcon className="size-4" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Export Content</TooltipContent>
+        <TooltipContent>Xuất nội dung</TooltipContent>
       </Tooltip>
     </>
   )

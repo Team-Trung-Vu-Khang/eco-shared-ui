@@ -38,22 +38,22 @@ const ELEMENT_FORMAT_OPTIONS: {
   left: {
     icon: <AlignLeftIcon className="size-4" />,
     iconRTL: "left-align",
-    name: "Left Align",
+    name: "Căn trái",
   },
   center: {
     icon: <AlignCenterIcon className="size-4" />,
     iconRTL: "center-align",
-    name: "Center Align",
+    name: "Căn giữa",
   },
   right: {
     icon: <AlignRightIcon className="size-4" />,
     iconRTL: "right-align",
-    name: "Right Align",
+    name: "Căn phải",
   },
   justify: {
     icon: <AlignJustifyIcon className="size-4" />,
     iconRTL: "justify-align",
-    name: "Justify Align",
+    name: "Căn đều",
   },
 } as const
 
@@ -138,7 +138,7 @@ export function ElementFormatToolbarPlugin({
       >
         <ToggleGroupItem
           value="outdent"
-          aria-label="Outdent"
+          aria-label="Giảm thụt lề"
           variant={"outline"}
           size="sm"
         >
@@ -148,7 +148,7 @@ export function ElementFormatToolbarPlugin({
         <ToggleGroupItem
           value="indent"
           variant={"outline"}
-          aria-label="Indent"
+          aria-label="Tăng thụt lề"
           size="sm"
         >
           <IndentIncreaseIcon className="size-4" />

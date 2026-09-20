@@ -47,7 +47,7 @@ export interface CustomEmbedConfig extends EmbedConfig {
 }
 
 export const YoutubeEmbedConfig: CustomEmbedConfig = {
-  contentName: "Youtube Video",
+  contentName: "Video YouTube",
 
   exampleUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
 
@@ -207,7 +207,7 @@ export function AutoEmbedPlugin(): JSX.Element {
     dismissFn: () => void,
   ) => {
     return [
-      new AutoEmbedOption("Dismiss", {
+      new AutoEmbedOption("Bỏ qua", {
         onSelect: dismissFn,
       }),
       new AutoEmbedOption(`Embed ${activeEmbedConfig.contentName}`, {

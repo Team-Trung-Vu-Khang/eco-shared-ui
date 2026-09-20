@@ -19,7 +19,7 @@ export function InsertHorizontalRule() {
     >
       <div className="flex items-center gap-1">
         <ScissorsIcon className="size-4" />
-        <span>Horizontal Rule</span>
+        <span>Đường kẻ ngang</span>
       </div>
     </SelectItem>
   )

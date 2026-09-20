@@ -91,7 +91,7 @@ export function InsertLayoutDialog({
           ))}
         </SelectContent>
       </Select>
-      <Button onClick={onClick}>Insert</Button>
+      <Button onClick={onClick}>Chèn</Button>
     </>
   );
 }

@@ -127,7 +127,7 @@ function SpeechToTextPluginImpl() {
             setIsSpeechToText(!isSpeechToText)
           }}
           variant={isSpeechToText ? "secondary" : "ghost"}
-          title="Speech To Text"
+          title="Giọng nói thành văn bản"
           aria-label={`${isSpeechToText ? "Enable" : "Disable"} speech to text`}
           className="p-2"
           size={"sm"}
@@ -135,7 +135,7 @@ function SpeechToTextPluginImpl() {
           <MicIcon className="size-4" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Speech To Text</TooltipContent>
+      <TooltipContent>Giọng nói thành văn bản</TooltipContent>
     </Tooltip>
   )
 }

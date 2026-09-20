@@ -1554,7 +1554,7 @@ function HexInput(props: FormatInputProps) {
   if (withoutAlpha) {
     return (
       <InputGroupItem
-        aria-label="Hex color value"
+        aria-label="Giá trị màu Hex"
         position="isolated"
         {...inputProps}
         placeholder="#000000"
@@ -1572,7 +1572,7 @@ function HexInput(props: FormatInputProps) {
       className={cn("flex items-center", className)}
     >
       <InputGroupItem
-        aria-label="Hex color value"
+        aria-label="Giá trị màu Hex"
         position="first"
         {...inputProps}
         placeholder="#000000"
@@ -1582,7 +1582,7 @@ function HexInput(props: FormatInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Alpha transparency percentage"
+        aria-label="Phần trăm độ trong suốt"
         position="last"
         {...inputProps}
         placeholder="100"
@@ -1632,7 +1632,7 @@ function RgbInput(props: FormatInputProps) {
       className={cn("flex items-center", className)}
     >
       <InputGroupItem
-        aria-label="Red color component (0-255)"
+        aria-label="Thành phần màu đỏ (0-255)"
         position="first"
         {...inputProps}
         placeholder="0"
@@ -1646,7 +1646,7 @@ function RgbInput(props: FormatInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Green color component (0-255)"
+        aria-label="Thành phần màu xanh lá (0-255)"
         position="middle"
         {...inputProps}
         placeholder="0"
@@ -1660,7 +1660,7 @@ function RgbInput(props: FormatInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Blue color component (0-255)"
+        aria-label="Thành phần màu xanh dương (0-255)"
         position={withoutAlpha ? "last" : "middle"}
         {...inputProps}
         placeholder="0"
@@ -1675,7 +1675,7 @@ function RgbInput(props: FormatInputProps) {
       />
       {!withoutAlpha && (
         <InputGroupItem
-          aria-label="Alpha transparency percentage"
+          aria-label="Phần trăm độ trong suốt"
           position="last"
           {...inputProps}
           placeholder="100"
@@ -1735,7 +1735,7 @@ function HslInput(props: FormatInputProps) {
       className={cn("flex items-center", className)}
     >
       <InputGroupItem
-        aria-label="Hue degree (0-360)"
+        aria-label="Độ màu (0-360)"
         position="first"
         {...inputProps}
         placeholder="0"
@@ -1749,7 +1749,7 @@ function HslInput(props: FormatInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Saturation percentage (0-100)"
+        aria-label="Phần trăm bão hoà (0-100)"
         position="middle"
         {...inputProps}
         placeholder="0"
@@ -1763,7 +1763,7 @@ function HslInput(props: FormatInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Lightness percentage (0-100)"
+        aria-label="Phần trăm độ sáng (0-100)"
         position={withoutAlpha ? "last" : "middle"}
         {...inputProps}
         placeholder="0"
@@ -1778,7 +1778,7 @@ function HslInput(props: FormatInputProps) {
       />
       {!withoutAlpha && (
         <InputGroupItem
-          aria-label="Alpha transparency percentage"
+          aria-label="Phần trăm độ trong suốt"
           position="last"
           {...inputProps}
           placeholder="100"
@@ -1842,7 +1842,7 @@ function HsbInput(props: HsbInputProps) {
       className={cn("flex items-center", className)}
     >
       <InputGroupItem
-        aria-label="Hue degree (0-360)"
+        aria-label="Độ màu (0-360)"
         position="first"
         {...inputProps}
         placeholder="0"
@@ -1856,7 +1856,7 @@ function HsbInput(props: HsbInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Saturation percentage (0-100)"
+        aria-label="Phần trăm bão hoà (0-100)"
         position="middle"
         {...inputProps}
         placeholder="0"
@@ -1870,7 +1870,7 @@ function HsbInput(props: HsbInputProps) {
         disabled={context.disabled}
       />
       <InputGroupItem
-        aria-label="Brightness percentage (0-100)"
+        aria-label="Phần trăm độ chói (0-100)"
         position={withoutAlpha ? "last" : "middle"}
         {...inputProps}
         placeholder="0"
@@ -1885,7 +1885,7 @@ function HsbInput(props: HsbInputProps) {
       />
       {!withoutAlpha && (
         <InputGroupItem
-          aria-label="Alpha transparency percentage"
+          aria-label="Phần trăm độ trong suốt"
           position="last"
           {...inputProps}
           placeholder="100"

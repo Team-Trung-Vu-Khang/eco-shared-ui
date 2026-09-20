@@ -76,7 +76,7 @@ export function ClearFormattingToolbarPlugin() {
   return (
     <Button
       className="!size-8"
-      aria-label="Clear formatting"
+      aria-label="Xoá định dạng"
       variant={"outline"}
       size={"icon"}
       onClick={clearFormatting}

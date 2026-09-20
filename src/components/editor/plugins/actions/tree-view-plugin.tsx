@@ -26,7 +26,7 @@ export function TreeViewPlugin(): JSX.Element {
       </DialogTrigger>
       <DialogContent aria-describedby={undefined}>
         <DialogHeader>
-          <DialogTitle>Tree View</DialogTitle>
+          <DialogTitle>Dạng cây</DialogTitle>
         </DialogHeader>
         <ScrollArea className="bg-foreground text-background h-96 overflow-hidden rounded-lg p-2">
           <TreeView

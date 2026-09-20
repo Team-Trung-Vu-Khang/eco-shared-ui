@@ -34,19 +34,19 @@ export function ClearEditorActionPlugin() {
             </Button>
           </DialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>Clear Editor</TooltipContent>
+        <TooltipContent>Xoá nội dung</TooltipContent>
       </Tooltip>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Clear Editor</DialogTitle>
+          <DialogTitle>Xoá nội dung</DialogTitle>
           <DialogDescription>
             Are you sure you want to clear the editor?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">Huỷ</Button>
           </DialogClose>
 
           <DialogClose asChild>

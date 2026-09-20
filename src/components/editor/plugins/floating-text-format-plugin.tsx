@@ -207,7 +207,7 @@ function FloatingTextFormat({
           >
             <ToggleGroupItem
               value="bold"
-              aria-label="Toggle bold"
+              aria-label="Bật/tắt in đậm"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
               }}
@@ -217,7 +217,7 @@ function FloatingTextFormat({
             </ToggleGroupItem>
             <ToggleGroupItem
               value="italic"
-              aria-label="Toggle italic"
+              aria-label="Bật/tắt in nghiêng"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
               }}
@@ -227,7 +227,7 @@ function FloatingTextFormat({
             </ToggleGroupItem>
             <ToggleGroupItem
               value="underline"
-              aria-label="Toggle underline"
+              aria-label="Bật/tắt gạch chân"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
               }}
@@ -237,7 +237,7 @@ function FloatingTextFormat({
             </ToggleGroupItem>
             <ToggleGroupItem
               value="strikethrough"
-              aria-label="Toggle strikethrough"
+              aria-label="Bật/tắt gạch ngang"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
               }}
@@ -248,7 +248,7 @@ function FloatingTextFormat({
             <Separator orientation="vertical" />
             <ToggleGroupItem
               value="code"
-              aria-label="Toggle code"
+              aria-label="Bật/tắt mã"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
               }}
@@ -258,7 +258,7 @@ function FloatingTextFormat({
             </ToggleGroupItem>
             <ToggleGroupItem
               value="link"
-              aria-label="Toggle link"
+              aria-label="Bật/tắt liên kết"
               onClick={insertLink}
               size="sm"
             >
@@ -274,7 +274,7 @@ function FloatingTextFormat({
           >
             <ToggleGroupItem
               value="subscript"
-              aria-label="Toggle subscript"
+              aria-label="Bật/tắt chỉ số dưới"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "subscript");
               }}
@@ -284,7 +284,7 @@ function FloatingTextFormat({
             </ToggleGroupItem>
             <ToggleGroupItem
               value="superscript"
-              aria-label="Toggle superscript"
+              aria-label="Bật/tắt chỉ số trên"
               onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "superscript");
               }}

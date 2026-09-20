@@ -13,7 +13,7 @@ export function InsertColumnsLayout() {
     <SelectItem
       value="columns"
       onPointerUp={() =>
-        showModal("Insert Columns Layout", (onClose) => (
+        showModal("Chèn bố cục cột", (onClose) => (
           <InsertLayoutDialog activeEditor={activeEditor} onClose={onClose} />
         ))
       }
@@ -21,7 +21,7 @@ export function InsertColumnsLayout() {
     >
       <div className="flex items-center gap-1">
         <Columns3Icon className="size-4" />
-        <span>Columns Layout</span>
+        <span>Bố cục cột</span>
       </div>
     </SelectItem>
   )

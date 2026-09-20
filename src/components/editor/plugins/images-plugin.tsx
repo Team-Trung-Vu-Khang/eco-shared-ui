@@ -63,7 +63,7 @@ export function InsertImageUriDialogBody({
   return (
     <div className="grid gap-4 py-4">
       <div className="grid gap-2">
-        <Label htmlFor="image-url">Image URL</Label>
+        <Label htmlFor="image-url">Đường dẫn ảnh</Label>
         <Input
           id="image-url"
           placeholder="i.e. https://source.unsplash.com/random"
@@ -73,10 +73,10 @@ export function InsertImageUriDialogBody({
         />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="alt-text">Alt Text</Label>
+        <Label htmlFor="alt-text">Văn bản thay thế</Label>
         <Input
           id="alt-text"
-          placeholder="Random unsplash image"
+          placeholder="Ảnh Unsplash ngẫu nhiên"
           onChange={(e) => setAltText(e.target.value)}
           value={altText}
           data-test-id="image-modal-alt-text-input"
@@ -122,7 +122,7 @@ export function InsertImageUploadedDialogBody({
   return (
     <div className="grid gap-4 py-4">
       <div className="grid gap-2">
-        <Label htmlFor="image-upload">Image Upload</Label>
+        <Label htmlFor="image-upload">Tải ảnh lên</Label>
         <Input
           id="image-upload"
           type="file"
@@ -132,10 +132,10 @@ export function InsertImageUploadedDialogBody({
         />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="alt-text">Alt Text</Label>
+        <Label htmlFor="alt-text">Văn bản thay thế</Label>
         <Input
           id="alt-text"
-          placeholder="Descriptive alternative text"
+          placeholder="Văn bản mô tả ảnh"
           onChange={(e) => setAltText(e.target.value)}
           value={altText}
           data-test-id="image-modal-alt-text-input"

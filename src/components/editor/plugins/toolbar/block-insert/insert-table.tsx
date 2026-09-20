@@ -13,7 +13,7 @@ export function InsertTable() {
     <SelectItem
       value="table"
       onPointerUp={() =>
-        showModal("Insert Table", (onClose) => (
+        showModal("Chèn bảng", (onClose) => (
           <InsertTableDialog activeEditor={activeEditor} onClose={onClose} />
         ))
       }
@@ -21,7 +21,7 @@ export function InsertTable() {
     >
       <div className="flex items-center gap-1">
         <TableIcon className="size-4" />
-        <span>Table</span>
+        <span>Bảng</span>
       </div>
     </SelectItem>
   )

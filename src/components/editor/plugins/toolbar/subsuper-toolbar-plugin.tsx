@@ -36,7 +36,7 @@ export function SubSuperToolbarPlugin() {
       <ToggleGroupItem
         value="subscript"
         size="sm"
-        aria-label="Toggle subscript"
+        aria-label="Bật/tắt chỉ số dưới"
         onClick={() => {
           activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "subscript")
         }}
@@ -47,7 +47,7 @@ export function SubSuperToolbarPlugin() {
       <ToggleGroupItem
         value="superscript"
         size="sm"
-        aria-label="Toggle superscript"
+        aria-label="Bật/tắt chỉ số trên"
         onClick={() => {
           activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, "superscript")
         }}

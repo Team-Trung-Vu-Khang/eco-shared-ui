@@ -4,11 +4,11 @@ import { InsertLayoutDialog } from "@/components/editor/plugins/layout-plugin"
 import { ComponentPickerOption } from "@/components/editor/plugins/picker/component-picker-option"
 
 export function ColumnsLayoutPickerPlugin() {
-  return new ComponentPickerOption("Columns Layout", {
+  return new ComponentPickerOption("Bố cục cột", {
     icon: <Columns3Icon className="size-4" />,
-    keywords: ["columns", "layout", "grid"],
+    keywords: ["columns", "layout", "grid", "bo cuc cot", "bố cục cột"],
     onSelect: (_, editor, showModal) =>
-      showModal("Insert Columns Layout", (onClose) => (
+      showModal("Chèn bố cục cột", (onClose) => (
         <InsertLayoutDialog activeEditor={editor} onClose={onClose} />
       )),
   })

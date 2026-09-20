@@ -24,7 +24,7 @@ export function EditModeTogglePlugin() {
             editor.setEditable(!editor.isEditable())
             setIsEditable(editor.isEditable())
           }}
-          title="Read-Only Mode"
+          title="Chế độ chỉ đọc"
           aria-label={`${!isEditable ? "Unlock" : "Lock"} read-only mode`}
           size={"sm"}
           className="p-2"

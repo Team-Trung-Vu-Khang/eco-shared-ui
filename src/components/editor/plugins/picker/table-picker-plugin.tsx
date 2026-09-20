@@ -5,11 +5,11 @@ import { ComponentPickerOption } from "@/components/editor/plugins/picker/compon
 import { InsertTableDialog } from "@/components/editor/plugins/table-plugin"
 
 export function TablePickerPlugin() {
-  return new ComponentPickerOption("Table", {
+  return new ComponentPickerOption("Bảng", {
     icon: <TableIcon className="size-4" />,
-    keywords: ["table", "grid", "spreadsheet", "rows", "columns"],
+    keywords: ["table", "grid", "spreadsheet", "rows", "columns", "bang", "bảng"],
     onSelect: (_, editor, showModal) =>
-      showModal("Insert Table", (onClose) => (
+      showModal("Chèn bảng", (onClose) => (
         <InsertTableDialog activeEditor={editor} onClose={onClose} />
       )),
   })

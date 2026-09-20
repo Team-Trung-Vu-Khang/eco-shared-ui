@@ -104,7 +104,6 @@ import { HistoryToolbarPlugin } from "@/components/editor/plugins/toolbar/histor
 import { LinkToolbarPlugin } from "@/components/editor/plugins/toolbar/link-toolbar-plugin";
 import { SubSuperToolbarPlugin } from "@/components/editor/plugins/toolbar/subsuper-toolbar-plugin";
 import { ToolbarPlugin } from "@/components/editor/plugins/toolbar/toolbar-plugin";
-import { TypingPerfPlugin } from "@/components/editor/plugins/typing-pref-plugin";
 import { EMOJI } from "@/components/editor/transformers/markdown-emoji-transformer";
 import { HR } from "@/components/editor/transformers/markdown-hr-transformer";
 import { IMAGE } from "@/components/editor/transformers/markdown-image-transformer";
@@ -114,7 +113,7 @@ import { Separator } from "@/components/ui/separator";
 import type { ClassValue } from "clsx";
 import { cn } from "@/lib";
 
-const placeholder = "Press / for commands...";
+const placeholder = "Nhấn / để mở lệnh...";
 const $maxLength = 500;
 
 type PluginsProps = {
@@ -290,7 +289,6 @@ export function Plugins({
             ...TEXT_MATCH_TRANSFORMERS,
           ]}
         />
-        <TypingPerfPlugin />
         <TabFocusPlugin />
         <AutocompletePlugin />
         <AutoLinkPlugin />

@@ -59,7 +59,7 @@ export function HistoryToolbarPlugin() {
         }}
         title={IS_APPLE ? "Undo (⌘Z)" : "Undo (Ctrl+Z)"}
         type="button"
-        aria-label="Undo"
+        aria-label="Hoàn tác"
         size="icon"
         className="!h-8 !w-8"
         variant={"outline"}
@@ -73,7 +73,7 @@ export function HistoryToolbarPlugin() {
         }}
         title={IS_APPLE ? "Redo (⇧⌘Z)" : "Redo (Ctrl+Y)"}
         type="button"
-        aria-label="Redo"
+        aria-label="Làm lại"
         variant={"outline"}
         size="icon"
         className="!h-8 !w-8"
