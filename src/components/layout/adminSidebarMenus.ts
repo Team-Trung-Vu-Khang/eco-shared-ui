@@ -2112,6 +2112,13 @@ export const menuMeviDevGroups: MenuSection[] = [
         href: "/enterprise-certificate",
       },
       {
+        id: "search-zone",
+        roles: ["MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN", "MEVI_ADMIN"],
+        label: "Tìm kiếm vùng trồng",
+        icon: Search,
+        href: "/search-zone",
+      },
+      {
         id: "region-chart",
         label: "Địa lý",
         icon: Map,
@@ -2164,22 +2171,10 @@ export const menuMeviDevGroups: MenuSection[] = [
             href: "/plant-identification",
           },
           {
-            id: "dist-detail",
-            roles: ["MEVI_FARM_MEMBER"],
-            label: "Chi tiết phân bổ",
-            href: "/distribution-detail",
-          },
-          {
             id: "search-crop",
             roles: ["MEVI_FARM_MEMBER"],
             label: "Tìm kiếm cây trồng",
             href: "/search-crop",
-          },
-          {
-            id: "search-zone",
-            roles: ["MEVI_FARM_MEMBER"],
-            label: "Tìm kiếm vùng trồng",
-            href: "/search-zone",
           },
           {
             id: "growth-cycle",
