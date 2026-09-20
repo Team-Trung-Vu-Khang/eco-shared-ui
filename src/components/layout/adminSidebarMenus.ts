@@ -2049,6 +2049,23 @@ export const menuDevGroups: MenuSection[] = [
 ];
 export const menuMeviDevGroups: MenuSection[] = [
   {
+    title: "Tổng quan",
+    items: [
+      {
+        id: "dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard,
+        href: "/",
+        roles: [
+          "MEVI_FARM_MEMBER",
+          "MEVI_ADMIN",
+          "MEVI_FARM_ADMIN",
+          "MEVI_SUPER_ADMIN",
+        ],
+      },
+    ],
+  },
+  {
     title: "Tổ chức - Đội ngũ",
     items: [
       {
