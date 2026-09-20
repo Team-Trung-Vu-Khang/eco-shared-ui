@@ -2472,6 +2472,12 @@ export const menuMeviDevGroups: MenuSection[] = [
             href: "/pesticide-group",
             roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
           },
+          {
+            id: "microbial-product-group",
+            label: "Nhóm chế phẩm vi sinh",
+            href: "/microbial-product-group",
+            roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
+          },
           // Tạm ẩn - chăn nuôi & thủy sản
           // {
           //   id: "livestock-medicine-group",
