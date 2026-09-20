@@ -2086,14 +2086,24 @@ export const menuMeviDevGroups: MenuSection[] = [
     items: [
       {
         id: "enterprise-certificate",
-        roles: ["MEVI_FARM_MEMBER"],
+        roles: [
+          "MEVI_FARM_MEMBER",
+          "MEVI_FARM_ADMIN",
+          "MEVI_SUPER_ADMIN",
+          "MEVI_ADMIN",
+        ],
         label: "Chứng nhận - chứng chỉ",
         icon: Award,
         href: "/enterprise-certificate",
       },
       {
         id: "search-zone",
-        roles: ["MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN", "MEVI_ADMIN"],
+        roles: [
+          "MEVI_FARM_MEMBER",
+          "MEVI_FARM_ADMIN",
+          "MEVI_SUPER_ADMIN",
+          "MEVI_ADMIN",
+        ],
         label: "Tìm kiếm vùng trồng",
         icon: Search,
         href: "/search-zone",
@@ -2157,20 +2167,20 @@ export const menuMeviDevGroups: MenuSection[] = [
             href: "/search-crop",
           },
           {
-            id: "growth-cycle",
+            id: "plan-growth",
             roles: ["MEVI_FARM_MEMBER"],
             label: "Vụ mùa",
-            href: "/growth-cycle",
+            href: "/plan-growth",
           },
         ],
       },
       {
         id: "legal-identification",
         roles: [
+          "MEVI_FARM_MEMBER",
           "MEVI_FARM_ADMIN",
           "MEVI_SUPER_ADMIN",
           "MEVI_ADMIN",
-          "MEVI_FARM_MEMBER",
         ],
         label: "Định danh pháp lý",
         icon: IdCardIcon,
