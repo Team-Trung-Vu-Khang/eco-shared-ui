@@ -2196,12 +2196,7 @@ export const menuMeviDevGroups: MenuSection[] = [
         label: "Hạt giống",
         icon: Leaf,
         href: "/seed",
-        roles: [
-          "MEVI_FARM_MEMBER",
-          "MEVI_ADMIN",
-          "MEVI_FARM_ADMIN",
-          "MEVI_SUPER_ADMIN",
-        ],
+        roles: ["MEVI_FARM_MEMBER", "MEVI_SUPER_ADMIN"],
       },
     ],
   },
