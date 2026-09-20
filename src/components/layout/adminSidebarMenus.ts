@@ -2044,7 +2044,243 @@ export const menuDevGroups: MenuSection[] = [
     ],
   },
 ];
-
+export const menuMeviDevGroups: MenuSection[] = [
+  {
+    title: "Chứng nhận - chứng chỉ",
+    items: [
+      {
+        id: "enterprise-certificate",
+        roles: ["MEVI_FARM_MEMBER"],
+        label: "Chứng nhận - chứng chỉ",
+        icon: Award,
+        href: "/enterprise-certificate",
+      },
+    ],
+  },
+  {
+    title: "Vật tư",
+    items: [
+      {
+        id: "lookup-material",
+        label: "Tra cứu vật tư",
+        icon: Search,
+        href: "/lookup-material",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "supply-conversion-rules",
+        label: "Đơn vị quy đổi",
+        icon: Scale,
+        href: "/supply-conversion-rules",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "cultivation-material",
+        label: "Vật tư trồng trọt",
+        icon: TreePine,
+        href: "/cultivation-zone",
+        roles: ["MEVI_FARM_MEMBER"],
+        children: [
+          {
+            id: "pesticide",
+            label: "Thuốc BVTV",
+            href: "/cultivation-material/pesticide",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "fertilizer",
+            label: "Phân bón",
+            href: "/cultivation-material/fertilizer",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "material",
+            label: "Vật tư khác",
+            href: "/cultivation-material/material",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "equipment",
+            label: "Dụng cụ – Máy móc",
+            href: "/cultivation-material/equipment",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Vùng sản xuất",
+    items: [
+      {
+        id: "cultivation-zone",
+        roles: ["MEVI_FARM_MEMBER"],
+        label: "Trồng trọt",
+        icon: TreePine,
+        href: "/cultivation-zone",
+        children: [
+          {
+            id: "cultivation-region",
+            roles: ["MEVI_FARM_MEMBER"],
+            label: "Vùng canh tác",
+            href: "/cultivation-region",
+          },
+          {
+            id: "crop-identification",
+            roles: ["MEVI_FARM_MEMBER"],
+            label: "Định danh cây trồng",
+            href: "/plant-identification",
+          },
+          {
+            id: "dist-detail",
+            roles: ["MEVI_FARM_MEMBER"],
+            label: "Chi tiết phân bổ",
+            href: "/distribution-detail",
+          },
+          {
+            id: "search-crop",
+            roles: ["MEVI_FARM_MEMBER"],
+            label: "Tìm kiếm cây trồng",
+            href: "/search-crop",
+          },
+          {
+            id: "search-zone",
+            roles: ["MEVI_FARM_MEMBER"],
+            label: "Tìm kiếm vùng trồng",
+            href: "/search-zone",
+          },
+          {
+            id: "growth-cycle",
+            roles: ["MEVI_FARM_MEMBER"],
+            label: "Vụ mùa",
+            href: "/growth-cycle",
+          },
+        ],
+      },
+      {
+        id: "cultivation-region-identification",
+        roles: ["MEVI_FARM_MEMBER"],
+        conditions: ["REQUIRE_FIRST_ONBOARD"],
+        label: "Định danh vùng canh tác",
+        icon: IdCardIcon,
+        href: "/cultivation-region-identification",
+        children: [
+          {
+            id: "cultivation-region-identification-crop",
+            roles: ["MEVI_FARM_MEMBER"],
+            conditions: ["REQUIRE_FIRST_ONBOARD"],
+            label: "Trồng trọt",
+            href: "/cultivation-region-identification/crop",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Nhật ký canh tác",
+    items: [
+      {
+        id: "farm-diary-daily",
+        label: "Nhật ký thường nhật",
+        icon: Zap,
+        roles: ["MEVI_FARM_MEMBER"],
+        children: [
+          {
+            id: "daily-diary-update",
+            label: "Cập nhật thông tin",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/incident",
+          },
+          {
+            id: "daily-diary-history",
+            label: "Lịch sử cập nhật",
+            roles: ["MEVI_FARM_MEMBER"],
+            href: "/diary/daily-history",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Báo cáo",
+    items: [
+      {
+        id: "production-cultivation-report",
+        label: "Báo cáo sản xuất/canh tác",
+        icon: ClipboardList,
+        href: "/production-cultivation-report",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "admin-report",
+        label: "Báo cáo quản trị Admin",
+        icon: UserCog,
+        href: "/admin-report",
+        roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
+      },
+      {
+        id: "treatment-report",
+        label: "Báo cáo điều trị",
+        icon: Heart,
+        href: "/treatment-report",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "harvest-report",
+        label: "Báo cáo thu hoạch",
+        icon: Leaf,
+        href: "/harvest-report",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "summary-report-export",
+        label: "Xuất báo cáo tổng hợp",
+        icon: FileText,
+        href: "/summary-report-export",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "report-crops",
+        label: "Canh tác trồng trọt",
+        icon: Sprout,
+        href: "/reports/crops/overview",
+        roles: ["MEVI_FARM_MEMBER"],
+        children: [
+          {
+            id: "rc-overview",
+            label: "Tổng quan",
+            href: "/reports/crops/overview",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "rc-plan-work",
+            label: "Kế hoạch - công việc",
+            href: "/reports/crops/plan-work",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "rc-harvest",
+            label: "Thu hoạch",
+            href: "/reports/crops/harvest",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "rc-materials",
+            label: "Vật tư",
+            href: "/reports/crops/materials",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "rc-inventory",
+            label: "Tồn kho",
+            href: "/reports/crops/inventory",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+        ],
+      },
+    ],
+  },
+];
 export const menuEcoSystemAdminGroups: MenuSection[] = [
   {
     title: "Quản lý người giới thiệu",

@@ -20,6 +20,7 @@ import {
   menuProdGroups,
   menuProdRiceGroups,
   menuEcoSystemAdminGroups,
+  menuMeviDevGroups,
 } from "./adminSidebarMenus";
 
 export interface AdminLayoutProps {
@@ -28,6 +29,7 @@ export interface AdminLayoutProps {
   description?: string;
   actions?: ReactNode;
   isDev?: boolean;
+  isMevi?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
   brandIcon?: ElementType;
@@ -49,6 +51,7 @@ function AdminLayoutContent({
   description,
   actions,
   isDev = false,
+  isMevi = false,
   isRice = false,
   isEcoSystemAdmin = false,
   brandIcon,
@@ -118,13 +121,15 @@ function AdminLayoutContent({
   }, [user]);
 
   const isAuthorized = useMemo(() => {
-    const masterMenu = isDev
-      ? menuDevGroups
-      : isRice
-        ? menuProdRiceGroups
-        : isEcoSystemAdmin
-          ? menuEcoSystemAdminGroups
-          : menuProdGroups;
+    const masterMenu = isMevi
+      ? menuMeviDevGroups
+      : isDev
+        ? menuDevGroups
+        : isRice
+          ? menuProdRiceGroups
+          : isEcoSystemAdmin
+            ? menuEcoSystemAdminGroups
+            : menuProdGroups;
     const filteredMenu = filterMenuByContext(
       masterMenu as unknown as SidebarMenuSection[],
       userContext,
@@ -136,7 +141,7 @@ function AdminLayoutContent({
       masterMenu as unknown as SidebarMenuSection[],
       filteredMenu as unknown as SidebarMenuSection[],
     );
-  }, [location, userContext, isDev, isRice, isEcoSystemAdmin]);
+  }, [location, userContext, isMevi, isDev, isRice, isEcoSystemAdmin]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -154,6 +159,7 @@ function AdminLayoutContent({
         isMobile={isMobile}
         mobileOpen={mobileSidebarOpen}
         isDev={isDev}
+        isMevi={isMevi}
         isRice={isRice}
         isEcoSystemAdmin={isEcoSystemAdmin}
         brandIcon={brandIcon}

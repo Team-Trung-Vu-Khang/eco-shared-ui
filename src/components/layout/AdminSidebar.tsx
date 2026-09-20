@@ -19,6 +19,7 @@ import { useLocation } from "wouter";
 import {
   menuDevGroups,
   menuEcoSystemAdminGroups,
+  menuMeviDevGroups,
   menuProdGroups,
   menuProdRiceGroups,
 } from "./adminSidebarMenus";
@@ -38,6 +39,7 @@ export interface AdminSidebarProps {
   isMobile?: boolean;
   mobileOpen?: boolean;
   isDev?: boolean;
+  isMevi?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
   brandIcon?: ElementType;
@@ -56,6 +58,7 @@ export function AdminSidebar({
   isMobile = false,
   mobileOpen = false,
   isDev = false,
+  isMevi = false,
   isRice = false,
   isEcoSystemAdmin = false,
   brandIcon,
@@ -79,14 +82,16 @@ export function AdminSidebar({
   }, [user]);
 
   const masterMenuConfig = useMemo(() => {
-    return isDev
-      ? menuDevGroups
-      : isRice
-        ? menuProdRiceGroups
-        : isEcoSystemAdmin
-          ? menuEcoSystemAdminGroups
-          : menuProdGroups;
-  }, [isDev, isRice, isEcoSystemAdmin]);
+    return isMevi
+      ? menuMeviDevGroups
+      : isDev
+        ? menuDevGroups
+        : isRice
+          ? menuProdRiceGroups
+          : isEcoSystemAdmin
+            ? menuEcoSystemAdminGroups
+            : menuProdGroups;
+  }, [isMevi, isDev, isRice, isEcoSystemAdmin]);
 
   const menuGroups = useMemo(() => {
     // Save to global caches
@@ -108,13 +113,15 @@ export function AdminSidebar({
   // Initialize state from storage or defaults
   const [expandedGroups, setExpandedGroups] = useState<string[]>(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY_GROUPS);
-    const masterConfig = isDev
-      ? menuDevGroups
-      : isRice
-        ? menuProdRiceGroups
-        : isEcoSystemAdmin
-          ? menuEcoSystemAdminGroups
-          : menuProdGroups;
+    const masterConfig = isMevi
+      ? menuMeviDevGroups
+      : isDev
+        ? menuDevGroups
+        : isRice
+          ? menuProdRiceGroups
+          : isEcoSystemAdmin
+            ? menuEcoSystemAdminGroups
+            : menuProdGroups;
 
     const initialGroups = masterConfig
       .filter((group) => "title" in group)
