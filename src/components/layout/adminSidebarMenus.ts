@@ -2264,6 +2264,18 @@ export const menuMeviDevGroups: MenuSection[] = [
         ],
       },
       {
+        id: "biological-product",
+        label: "Chế phẩm sinh học",
+        icon: FlaskConical,
+        href: "/cultivation-material/biological-product",
+        roles: [
+          "MEVI_FARM_MEMBER",
+          "MEVI_ADMIN",
+          "MEVI_FARM_ADMIN",
+          "MEVI_SUPER_ADMIN",
+        ],
+      },
+      {
         id: "equipment",
         label: "Dụng cụ – Máy móc",
         icon: Tractor,
