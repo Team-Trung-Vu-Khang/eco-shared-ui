@@ -2295,6 +2295,34 @@ export const menuMeviDevGroups: MenuSection[] = [
     title: "Dữ liệu liên kết",
     items: [
       {
+        id: "parent-crop",
+        label: "Cây trồng & Giống",
+        icon: Leaf,
+        children: [
+          {
+            id: "fd-group-crop",
+            roles: ["MEVI_SUPER_ADMIN"],
+            label: "Nhóm cây trồng",
+            // icon: Trees,
+            href: "/group-crop",
+          },
+          {
+            id: "fd-crop",
+            roles: ["MEVI_SUPER_ADMIN"],
+            label: "Cây trồng",
+            // icon: Flower2,
+            href: "/crop-foundation",
+          },
+          {
+            id: "fd-variety",
+            roles: ["MEVI_SUPER_ADMIN"],
+            label: "Giống cây trồng",
+            // icon: Sprout,
+            href: "/variety-foundation",
+          },
+        ],
+      },
+      {
         id: "season",
         roles: ["MEVI_SUPER_ADMIN"],
         label: "Chu kỳ sinh trưởng",
