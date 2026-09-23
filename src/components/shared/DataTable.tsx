@@ -58,7 +58,14 @@ export interface Column<T> {
 interface DataTableProps<T> {
   columns: Column<T>[];
   data: T[];
+  /** Hiện ô tìm kiếm (mặc định true) */
   searchable?: boolean;
+  /** Hiện nút bộ lọc (mặc định true, chỉ hiện khi có `filters`) */
+  filterable?: boolean;
+  /** Hiện nút ẩn/hiện cột (mặc định true) */
+  columnToggleable?: boolean;
+  /** Hiện nút tải xuống (mặc định true) */
+  downloadable?: boolean;
   searchPlaceholder?: string;
   selectable?: boolean;
   onSearch?: (value: string) => void;
@@ -85,6 +92,9 @@ export function DataTable<T extends { id: string | number }>({
   columns,
   data,
   searchable = true,
+  filterable = true,
+  columnToggleable = true,
+  downloadable = true,
   searchPlaceholder = "Tìm kiếm...",
   selectable = false,
   onSearch,
@@ -240,120 +250,132 @@ export function DataTable<T extends { id: string | number }>({
     (selectable ? 1 : 0) +
     (onView || onEdit || onDuplicate || onDelete ? 1 : 0);
 
+  const showFilter = filterable && filters.length > 0;
+  const showToolbar =
+    searchable || showFilter || columnToggleable || downloadable;
+
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 flex-1">
-          {searchable && (
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder={searchPlaceholder}
-                value={search}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="pl-10 h-10 border-muted-foreground/20 focus:ring-primary/20"
-                data-testid="table-search"
-              />
-            </div>
-          )}
+      {showToolbar && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 flex-1">
+            {searchable && (
+              <div className="relative flex-1 max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder={searchPlaceholder}
+                  value={search}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  className="pl-10 h-10 border-muted-foreground/20 focus:ring-primary/20"
+                  data-testid="table-search"
+                />
+              </div>
+            )}
 
-          {filters.length > 0 && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            {showFilter && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="h-10 border-muted-foreground/20 gap-2"
+                  >
+                    <Filter className="w-4 h-4" />
+                    <span>Bộ lọc</span>
+                    {Object.keys(activeFilters).length > 0 && (
+                      <Badge
+                        variant="secondary"
+                        className="ml-1 h-5 px-1.5 bg-primary/10 text-primary"
+                      >
+                        {Object.keys(activeFilters).length}
+                      </Badge>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56 p-2">
+                  <DropdownMenuLabel>Lọc theo</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {filters.map((filter) => (
+                    <div key={filter.key} className="px-2 py-1.5 space-y-1.5">
+                      <p className="text-xs font-medium text-muted-foreground">
+                        {filter.label}
+                      </p>
+                      <AutoCompleteSelect
+                        options={[
+                          { label: "Tất cả", value: "all" },
+                          ...filter.options,
+                        ]}
+                        value={activeFilters[filter.key] || "all"}
+                        onChange={(val) => handleFilterChange(filter.key, val)}
+                        placeholder="Tất cả"
+                        searchPlaceholder="Tìm kiếm..."
+                        clearable={false}
+                        autocomplete={filter.options.length > 10}
+                        className="h-8 min-h-8 w-full max-w-[250px] px-2 text-xs"
+                      />
+                    </div>
+                  ))}
+                  <DropdownMenuSeparator />
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+                    onClick={clearFilters}
+                  >
+                    <X className="w-3 h-3 mr-2" />
+                    Xóa bộ lọc
+                  </Button>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+
+          {(columnToggleable || downloadable) && (
+            <div className="flex items-center gap-2">
+              {columnToggleable && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10 border-muted-foreground/20"
+                    >
+                      <Settings2 className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel>Hiển thị cột</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {columns.map((column) => (
+                      <DropdownMenuCheckboxItem
+                        key={column.key}
+                        checked={visibleColumns.has(column.key)}
+                        onCheckedChange={(checked) => {
+                          const next = new Set(visibleColumns);
+                          if (checked) next.add(column.key);
+                          else next.delete(column.key);
+                          setVisibleColumns(next);
+                        }}
+                      >
+                        {column.label}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+
+              {downloadable && (
                 <Button
                   variant="outline"
-                  className="h-10 border-muted-foreground/20 gap-2"
+                  size="icon"
+                  className="h-10 w-10 border-muted-foreground/20"
                 >
-                  <Filter className="w-4 h-4" />
-                  <span>Bộ lọc</span>
-                  {Object.keys(activeFilters).length > 0 && (
-                    <Badge
-                      variant="secondary"
-                      className="ml-1 h-5 px-1.5 bg-primary/10 text-primary"
-                    >
-                      {Object.keys(activeFilters).length}
-                    </Badge>
-                  )}
+                  <Download className="w-4 h-4" />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56 p-2">
-                <DropdownMenuLabel>Lọc theo</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {filters.map((filter) => (
-                  <div key={filter.key} className="px-2 py-1.5 space-y-1.5">
-                    <p className="text-xs font-medium text-muted-foreground">
-                      {filter.label}
-                    </p>
-                    <AutoCompleteSelect
-                      options={[
-                        { label: "Tất cả", value: "all" },
-                        ...filter.options,
-                      ]}
-                      value={activeFilters[filter.key] || "all"}
-                      onChange={(val) => handleFilterChange(filter.key, val)}
-                      placeholder="Tất cả"
-                      searchPlaceholder="Tìm kiếm..."
-                      clearable={false}
-                      autocomplete={filter.options.length > 10}
-                      className="h-8 min-h-8 w-full max-w-[250px] px-2 text-xs"
-                    />
-                  </div>
-                ))}
-                <DropdownMenuSeparator />
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
-                  onClick={clearFilters}
-                >
-                  <X className="w-3 h-3 mr-2" />
-                  Xóa bộ lọc
-                </Button>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              )}
+            </div>
           )}
         </div>
-
-        <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-10 w-10 border-muted-foreground/20"
-              >
-                <Settings2 className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>Hiển thị cột</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {columns.map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.key}
-                  checked={visibleColumns.has(column.key)}
-                  onCheckedChange={(checked) => {
-                    const next = new Set(visibleColumns);
-                    if (checked) next.add(column.key);
-                    else next.delete(column.key);
-                    setVisibleColumns(next);
-                  }}
-                >
-                  {column.label}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-10 w-10 border-muted-foreground/20"
-          >
-            <Download className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
+      )}
 
       {Object.keys(activeFilters).length > 0 && (
         <div className="flex flex-wrap gap-2 items-center">
