@@ -13,6 +13,7 @@ import {
   CheckSquare,
   ClipboardList,
   FileText,
+  PlusSquareIcon,
   FlaskConical,
   Flower2,
   GitBranch,
@@ -2263,6 +2264,13 @@ export const menuMeviDevGroups: MenuSection[] = [
         roles: ["MEVI_FARM_MEMBER", "MEVI_SUPER_ADMIN"],
       },
       {
+        id: "byproduct",
+        label: "Phụ phẩm",
+        icon: PlusSquareIcon,
+        href: "/cultivation-material/byproduct",
+        roles: ["MEVI_FARM_MEMBER", "MEVI_SUPER_ADMIN"],
+      },
+      {
         id: "equipment",
         label: "Dụng cụ – Máy móc",
         icon: Tractor,
@@ -2443,6 +2451,12 @@ export const menuMeviDevGroups: MenuSection[] = [
             href: "/microbial-product-group",
             roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
           },
+          {
+            id: "byproduct",
+            label: "Phụ phẩm",
+            href: "/byproduct",
+            roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
+          },
           // Tạm ẩn - chăn nuôi & thủy sản
           // {
           //   id: "livestock-medicine-group",
@@ -2514,6 +2528,12 @@ export const menuMeviDevGroups: MenuSection[] = [
             roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
             label: "Dụng cụ – Máy móc",
             href: "/admin/equipment",
+          },
+          {
+            id: "byproduct",
+            label: "Phụ phẩm",
+            href: "/admin/byproduct",
+            roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
           },
         ],
       },
