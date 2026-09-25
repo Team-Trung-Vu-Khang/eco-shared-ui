@@ -17,6 +17,8 @@ export interface MobileAppLayoutProps {
   brandTitle?: ReactNode;
   /** Mặc định hiển thị tên đơn vị (workspace) đang chọn */
   brandSubtitle?: ReactNode;
+  /** Nội dung bên phải header (vd: chuông thông báo) */
+  headerActions?: ReactNode;
 }
 
 /** Giao diện mobile: header gọn + bottom navigation, thay cho sidebar */
@@ -34,6 +36,7 @@ function MobileAppLayoutContent({
   brandIcon: BrandIcon = Sprout,
   brandTitle = "Eco Farm",
   brandSubtitle,
+  headerActions,
 }: MobileAppLayoutProps) {
   const [location] = useLocation();
   const { currentWorkspace } = useWorkspace();
@@ -44,7 +47,7 @@ function MobileAppLayoutContent({
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <BrandIcon className="h-5 w-5" />
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="text-sm font-bold leading-tight text-slate-900">
             {brandTitle}
           </p>
@@ -54,19 +57,20 @@ function MobileAppLayoutContent({
               "Đang tải đơn vị..."}
           </p>
         </div>
+        {headerActions}
       </header>
 
-      {/* Chừa chỗ cho bottom nav + vùng an toàn (tai thỏ / thanh home iOS) */}
-      <main className="min-w-0 px-4 pt-4 pb-[calc(5rem+env(safe-area-inset-bottom))]">
+      {/* Chừa chỗ cho thanh điều hướng nổi + vùng an toàn (thanh home iOS) */}
+      <main className="min-w-0 px-4 pt-4 pb-[calc(7rem+env(safe-area-inset-bottom))]">
         {children}
       </main>
 
       <nav
         aria-label="Điều hướng chính"
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)]"
+        className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-40"
       >
         <ul
-          className="grid"
+          className="grid h-16 items-center rounded-[1.75rem] bg-white px-1 shadow-[0_4px_20px_rgba(15,23,42,0.08)]"
           style={{
             gridTemplateColumns: `repeat(${Math.max(navItems.length, 1)}, minmax(0, 1fr))`,
           }}
@@ -74,25 +78,32 @@ function MobileAppLayoutContent({
           {navItems.map((item) => {
             const isActive = isNavItemActive(item, location);
             const Icon = item.icon;
+
             if (item.isPrimary) {
               return (
-                <li key={item.href} className="flex justify-center">
+                <li key={item.href} className="relative flex justify-center">
                   <Link
                     href={item.href}
+                    aria-label={item.label}
                     aria-current={isActive ? "page" : undefined}
-                    className="flex h-16 flex-col items-center justify-end gap-1 pb-1.5 text-[11px] font-medium"
+                    className="group absolute -top-11 flex flex-col items-center gap-1"
                   >
                     <span
                       className={cn(
-                        "-mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-white transition-transform active:scale-95",
-                        isActive && "ring-primary/20",
+                        "flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-4 ring-white transition-transform duration-200 group-active:scale-90",
+                        isActive ? "rotate-0" : "rotate-45",
                       )}
                     >
-                      <Icon className="h-6 w-6" />
+                      <Icon
+                        className={cn(
+                          "h-6 w-6 transition-transform duration-200",
+                          !isActive && "-rotate-45",
+                        )}
+                      />
                     </span>
                     <span
                       className={cn(
-                        "max-w-full truncate px-1",
+                        "text-[10px] font-semibold",
                         isActive ? "text-primary" : "text-slate-600",
                       )}
                     >
@@ -102,27 +113,41 @@ function MobileAppLayoutContent({
                 </li>
               );
             }
+
             return (
-              <li key={item.href}>
+              <li key={item.href} className="flex justify-center">
                 <Link
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={cn(
-                    "flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
-                    isActive
-                      ? "text-primary"
-                      : "text-slate-500 active:text-slate-700",
-                  )}
+                  className="relative flex h-14 w-full flex-col items-center justify-center gap-0.5 transition-transform active:scale-95"
                 >
+                  {/* Vạch sáng phía trên tab đang chọn */}
                   <span
                     className={cn(
-                      "flex h-7 w-12 items-center justify-center rounded-full transition-colors",
-                      isActive && "bg-primary/10",
+                      "absolute -top-1 h-1 rounded-full bg-primary transition-all duration-300",
+                      isActive ? "w-6 opacity-100" : "w-0 opacity-0",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-300",
+                      isActive
+                        ? "-translate-y-0.5 bg-primary/10 text-primary"
+                        : "text-slate-400",
                     )}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5" strokeWidth={isActive ? 2.4 : 2} />
                   </span>
-                  <span className="max-w-full truncate px-1">{item.label}</span>
+                  <span
+                    className={cn(
+                      "max-w-full truncate px-0.5 text-[10px] transition-colors",
+                      isActive
+                        ? "font-bold text-primary"
+                        : "font-medium text-slate-500",
+                    )}
+                  >
+                    {item.label}
+                  </span>
                 </Link>
               </li>
             );
