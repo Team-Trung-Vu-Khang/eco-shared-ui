@@ -24,7 +24,8 @@ export interface AdminLayoutProps {
   isMevi?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
-  /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin */
+  isFactory?: boolean;
+  /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin/isFactory */
   menu?: MenuSection[];
   brandIcon?: ElementType;
   brandTitle?: ReactNode;
@@ -48,6 +49,7 @@ function AdminLayoutContent({
   isMevi = false,
   isRice = false,
   isEcoSystemAdmin = false,
+  isFactory = false,
   menu,
   brandIcon,
   brandTitle,
@@ -102,39 +104,84 @@ function AdminLayoutContent({
   const [location] = useLocation();
   const { user, isLoading } = useAuth();
   const { workspaces, isLoading: isWorkspaceLoading } = useWorkspace();
+  const needsWorkspace = !isEcoSystemAdmin;
 
-  const userContext = useMemo(() => {
-    return {
-      roles: (user?.roles ||
-        (user?.role
-          ? Array.isArray(user.role)
-            ? user.role
-            : [user.role]
-          : [])) as string[],
+  const userContext = useMemo(
+    () => ({
+      roles: (user?.roles ??
+        (user?.role ? [user.role].flat() : [])) as string[],
       isFirstOnboard: !!(user as Record<string, unknown>)?.isFirstOnboard,
-    };
-  }, [user]);
+    }),
+    [user],
+  );
+
+  const masterMenu = useMemo(
+    () =>
+      resolveAdminMenu({
+        menu,
+        isDev,
+        isMevi,
+        isRice,
+        isEcoSystemAdmin,
+        isFactory,
+      }),
+    [menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory],
+  );
 
   const isAuthorized = useMemo(() => {
-    const masterMenu = resolveAdminMenu({
-      menu,
-      isDev,
-      isMevi,
-      isRice,
-      isEcoSystemAdmin,
-    });
-    const filteredMenu = filterMenuByContext(
-      masterMenu as unknown as SidebarMenuSection[],
-      userContext,
-    );
-
+    const master = masterMenu as unknown as SidebarMenuSection[];
     return isRouteAuthorized(
       location,
       userContext,
-      masterMenu as unknown as SidebarMenuSection[],
-      filteredMenu as unknown as SidebarMenuSection[],
+      master,
+      filterMenuByContext(master, userContext),
     );
-  }, [location, userContext, menu, isMevi, isDev, isRice, isEcoSystemAdmin]);
+  }, [location, userContext, masterMenu]);
+
+  const renderContent = () => {
+    if (isLoading)
+      return <LoadingState message="Đang kiểm tra quyền truy cập..." />;
+    if (needsWorkspace && isWorkspaceLoading)
+      return (
+        <LoadingState message="Đang tải danh sách không gian làm việc..." />
+      );
+    if (needsWorkspace && workspaces.length === 0)
+      return (
+        <LoadingState message="Hệ thống đang khởi tạo không gian làm việc, vui lòng đợi trong giây lát..." />
+      );
+    if (!isAuthorized) return <UnauthorizedState />;
+
+    return (
+      <main className="p-6 flex-1">
+        {(title || actions) && (
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <div>
+              {title && (
+                <h1
+                  className="text-2xl font-display font-bold text-foreground"
+                  data-testid="page-title"
+                >
+                  {title}
+                </h1>
+              )}
+              {description && (
+                <p
+                  className="mt-1 text-muted-foreground"
+                  data-testid="page-description"
+                >
+                  {description}
+                </p>
+              )}
+            </div>
+            {actions && (
+              <div className="flex items-center gap-2">{actions}</div>
+            )}
+          </div>
+        )}
+        {children}
+      </main>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -151,11 +198,7 @@ function AdminLayoutContent({
         onToggle={toggleSidebar}
         isMobile={isMobile}
         mobileOpen={mobileSidebarOpen}
-        isDev={isDev}
-        isMevi={isMevi}
-        isRice={isRice}
-        isEcoSystemAdmin={isEcoSystemAdmin}
-        menu={menu}
+        menu={masterMenu}
         brandIcon={brandIcon}
         brandTitle={brandTitle}
         brandSubtitle={brandSubtitle}
@@ -172,90 +215,57 @@ function AdminLayoutContent({
             isMobile ? () => setMobileSidebarOpen(true) : undefined
           }
         />
-        {isLoading || (!isEcoSystemAdmin && isWorkspaceLoading) ? (
-          <main className="p-6 flex-1 flex items-center justify-center bg-slate-50/30 dark:bg-slate-900/30">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-muted-foreground font-semibold animate-pulse">
-                {isLoading
-                  ? "Đang kiểm tra quyền truy cập..."
-                  : "Đang tải danh sách không gian làm việc..."}
-              </p>
-            </div>
-          </main>
-        ) : !isEcoSystemAdmin && workspaces.length === 0 ? (
-          <main className="p-6 flex-1 flex items-center justify-center bg-slate-50/30 dark:bg-slate-900/30">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center max-w-md p-6">
-              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-muted-foreground font-semibold animate-pulse">
-                Hệ thống đang khởi tạo không gian làm việc, vui lòng đợi trong
-                giây lát...
-              </p>
-            </div>
-          </main>
-        ) : isAuthorized ? (
-          <main className="p-6 flex-1">
-            {(title || actions) && (
-              <div className="mb-6 flex items-start justify-between gap-4">
-                <div>
-                  {title && (
-                    <h1
-                      className="text-2xl font-display font-bold text-foreground"
-                      data-testid="page-title"
-                    >
-                      {title}
-                    </h1>
-                  )}
-                  {description && (
-                    <p
-                      className="mt-1 text-muted-foreground"
-                      data-testid="page-description"
-                    >
-                      {description}
-                    </p>
-                  )}
-                </div>
-                {actions && (
-                  <div className="flex items-center gap-2">{actions}</div>
-                )}
-              </div>
-            )}
-            {children}
-          </main>
-        ) : (
-          <main className="flex-1 flex items-center justify-center p-6 bg-slate-50/50 dark:bg-slate-900/50">
-            <div className="max-w-md w-full text-center p-8 rounded-2xl border border-border bg-card/60 backdrop-blur-xl shadow-xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <div className="w-16 h-16 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center mx-auto shadow-inner">
-                <ShieldAlert className="w-8 h-8" />
-              </div>
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                  Không có quyền truy cập
-                </h2>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  Tài khoản của bạn không được phân quyền để truy cập trang này.
-                  Vui lòng liên hệ quản trị viên hoặc quay lại trang chủ.
-                </p>
-              </div>
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    window.open(
-                      "https://mevi-center.otechz.com/dashboard",
-                      "_blank",
-                      "noopener,noreferrer",
-                    );
-                  }}
-                  className="w-full py-2.5 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer"
-                >
-                  Quay lại Trang chủ
-                </button>
-              </div>
-            </div>
-          </main>
-        )}
+        {renderContent()}
       </div>
     </div>
+  );
+}
+
+function LoadingState({ message }: { message: string }) {
+  return (
+    <main className="p-6 flex-1 flex items-center justify-center bg-slate-50/30 dark:bg-slate-900/30">
+      <div className="flex flex-col items-center justify-center space-y-4 text-center max-w-md p-6">
+        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-muted-foreground font-semibold animate-pulse">
+          {message}
+        </p>
+      </div>
+    </main>
+  );
+}
+
+function UnauthorizedState() {
+  return (
+    <main className="flex-1 flex items-center justify-center p-6 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="max-w-md w-full text-center p-8 rounded-2xl border border-border bg-card/60 backdrop-blur-xl shadow-xl space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="w-16 h-16 rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center mx-auto shadow-inner">
+          <ShieldAlert className="w-8 h-8" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            Không có quyền truy cập
+          </h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Tài khoản của bạn không được phân quyền để truy cập trang này. Vui
+            lòng liên hệ quản trị viên hoặc quay lại trang chủ.
+          </p>
+        </div>
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => {
+              window.open(
+                "https://mevi-center.otechz.com/dashboard",
+                "_blank",
+                "noopener,noreferrer",
+              );
+            }}
+            className="w-full py-2.5 px-4 bg-primary text-primary-foreground hover:bg-primary/90 font-medium rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer"
+          >
+            Quay lại Trang chủ
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }

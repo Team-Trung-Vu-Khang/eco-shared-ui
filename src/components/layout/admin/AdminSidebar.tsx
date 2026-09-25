@@ -37,7 +37,8 @@ export interface AdminSidebarProps {
   isMevi?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
-  /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin */
+  isFactory?: boolean;
+  /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin/isFactory */
   menu?: MenuSection[];
   brandIcon?: ElementType;
   brandTitle?: ReactNode;
@@ -58,6 +59,7 @@ export function AdminSidebar({
   isMevi = false,
   isRice = false,
   isEcoSystemAdmin = false,
+  isFactory = false,
   menu,
   brandIcon,
   brandTitle,
@@ -80,8 +82,8 @@ export function AdminSidebar({
   }, [user]);
 
   const masterMenuConfig = useMemo(() => {
-    return resolveAdminMenu({ menu, isDev, isMevi, isRice, isEcoSystemAdmin });
-  }, [menu, isMevi, isDev, isRice, isEcoSystemAdmin]);
+    return resolveAdminMenu({ menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory });
+  }, [menu, isMevi, isDev, isRice, isEcoSystemAdmin, isFactory]);
 
   const menuGroups = useMemo(() => {
     // Save to global caches
@@ -109,6 +111,7 @@ export function AdminSidebar({
       isMevi,
       isRice,
       isEcoSystemAdmin,
+      isFactory,
     });
 
     const initialGroups = masterConfig
