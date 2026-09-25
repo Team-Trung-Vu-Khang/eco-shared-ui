@@ -10,18 +10,10 @@ import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
 
 import { ShieldAlert } from "lucide-react";
 
-import {
-  isRouteAuthorized,
-  filterMenuByContext,
-} from "./sidebar/menuUtils";
-import type { MenuSection as SidebarMenuSection } from "./sidebar/types";
-import {
-  menuDevGroups,
-  menuProdGroups,
-  menuProdRiceGroups,
-  menuEcoSystemAdminGroups,
-  menuMeviDevGroups,
-} from "./adminSidebarMenus";
+import { isRouteAuthorized, filterMenuByContext } from "../sidebar/menuUtils";
+import type { MenuSection as SidebarMenuSection } from "../sidebar/types";
+import type { MenuSection } from "../menus/adminSidebarMenus";
+import { resolveAdminMenu } from "../menus/resolveAdminMenu";
 
 export interface AdminLayoutProps {
   children: ReactNode;
@@ -32,6 +24,8 @@ export interface AdminLayoutProps {
   isMevi?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
+  /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin */
+  menu?: MenuSection[];
   brandIcon?: ElementType;
   brandTitle?: ReactNode;
   brandSubtitle?: ReactNode;
@@ -54,6 +48,7 @@ function AdminLayoutContent({
   isMevi = false,
   isRice = false,
   isEcoSystemAdmin = false,
+  menu,
   brandIcon,
   brandTitle,
   brandSubtitle,
@@ -121,15 +116,13 @@ function AdminLayoutContent({
   }, [user]);
 
   const isAuthorized = useMemo(() => {
-    const masterMenu = isMevi
-      ? menuMeviDevGroups
-      : isDev
-        ? menuDevGroups
-        : isRice
-          ? menuProdRiceGroups
-          : isEcoSystemAdmin
-            ? menuEcoSystemAdminGroups
-            : menuProdGroups;
+    const masterMenu = resolveAdminMenu({
+      menu,
+      isDev,
+      isMevi,
+      isRice,
+      isEcoSystemAdmin,
+    });
     const filteredMenu = filterMenuByContext(
       masterMenu as unknown as SidebarMenuSection[],
       userContext,
@@ -141,7 +134,7 @@ function AdminLayoutContent({
       masterMenu as unknown as SidebarMenuSection[],
       filteredMenu as unknown as SidebarMenuSection[],
     );
-  }, [location, userContext, isMevi, isDev, isRice, isEcoSystemAdmin]);
+  }, [location, userContext, menu, isMevi, isDev, isRice, isEcoSystemAdmin]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -162,6 +155,7 @@ function AdminLayoutContent({
         isMevi={isMevi}
         isRice={isRice}
         isEcoSystemAdmin={isEcoSystemAdmin}
+        menu={menu}
         brandIcon={brandIcon}
         brandTitle={brandTitle}
         brandSubtitle={brandSubtitle}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Building2, ExternalLink, Check, Menu, Search } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { SUPER_ADMIN_ROLE } from "./sidebar/types";
+import { SUPER_ADMIN_ROLE } from "../sidebar/types";
 import {
   workspaceApi,
   useWorkspace,

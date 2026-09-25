@@ -74,6 +74,34 @@ function MobileAppLayoutContent({
           {navItems.map((item) => {
             const isActive = isNavItemActive(item, location);
             const Icon = item.icon;
+            if (item.isPrimary) {
+              return (
+                <li key={item.href} className="flex justify-center">
+                  <Link
+                    href={item.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className="flex h-16 flex-col items-center justify-end gap-1 pb-1.5 text-[11px] font-medium"
+                  >
+                    <span
+                      className={cn(
+                        "-mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-4 ring-white transition-transform active:scale-95",
+                        isActive && "ring-primary/20",
+                      )}
+                    >
+                      <Icon className="h-6 w-6" />
+                    </span>
+                    <span
+                      className={cn(
+                        "max-w-full truncate px-1",
+                        isActive ? "text-primary" : "text-slate-600",
+                      )}
+                    >
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            }
             return (
               <li key={item.href}>
                 <Link

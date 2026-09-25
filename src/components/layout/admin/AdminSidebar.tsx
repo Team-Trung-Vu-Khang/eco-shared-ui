@@ -16,13 +16,8 @@ import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import type { ElementType, MouseEvent, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
-import {
-  menuDevGroups,
-  menuEcoSystemAdminGroups,
-  menuMeviDevGroups,
-  menuProdGroups,
-  menuProdRiceGroups,
-} from "./adminSidebarMenus";
+import type { MenuSection } from "../menus/adminSidebarMenus";
+import { resolveAdminMenu } from "../menus/resolveAdminMenu";
 import { AdminSidebarBrand } from "./AdminSidebarBrand";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
@@ -30,8 +25,8 @@ import {
   getIconComponent,
   setCachedFilteredMenu,
   setCachedMasterMenu,
-} from "./sidebar/menuUtils";
-import type { MenuSection as SidebarMenuSection } from "./sidebar/types";
+} from "../sidebar/menuUtils";
+import type { MenuSection as SidebarMenuSection } from "../sidebar/types";
 
 export interface AdminSidebarProps {
   collapsed?: boolean;
@@ -42,6 +37,8 @@ export interface AdminSidebarProps {
   isMevi?: boolean;
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
+  /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin */
+  menu?: MenuSection[];
   brandIcon?: ElementType;
   brandTitle?: ReactNode;
   brandSubtitle?: ReactNode;
@@ -61,6 +58,7 @@ export function AdminSidebar({
   isMevi = false,
   isRice = false,
   isEcoSystemAdmin = false,
+  menu,
   brandIcon,
   brandTitle,
   brandSubtitle,
@@ -82,16 +80,8 @@ export function AdminSidebar({
   }, [user]);
 
   const masterMenuConfig = useMemo(() => {
-    return isMevi
-      ? menuMeviDevGroups
-      : isDev
-        ? menuDevGroups
-        : isRice
-          ? menuProdRiceGroups
-          : isEcoSystemAdmin
-            ? menuEcoSystemAdminGroups
-            : menuProdGroups;
-  }, [isMevi, isDev, isRice, isEcoSystemAdmin]);
+    return resolveAdminMenu({ menu, isDev, isMevi, isRice, isEcoSystemAdmin });
+  }, [menu, isMevi, isDev, isRice, isEcoSystemAdmin]);
 
   const menuGroups = useMemo(() => {
     // Save to global caches
@@ -113,15 +103,13 @@ export function AdminSidebar({
   // Initialize state from storage or defaults
   const [expandedGroups, setExpandedGroups] = useState<string[]>(() => {
     const saved = sessionStorage.getItem(STORAGE_KEY_GROUPS);
-    const masterConfig = isMevi
-      ? menuMeviDevGroups
-      : isDev
-        ? menuDevGroups
-        : isRice
-          ? menuProdRiceGroups
-          : isEcoSystemAdmin
-            ? menuEcoSystemAdminGroups
-            : menuProdGroups;
+    const masterConfig = resolveAdminMenu({
+      menu,
+      isDev,
+      isMevi,
+      isRice,
+      isEcoSystemAdmin,
+    });
 
     const initialGroups = masterConfig
       .filter((group) => "title" in group)
