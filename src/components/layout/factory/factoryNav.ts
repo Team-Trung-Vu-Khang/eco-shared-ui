@@ -92,7 +92,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
       // },
       {
         id: "factory-product-groups",
-        label: "Nhóm nông sản/sản phẩm đang chế biến",
+        label: "Nhóm nông sản/sản phẩm",
         icon: Layers,
         href: FACTORY_ROUTES.productGroups,
       },
