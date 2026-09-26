@@ -1,6 +1,5 @@
 import {
   Award,
-  Building2,
   CalendarClock,
   ClipboardList,
   Cog,
@@ -13,7 +12,6 @@ import {
   ListChecks,
   Package,
   Search,
-  Sparkles,
   UserRound,
   Warehouse,
   Wrench,
@@ -188,48 +186,8 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
   },
 ];
 
-/** Bottom navigation cho nhà máy trên mobile */
+/** Bottom navigation trên mobile (dùng chung) */
 export const FACTORY_MOBILE_NAV_ITEMS: MobileNavItem[] = [
-  {
-    label: "Tổng quan",
-    href: FACTORY_ROUTES.dashboard,
-    icon: LayoutDashboard,
-    // Chỉ khớp chính xác, tránh active cho mọi trang /factory/*
-    matchPrefixes: [],
-  },
-  {
-    label: "Kho",
-    href: FACTORY_ROUTES.warehouse,
-    icon: Warehouse,
-    matchPrefixes: [FACTORY_ROUTES.warehouse],
-  },
-  {
-    label: "Tìm nhu cầu",
-    href: FACTORY_ROUTES.demandMatching,
-    icon: Search,
-    matchPrefixes: [FACTORY_ROUTES.demandMatching],
-    isPrimary: true,
-  },
-  {
-    label: "Nhu cầu",
-    href: FACTORY_ROUTES.demands,
-    icon: Sparkles,
-    matchPrefixes: [FACTORY_ROUTES.demands, FACTORY_ROUTES.demandTypes],
-  },
-  {
-    label: "Hồ sơ",
-    href: FACTORY_ROUTES.profile,
-    icon: Building2,
-    matchPrefixes: [
-      FACTORY_ROUTES.profile,
-      FACTORY_ROUTES.certificates,
-      FACTORY_ROUTES.products,
-    ],
-  },
-];
-
-/** Bottom navigation cho nông hộ khi chuyển sang factory trên mobile */
-export const FACTORY_FARMER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
   {
     label: "Trang chủ",
     href: FACTORY_ROUTES.dashboard,
@@ -241,7 +199,6 @@ export const FACTORY_FARMER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
     href: FACTORY_ROUTES.connectionSearch,
     icon: Search,
     matchPrefixes: [FACTORY_ROUTES.connectionSearch],
-    isPrimary: true,
   },
   {
     label: "Lịch sử",
@@ -250,9 +207,9 @@ export const FACTORY_FARMER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
     matchPrefixes: [FACTORY_ROUTES.connectionHistory],
   },
   {
-    label: "Profile",
-    href: FACTORY_ROUTES.profile,
+    label: "Tài khoản",
+    href: "/profile",
     icon: UserRound,
-    matchPrefixes: [FACTORY_ROUTES.profile],
+    matchPrefixes: ["/profile"],
   },
 ];
