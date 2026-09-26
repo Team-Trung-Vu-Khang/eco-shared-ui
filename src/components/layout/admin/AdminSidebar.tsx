@@ -38,6 +38,7 @@ export interface AdminSidebarProps {
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
   isFactory?: boolean;
+  isOwnerFactory?: boolean;
   /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin/isFactory */
   menu?: MenuSection[];
   brandIcon?: ElementType;
@@ -60,6 +61,7 @@ export function AdminSidebar({
   isRice = false,
   isEcoSystemAdmin = false,
   isFactory = false,
+  isOwnerFactory = false,
   menu,
   brandIcon,
   brandTitle,
@@ -82,8 +84,8 @@ export function AdminSidebar({
   }, [user]);
 
   const masterMenuConfig = useMemo(() => {
-    return resolveAdminMenu({ menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory });
-  }, [menu, isMevi, isDev, isRice, isEcoSystemAdmin, isFactory]);
+    return resolveAdminMenu({ menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory, isOwnerFactory });
+  }, [menu, isMevi, isDev, isRice, isEcoSystemAdmin, isFactory, isOwnerFactory]);
 
   const menuGroups = useMemo(() => {
     // Save to global caches
@@ -112,6 +114,7 @@ export function AdminSidebar({
       isRice,
       isEcoSystemAdmin,
       isFactory,
+      isOwnerFactory,
     });
 
     const initialGroups = masterConfig

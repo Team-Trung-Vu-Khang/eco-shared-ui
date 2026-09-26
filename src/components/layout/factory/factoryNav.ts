@@ -187,6 +187,45 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
   },
 ];
 
+/** Menu sidebar cho tài khoản chủ nhà máy (isOwnerFactory) */
+export const FACTORY_OWNER_MENU_GROUPS: MenuSection[] = [
+  {
+    title: "Nhà máy",
+    items: [
+      {
+        id: "factory-owner-profile",
+        label: "Thông tin nhà máy",
+        icon: Factory,
+        href: FACTORY_ROUTES.profile,
+        children: [
+          {
+            id: "factory-owner-profile-info",
+            label: "Hồ sơ nhà máy",
+            href: FACTORY_ROUTES.profile,
+          },
+          {
+            id: "factory-owner-certificates",
+            label: "Chứng nhận",
+            href: FACTORY_ROUTES.certificates,
+          },
+        ],
+      },
+      {
+        id: "factory-owner-processing-schedules",
+        label: "Đăng tin",
+        icon: CalendarClock,
+        href: FACTORY_ROUTES.processingSchedules,
+      },
+      {
+        id: "factory-owner-connection-requests",
+        label: "Nhu cầu kết nối",
+        icon: Handshake,
+        href: FACTORY_ROUTES.connectionHistory,
+      },
+    ],
+  },
+];
+
 /** Bottom navigation trên mobile (dùng chung) */
 export const FACTORY_MOBILE_NAV_ITEMS: MobileNavItem[] = [
   {

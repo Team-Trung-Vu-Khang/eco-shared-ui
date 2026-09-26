@@ -25,6 +25,7 @@ export interface AdminLayoutProps {
   isRice?: boolean;
   isEcoSystemAdmin?: boolean;
   isFactory?: boolean;
+  isOwnerFactory?: boolean;
   /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin/isFactory */
   menu?: MenuSection[];
   brandIcon?: ElementType;
@@ -50,6 +51,7 @@ function AdminLayoutContent({
   isRice = false,
   isEcoSystemAdmin = false,
   isFactory = false,
+  isOwnerFactory = false,
   menu,
   brandIcon,
   brandTitle,
@@ -124,8 +126,9 @@ function AdminLayoutContent({
         isRice,
         isEcoSystemAdmin,
         isFactory,
+        isOwnerFactory,
       }),
-    [menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory],
+    [menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory, isOwnerFactory],
   );
 
   const isAuthorized = useMemo(() => {
