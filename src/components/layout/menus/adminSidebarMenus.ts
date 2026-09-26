@@ -1,5 +1,5 @@
 import type { ElementType } from "react";
-import type { FarmRole, MenuCondition } from "./sidebar/types";
+import type { FarmRole, MenuCondition } from "../sidebar/types";
 import {
   Award,
   BookOpenText,

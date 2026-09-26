@@ -13,6 +13,8 @@ export interface MobileNavItem {
   icon: LucideIcon;
   /** Các tiền tố đường dẫn cũng coi là đang ở tab này */
   matchPrefixes: string[];
+  /** Hành động chính — hiển thị nút nổi ở giữa thanh điều hướng */
+  isPrimary?: boolean;
 }
 
 export const MOBILE_HOME_PATH = "/home";
@@ -25,16 +27,17 @@ export const MOBILE_NAV_ITEMS: MobileNavItem[] = [
     matchPrefixes: [MOBILE_HOME_PATH],
   },
   {
-    label: "Vùng canh tác",
-    href: "/cultivation-region",
+    label: "Vùng trồng",
+    href: "/dashboard",
     icon: Map,
-    matchPrefixes: ["/cultivation-region"],
+    matchPrefixes: ["/dashboard"],
   },
   {
     label: "Cập nhật",
     href: "/diary/incident",
     icon: NotebookPen,
     matchPrefixes: ["/diary/incident"],
+    isPrimary: true,
   },
   {
     label: "Lịch sử",
@@ -51,6 +54,7 @@ export const MOBILE_NAV_ITEMS: MobileNavItem[] = [
 ];
 
 export const isNavItemActive = (item: MobileNavItem, location: string) =>
+  location === item.href ||
   item.matchPrefixes.some(
     (prefix) => location === prefix || location.startsWith(`${prefix}/`),
   );
