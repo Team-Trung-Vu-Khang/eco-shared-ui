@@ -9,11 +9,11 @@ import {
   Home,
   Layers,
   LayoutDashboard,
-  ListChecks,
-  Package,
+  // ListChecks,
+  // Package,
   Search,
   UserRound,
-  Warehouse,
+  // Warehouse,
   Wrench,
 } from "lucide-react";
 import type { MenuSection } from "../menus/adminSidebarMenus";
@@ -71,24 +71,25 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
         icon: Factory,
         href: FACTORY_ROUTES.profile,
       },
-      {
-        id: "factory-warehouse",
-        label: "Quản lý kho",
-        icon: Warehouse,
-        href: FACTORY_ROUTES.warehouse,
-      },
+      // Tạm ẩn: Kho sẽ phân khu (vật tư / sản phẩm / thành phẩm) trong tương lai
+      // {
+      //   id: "factory-warehouse",
+      //   label: "Quản lý kho",
+      //   icon: Warehouse,
+      //   href: FACTORY_ROUTES.warehouse,
+      // },
       {
         id: "factory-certificates",
         label: "Chứng nhận sản xuất",
         icon: Award,
         href: FACTORY_ROUTES.certificates,
       },
-      {
-        id: "factory-products",
-        label: "Sản phẩm chế biến",
-        icon: Package,
-        href: FACTORY_ROUTES.products,
-      },
+      // {
+      //   id: "factory-products",
+      //   label: "Sản phẩm chế biến",
+      //   icon: Package,
+      //   href: FACTORY_ROUTES.products,
+      // },
       {
         id: "factory-product-groups",
         label: "Nhóm nông sản/sản phẩm đang chế biến",
@@ -153,12 +154,12 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
   {
     title: "Nhu cầu",
     items: [
-      {
-        id: "factory-demand-types",
-        label: "Loại nhu cầu",
-        icon: ListChecks,
-        href: FACTORY_ROUTES.demandTypes,
-      },
+      // {
+      //   id: "factory-demand-types",
+      //   label: "Loại nhu cầu",
+      //   icon: ListChecks,
+      //   href: FACTORY_ROUTES.demandTypes,
+      // },
       {
         id: "factory-demands",
         label: "Thông tin nhu cầu",
