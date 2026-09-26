@@ -2453,7 +2453,7 @@ export const menuMeviDevGroups: MenuSection[] = [
           },
           {
             id: "byproduct",
-            label: "Phụ phẩm",
+            label: "Nhóm phụ phẩm",
             href: "/byproduct",
             roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
           },
