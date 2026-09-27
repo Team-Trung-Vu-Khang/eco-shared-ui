@@ -119,7 +119,7 @@ function MobileAppLayoutContent({
                 <Link
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className="relative flex h-14 w-full flex-col items-center justify-center gap-0.5 transition-transform active:scale-95"
+                  className="relative flex min-h-14 w-full flex-col items-center justify-center gap-0.5 transition-transform active:scale-95"
                 >
                   {/* Vạch sáng phía trên tab đang chọn */}
                   <span
@@ -140,7 +140,7 @@ function MobileAppLayoutContent({
                   </span>
                   <span
                     className={cn(
-                      "max-w-full truncate px-0.5 text-[10px] transition-colors",
+                      "line-clamp-2 max-w-full px-0.5 text-center text-[10px] leading-tight transition-colors",
                       isActive
                         ? "font-bold text-primary"
                         : "font-medium text-slate-500",

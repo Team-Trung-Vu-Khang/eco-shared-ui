@@ -275,13 +275,13 @@ const MOBILE_ACCOUNT_ITEM: MobileNavItem = {
   matchPrefixes: ["/profile"],
 };
 
-/** Bottom navigation mobile cho chủ nhà máy (quản lý nhà máy của mình) */
+/** Bottom navigation mobile cho chủ nhà máy (MEVI_FACTORY_MEMBER) */
 export const FACTORY_MEMBER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
   {
-    label: "Hồ sơ",
-    href: FACTORY_ROUTES.profile,
-    icon: Factory,
-    matchPrefixes: [FACTORY_ROUTES.profile, FACTORY_ROUTES.certificates],
+    label: "Chứng nhận",
+    href: FACTORY_ROUTES.certificates,
+    icon: Award,
+    matchPrefixes: [FACTORY_ROUTES.certificates],
   },
   {
     label: "Máy móc",
@@ -290,10 +290,54 @@ export const FACTORY_MEMBER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
     matchPrefixes: [FACTORY_ROUTES.machines],
   },
   {
-    label: "Lịch nhận",
+    label: "Đăng tin",
     href: FACTORY_ROUTES.processingSchedules,
     icon: CalendarClock,
-    matchPrefixes: [FACTORY_ROUTES.processingSchedules],
+    // Không match theo prefix để tránh trùng với tab Lịch sử (/processing-schedules/history)
+    matchPrefixes: [],
+    isPrimary: true,
+  },
+  {
+    label: "Lịch sử",
+    href: FACTORY_ROUTES.processingScheduleHistory,
+    icon: History,
+    matchPrefixes: [FACTORY_ROUTES.processingScheduleHistory],
+  },
+  {
+    label: "Hồ sơ",
+    href: FACTORY_ROUTES.profile,
+    icon: Factory,
+    matchPrefixes: [FACTORY_ROUTES.profile],
+  },
+];
+
+/** Bottom navigation mobile cho admin nhà máy */
+export const FACTORY_ADMIN_MOBILE_NAV_ITEMS: MobileNavItem[] = [
+  {
+    label: "Hồ sơ",
+    href: FACTORY_ROUTES.profile,
+    icon: Factory,
+    matchPrefixes: [FACTORY_ROUTES.profile],
+  },
+  {
+    label: "Chứng nhận",
+    href: FACTORY_ROUTES.certificates,
+    icon: Award,
+    matchPrefixes: [FACTORY_ROUTES.certificates],
+  },
+  {
+    label: "Tổng quan",
+    href: FACTORY_ROUTES.dashboard,
+    icon: LayoutDashboard,
+    // Dashboard là "/factory" — chỉ match chính xác
+    matchPrefixes: [],
+    isPrimary: true,
+  },
+  {
+    label: "Tài khoản nhà máy",
+    href: FACTORY_ROUTES.accounts,
+    icon: UserCog,
+    matchPrefixes: [FACTORY_ROUTES.accounts],
   },
   MOBILE_ACCOUNT_ITEM,
 ];
@@ -325,9 +369,10 @@ export function getFactoryAccessLevel(roles: string[] = []): FactoryAccessLevel 
 }
 
 
-/** Bottom nav mobile theo quyền (admin dùng desktop, fallback nav member) */
+/** Bottom nav mobile theo quyền */
 export function getFactoryMobileNavItems(roles: string[] = []): MobileNavItem[] {
-  return getFactoryAccessLevel(roles) === "guest"
-    ? FACTORY_MOBILE_NAV_ITEMS
-    : FACTORY_MEMBER_MOBILE_NAV_ITEMS;
+  const level = getFactoryAccessLevel(roles);
+  if (level === "admin") return FACTORY_ADMIN_MOBILE_NAV_ITEMS;
+  if (level === "member") return FACTORY_MEMBER_MOBILE_NAV_ITEMS;
+  return FACTORY_MOBILE_NAV_ITEMS;
 }
