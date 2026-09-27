@@ -3,20 +3,25 @@ import {
   MobileAppLayout,
   type MobileAppLayoutProps,
 } from "../mobile/MobileAppLayout";
-import { FACTORY_MOBILE_NAV_ITEMS } from "./factoryNav";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { getFactoryMobileNavItems } from "./factoryNav";
 
 export type FactoryMobileLayoutProps = MobileAppLayoutProps;
 
-/** Layout mobile cho nhà máy sản xuất — header + bottom nav nhà máy */
+/** Layout mobile cho nhà máy sản xuất — header + bottom nav theo quyền */
 export function FactoryMobileLayout({
-  navItems = FACTORY_MOBILE_NAV_ITEMS,
+  navItems,
   brandIcon = Factory,
   brandTitle = "Eco Factory",
   ...props
 }: FactoryMobileLayoutProps) {
+  const { user } = useAuth();
+  const roles = (user?.roles ??
+    (user?.role ? [user.role].flat() : [])) as string[];
+
   return (
     <MobileAppLayout
-      navItems={navItems}
+      navItems={navItems ?? getFactoryMobileNavItems(roles)}
       brandIcon={brandIcon}
       brandTitle={brandTitle}
       {...props}

@@ -2,14 +2,30 @@ import type { ElementType } from "react";
 
 export const SUPER_ADMIN_ROLE = "MEVI_SUPER_ADMIN";
 export const REQUIRE_FIRST_ONBOARD_COND = "REQUIRE_FIRST_ONBOARD";
+/** User không có role nào trong nhà máy (FACTORY_ROLES) */
+export const NO_FACTORY_ROLE_COND = "NO_FACTORY_ROLE";
 
 export type FarmRole =
   | "MEVI_ADMIN"
   | "MEVI_SUPER_ADMIN"
   | "MEVI_FARM_ADMIN"
-  | "MEVI_FARM_MEMBER";
+  | "MEVI_FARM_MEMBER"
+  | "MEVI_FACTORY_ADMIN";
 
-export type MenuCondition = "REQUIRE_FIRST_ONBOARD";
+/** Nhóm quản trị nhà máy: super admin, admin mevi, admin nhà máy */
+export const FACTORY_ADMIN_ROLES: FarmRole[] = [
+  "MEVI_SUPER_ADMIN",
+  "MEVI_ADMIN",
+  "MEVI_FACTORY_ADMIN",
+];
+
+/** Các role có quyền trong phân hệ nhà máy */
+export const FACTORY_ROLES: FarmRole[] = [
+  ...FACTORY_ADMIN_ROLES,
+  "MEVI_FARM_MEMBER",
+];
+
+export type MenuCondition = "REQUIRE_FIRST_ONBOARD" | "NO_FACTORY_ROLE";
 
 export interface UserContext {
   roles?: string[];

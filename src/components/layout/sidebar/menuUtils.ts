@@ -8,7 +8,12 @@ import type {
   MenuSection,
   UserContext,
 } from "./types";
-import { SUPER_ADMIN_ROLE, REQUIRE_FIRST_ONBOARD_COND } from "./types";
+import {
+  FACTORY_ROLES,
+  NO_FACTORY_ROLE_COND,
+  REQUIRE_FIRST_ONBOARD_COND,
+  SUPER_ADMIN_ROLE,
+} from "./types";
 
 /**
  * Resolves a dynamic icon string or ElementType into a valid React Component.
@@ -44,6 +49,9 @@ export function filterMenuByContext(
     return conditions.every((cond) => {
       if (cond === REQUIRE_FIRST_ONBOARD_COND) {
         return !!context.isFirstOnboard;
+      }
+      if (cond === NO_FACTORY_ROLE_COND) {
+        return !FACTORY_ROLES.some((role) => context.roles?.includes(role));
       }
       return true;
     });

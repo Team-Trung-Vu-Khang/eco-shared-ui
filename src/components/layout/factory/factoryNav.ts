@@ -6,18 +6,23 @@ import {
   Factory,
   Handshake,
   History,
-  Home,
   Layers,
   LayoutDashboard,
   // ListChecks,
   // Package,
   Search,
+  UserCog,
   UserRound,
   // Warehouse,
   Wrench,
 } from "lucide-react";
 import type { MenuSection } from "../menus/adminSidebarMenus";
 import type { MobileNavItem } from "../mobile/mobileNav";
+import {
+  FACTORY_ADMIN_ROLES,
+  FACTORY_ROLES,
+  type MenuCondition,
+} from "../sidebar/types";
 
 export const FACTORY_BASE_PATH = "/factory";
 
@@ -41,6 +46,8 @@ export const FACTORY_ROUTES = {
   connectionSearch: `${FACTORY_BASE_PATH}/connections/search`,
   /** Kết nối nhà máy - lịch sử kết nối */
   connectionHistory: `${FACTORY_BASE_PATH}/connections/history`,
+  /** Quản lý tài khoản nhà máy (tạo/tạm dừng/xóa, gán cho nhà máy) */
+  accounts: `${FACTORY_BASE_PATH}/accounts`,
   demandTypes: `${FACTORY_BASE_PATH}/demand-types`,
   demands: `${FACTORY_BASE_PATH}/demands`,
   /** Hệ thống gợi ý nhà máy phù hợp với nhu cầu */
@@ -49,14 +56,25 @@ export const FACTORY_ROUTES = {
   demandMatching: `${FACTORY_BASE_PATH}/demands/matching`,
 } as const;
 
-/** Menu sidebar cho nhà máy sản xuất */
+const ADMIN = FACTORY_ADMIN_ROLES;
+/** Member không có role nhà máy (super admin bypass vẫn thấy) */
+const NO_FACTORY_ROLE: MenuCondition[] = ["NO_FACTORY_ROLE"];
+
+/**
+ * Menu sidebar cho nhà máy sản xuất — phân quyền:
+ * - Admin (super admin / admin mevi / admin nhà máy): báo cáo, hồ sơ, chứng nhận,
+ *   tài khoản nhà máy, dữ liệu liên kết
+ * - Farm member: hồ sơ, chứng nhận, máy & dây chuyền, lịch nhận chế biến
+ * - Member không có role nhà máy: tìm kiếm nhà máy, lịch sử kết nối
+ */
 export const FACTORY_MENU_GROUPS: MenuSection[] = [
   {
     title: "Tổng quan",
+    roles: ADMIN,
     items: [
       {
         id: "factory-dashboard",
-        label: "Dashboard",
+        label: "Báo cáo tổng quan",
         icon: LayoutDashboard,
         href: FACTORY_ROUTES.dashboard,
       },
@@ -70,6 +88,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
         label: "Hồ sơ nhà máy",
         icon: Factory,
         href: FACTORY_ROUTES.profile,
+        roles: FACTORY_ROLES,
       },
       // Tạm ẩn: Kho sẽ phân khu (vật tư / sản phẩm / thành phẩm) trong tương lai
       // {
@@ -83,6 +102,14 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
         label: "Chứng nhận sản xuất",
         icon: Award,
         href: FACTORY_ROUTES.certificates,
+        roles: FACTORY_ROLES,
+      },
+      {
+        id: "factory-accounts",
+        label: "Quản lý tài khoản nhà máy",
+        icon: UserCog,
+        href: FACTORY_ROUTES.accounts,
+        roles: ADMIN,
       },
       // {
       //   id: "factory-products",
@@ -91,28 +118,18 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
       //   href: FACTORY_ROUTES.products,
       // },
       {
-        id: "factory-product-groups",
-        label: "Nhóm nông sản/sản phẩm",
-        icon: Layers,
-        href: FACTORY_ROUTES.productGroups,
-      },
-      {
-        id: "factory-processing-services",
-        label: "Dịch vụ chế biến tại nhà máy",
-        icon: Wrench,
-        href: FACTORY_ROUTES.processingServices,
-      },
-      {
         id: "factory-machines",
         label: "Máy & Dây chuyền",
         icon: Cog,
         href: FACTORY_ROUTES.machines,
+        roles: ["MEVI_FARM_MEMBER"],
       },
       {
         id: "factory-processing-schedules",
         label: "Lịch nhận chế biến",
         icon: CalendarClock,
         href: FACTORY_ROUTES.processingSchedules,
+        roles: ["MEVI_FARM_MEMBER"],
         children: [
           {
             id: "factory-processing-schedule-list",
@@ -129,6 +146,24 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
     ],
   },
   {
+    title: "Dữ liệu liên kết",
+    roles: ADMIN,
+    items: [
+      {
+        id: "factory-product-groups",
+        label: "Nhóm nông sản/sản phẩm",
+        icon: Layers,
+        href: FACTORY_ROUTES.productGroups,
+      },
+      {
+        id: "factory-processing-services",
+        label: "Dịch vụ chế biến tại nhà máy",
+        icon: Wrench,
+        href: FACTORY_ROUTES.processingServices,
+      },
+    ],
+  },
+  {
     title: "Kết nối nhà máy",
     items: [
       {
@@ -136,6 +171,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
         label: "Kết nối nhà máy",
         icon: Handshake,
         href: FACTORY_ROUTES.connectionSearch,
+        conditions: NO_FACTORY_ROLE,
         children: [
           {
             id: "factory-connection-search",
@@ -153,6 +189,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
   },
   {
     title: "Nhu cầu",
+    roles: ADMIN,
     items: [
       // {
       //   id: "factory-demand-types",
@@ -226,14 +263,38 @@ export const FACTORY_OWNER_MENU_GROUPS: MenuSection[] = [
   },
 ];
 
-/** Bottom navigation trên mobile (dùng chung) */
-export const FACTORY_MOBILE_NAV_ITEMS: MobileNavItem[] = [
+const MOBILE_ACCOUNT_ITEM: MobileNavItem = {
+  label: "Tài khoản",
+  href: "/profile",
+  icon: UserRound,
+  matchPrefixes: ["/profile"],
+};
+
+/** Bottom navigation mobile cho farm member (quản lý nhà máy của mình) */
+export const FACTORY_MEMBER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
   {
-    label: "Trang chủ",
-    href: FACTORY_ROUTES.dashboard,
-    icon: Home,
-    matchPrefixes: [],
+    label: "Hồ sơ",
+    href: FACTORY_ROUTES.profile,
+    icon: Factory,
+    matchPrefixes: [FACTORY_ROUTES.profile, FACTORY_ROUTES.certificates],
   },
+  {
+    label: "Máy móc",
+    href: FACTORY_ROUTES.machines,
+    icon: Cog,
+    matchPrefixes: [FACTORY_ROUTES.machines],
+  },
+  {
+    label: "Lịch nhận",
+    href: FACTORY_ROUTES.processingSchedules,
+    icon: CalendarClock,
+    matchPrefixes: [FACTORY_ROUTES.processingSchedules],
+  },
+  MOBILE_ACCOUNT_ITEM,
+];
+
+/** Bottom navigation mobile cho member không có role nhà máy (kết nối) */
+export const FACTORY_MOBILE_NAV_ITEMS: MobileNavItem[] = [
   {
     label: "Tìm kiếm",
     href: FACTORY_ROUTES.connectionSearch,
@@ -246,10 +307,22 @@ export const FACTORY_MOBILE_NAV_ITEMS: MobileNavItem[] = [
     icon: History,
     matchPrefixes: [FACTORY_ROUTES.connectionHistory],
   },
-  {
-    label: "Tài khoản",
-    href: "/profile",
-    icon: UserRound,
-    matchPrefixes: ["/profile"],
-  },
+  MOBILE_ACCOUNT_ITEM,
 ];
+
+export type FactoryAccessLevel = "admin" | "member" | "guest";
+
+/** Xác định nhóm quyền nhà máy từ danh sách role của user */
+export function getFactoryAccessLevel(roles: string[] = []): FactoryAccessLevel {
+  if (FACTORY_ADMIN_ROLES.some((role) => roles.includes(role))) return "admin";
+  if (roles.includes("MEVI_FARM_MEMBER")) return "member";
+  return "guest";
+}
+
+
+/** Bottom nav mobile theo quyền (admin dùng desktop, fallback nav member) */
+export function getFactoryMobileNavItems(roles: string[] = []): MobileNavItem[] {
+  return getFactoryAccessLevel(roles) === "guest"
+    ? FACTORY_MOBILE_NAV_ITEMS
+    : FACTORY_MEMBER_MOBILE_NAV_ITEMS;
+}
