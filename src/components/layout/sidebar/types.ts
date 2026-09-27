@@ -6,11 +6,20 @@ export const REQUIRE_FIRST_ONBOARD_COND = "REQUIRE_FIRST_ONBOARD";
 export const NO_FACTORY_ROLE_COND = "NO_FACTORY_ROLE";
 
 export type FarmRole =
-  | "MEVI_ADMIN"
+  // Quản trị toàn hệ thống
   | "MEVI_SUPER_ADMIN"
+  | "MEVI_ADMIN"
+  // Quản trị theo phân hệ
+  | "MEVI_EDU_ADMIN"
   | "MEVI_FARM_ADMIN"
+  | "MEVI_FACTORY_ADMIN"
+  | "MEVI_SHOP_ADMIN"
+  // Người dùng theo phân hệ
+  | "MEVI_EDU_TRAINEES"
+  | "MEVI_EDU_LECTURER"
   | "MEVI_FARM_MEMBER"
-  | "MEVI_FACTORY_ADMIN";
+  | "MEVI_FACTORY_MEMBER"
+  | "MEVI_SHOP_MEMBER";
 
 /** Nhóm quản trị nhà máy: super admin, admin mevi, admin nhà máy */
 export const FACTORY_ADMIN_ROLES: FarmRole[] = [
@@ -19,10 +28,13 @@ export const FACTORY_ADMIN_ROLES: FarmRole[] = [
   "MEVI_FACTORY_ADMIN",
 ];
 
+/** Tài khoản nhà máy (chủ nhà máy) */
+export const FACTORY_MEMBER_ROLE: FarmRole = "MEVI_FACTORY_MEMBER";
+
 /** Các role có quyền trong phân hệ nhà máy */
 export const FACTORY_ROLES: FarmRole[] = [
   ...FACTORY_ADMIN_ROLES,
-  "MEVI_FARM_MEMBER",
+  FACTORY_MEMBER_ROLE,
 ];
 
 export type MenuCondition = "REQUIRE_FIRST_ONBOARD" | "NO_FACTORY_ROLE";

@@ -20,7 +20,9 @@ import type { MenuSection } from "../menus/adminSidebarMenus";
 import type { MobileNavItem } from "../mobile/mobileNav";
 import {
   FACTORY_ADMIN_ROLES,
+  FACTORY_MEMBER_ROLE,
   FACTORY_ROLES,
+  type FarmRole,
   type MenuCondition,
 } from "../sidebar/types";
 
@@ -57,15 +59,18 @@ export const FACTORY_ROUTES = {
 } as const;
 
 const ADMIN = FACTORY_ADMIN_ROLES;
+/** Chủ nhà máy (MEVI_FACTORY_MEMBER) */
+const OWNER: FarmRole[] = [FACTORY_MEMBER_ROLE];
 /** Member không có role nhà máy (super admin bypass vẫn thấy) */
 const NO_FACTORY_ROLE: MenuCondition[] = ["NO_FACTORY_ROLE"];
 
 /**
  * Menu sidebar cho nhà máy sản xuất — phân quyền:
- * - Admin (super admin / admin mevi / admin nhà máy): báo cáo, hồ sơ, chứng nhận,
- *   tài khoản nhà máy, dữ liệu liên kết
- * - Farm member: hồ sơ, chứng nhận, máy & dây chuyền, lịch nhận chế biến
- * - Member không có role nhà máy: tìm kiếm nhà máy, lịch sử kết nối
+ * - Admin (super admin / admin mevi / admin nhà máy): báo cáo tổng quan, hồ sơ,
+ *   chứng nhận, quản lý tài khoản nhà máy, dữ liệu liên kết
+ * - Chủ nhà máy (MEVI_FACTORY_MEMBER): hồ sơ, chứng nhận, máy & dây chuyền,
+ *   lịch nhận chế biến
+ * - Member khác (không có role nhà máy, vd nông dân): kết nối nhà máy
  */
 export const FACTORY_MENU_GROUPS: MenuSection[] = [
   {
@@ -122,14 +127,14 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
         label: "Máy & Dây chuyền",
         icon: Cog,
         href: FACTORY_ROUTES.machines,
-        roles: ["MEVI_FARM_MEMBER"],
+        roles: OWNER,
       },
       {
         id: "factory-processing-schedules",
         label: "Lịch nhận chế biến",
         icon: CalendarClock,
         href: FACTORY_ROUTES.processingSchedules,
-        roles: ["MEVI_FARM_MEMBER"],
+        roles: OWNER,
         children: [
           {
             id: "factory-processing-schedule-list",
@@ -270,7 +275,7 @@ const MOBILE_ACCOUNT_ITEM: MobileNavItem = {
   matchPrefixes: ["/profile"],
 };
 
-/** Bottom navigation mobile cho farm member (quản lý nhà máy của mình) */
+/** Bottom navigation mobile cho chủ nhà máy (quản lý nhà máy của mình) */
 export const FACTORY_MEMBER_MOBILE_NAV_ITEMS: MobileNavItem[] = [
   {
     label: "Hồ sơ",
@@ -315,7 +320,7 @@ export type FactoryAccessLevel = "admin" | "member" | "guest";
 /** Xác định nhóm quyền nhà máy từ danh sách role của user */
 export function getFactoryAccessLevel(roles: string[] = []): FactoryAccessLevel {
   if (FACTORY_ADMIN_ROLES.some((role) => roles.includes(role))) return "admin";
-  if (roles.includes("MEVI_FARM_MEMBER")) return "member";
+  if (roles.includes(FACTORY_MEMBER_ROLE)) return "member";
   return "guest";
 }
 
