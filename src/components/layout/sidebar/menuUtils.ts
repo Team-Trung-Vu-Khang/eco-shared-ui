@@ -11,6 +11,8 @@ import type {
 import {
   FACTORY_ROLES,
   NO_FACTORY_ROLE_COND,
+  HIDE_FOR_ADMIN_COND,
+  FACTORY_ADMIN_ROLES,
   REQUIRE_FIRST_ONBOARD_COND,
   SUPER_ADMIN_ROLE,
 } from "./types";
@@ -43,6 +45,12 @@ export function filterMenuByContext(
 
   // Helper to check user conditions (ABAC)
   const checkConditions = (conditions?: MenuCondition[]): boolean => {
+    if (
+      conditions?.includes(HIDE_FOR_ADMIN_COND) &&
+      FACTORY_ADMIN_ROLES.some((role) => context.roles?.includes(role))
+    ) {
+      return false;
+    }
     if (isSuperAdmin) return true;
     if (!conditions || conditions.length === 0) return true;
 

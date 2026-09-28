@@ -4,6 +4,8 @@ export const SUPER_ADMIN_ROLE = "MEVI_SUPER_ADMIN";
 export const REQUIRE_FIRST_ONBOARD_COND = "REQUIRE_FIRST_ONBOARD";
 /** User không có role nào trong nhà máy (FACTORY_ROLES) */
 export const NO_FACTORY_ROLE_COND = "NO_FACTORY_ROLE";
+/** Ẩn với nhóm admin nhà máy (FACTORY_ADMIN_ROLES), kể cả super admin */
+export const HIDE_FOR_ADMIN_COND = "HIDE_FOR_ADMIN" as const;
 
 export type FarmRole =
   // Quản trị toàn hệ thống
@@ -37,7 +39,10 @@ export const FACTORY_ROLES: FarmRole[] = [
   FACTORY_MEMBER_ROLE,
 ];
 
-export type MenuCondition = "REQUIRE_FIRST_ONBOARD" | "NO_FACTORY_ROLE";
+export type MenuCondition =
+  | "REQUIRE_FIRST_ONBOARD"
+  | "NO_FACTORY_ROLE"
+  | "HIDE_FOR_ADMIN";
 
 export interface UserContext {
   roles?: string[];
