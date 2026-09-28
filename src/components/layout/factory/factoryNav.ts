@@ -22,6 +22,7 @@ import {
   FACTORY_ADMIN_ROLES,
   FACTORY_MEMBER_ROLE,
   FACTORY_ROLES,
+  SUPER_ADMIN_ROLE,
   type FarmRole,
   type MenuCondition,
 } from "../sidebar/types";
@@ -134,7 +135,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
         label: "Lịch nhận chế biến",
         icon: CalendarClock,
         href: FACTORY_ROUTES.processingSchedules,
-        roles: OWNER,
+        roles: [...ADMIN, ...OWNER],
         children: [
           {
             id: "factory-processing-schedule-list",
@@ -194,7 +195,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
   },
   {
     title: "Nhu cầu",
-    roles: ADMIN,
+    roles: [SUPER_ADMIN_ROLE],
     items: [
       // {
       //   id: "factory-demand-types",
