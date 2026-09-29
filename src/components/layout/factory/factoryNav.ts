@@ -142,6 +142,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
             id: "factory-processing-schedule-list",
             label: "Đăng tin",
             href: FACTORY_ROUTES.processingSchedules,
+            roles: OWNER,
           },
           {
             id: "factory-processing-schedule-history",
@@ -365,15 +366,18 @@ export const FACTORY_MOBILE_NAV_ITEMS: MobileNavItem[] = [
 export type FactoryAccessLevel = "admin" | "member" | "guest";
 
 /** Xác định nhóm quyền nhà máy từ danh sách role của user */
-export function getFactoryAccessLevel(roles: string[] = []): FactoryAccessLevel {
+export function getFactoryAccessLevel(
+  roles: string[] = [],
+): FactoryAccessLevel {
   if (FACTORY_ADMIN_ROLES.some((role) => roles.includes(role))) return "admin";
   if (roles.includes(FACTORY_MEMBER_ROLE)) return "member";
   return "guest";
 }
 
-
 /** Bottom nav mobile theo quyền */
-export function getFactoryMobileNavItems(roles: string[] = []): MobileNavItem[] {
+export function getFactoryMobileNavItems(
+  roles: string[] = [],
+): MobileNavItem[] {
   const level = getFactoryAccessLevel(roles);
   if (level === "admin") return FACTORY_ADMIN_MOBILE_NAV_ITEMS;
   if (level === "member") return FACTORY_MEMBER_MOBILE_NAV_ITEMS;
