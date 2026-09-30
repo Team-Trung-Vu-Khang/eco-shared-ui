@@ -143,6 +143,7 @@ export const FACTORY_MENU_GROUPS: MenuSection[] = [
             label: "Đăng tin",
             href: FACTORY_ROUTES.processingSchedules,
             roles: OWNER,
+            conditions: [HIDE_FOR_ADMIN_COND],
           },
           {
             id: "factory-processing-schedule-history",
