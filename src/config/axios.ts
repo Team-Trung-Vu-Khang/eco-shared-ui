@@ -42,7 +42,10 @@ apiClient.interceptors.request.use(
 
 interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
+  _retryCount?: number;
 }
+
+const MAX_GET_RETRIES = 3;
 
 apiClient.interceptors.response.use(
   (response) => response,
@@ -104,6 +107,16 @@ apiClient.interceptors.response.use(
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;
+        }
+      }
+
+      const isGet = originalRequest?.method?.toLowerCase() === "get";
+      const isRetryable = !error.response || (status !== undefined && status >= 500);
+      if (isGet && isRetryable && error.code !== "ERR_CANCELED") {
+        originalRequest._retryCount = (originalRequest._retryCount ?? 0) + 1;
+        if (originalRequest._retryCount <= MAX_GET_RETRIES) {
+          await new Promise((r) => setTimeout(r, 500 * 2 ** (originalRequest._retryCount! - 1)));
+          return apiClient(originalRequest);
         }
       }
 
