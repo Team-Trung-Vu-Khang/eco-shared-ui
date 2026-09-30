@@ -3,6 +3,7 @@ import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
+import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
 import {
   MOBILE_NAV_ITEMS,
   isNavItemActive,
@@ -19,12 +20,14 @@ export interface MobileAppLayoutProps {
   brandSubtitle?: ReactNode;
   /** Nội dung bên phải header (vd: chuông thông báo) */
   headerActions?: ReactNode;
+  /** Lọc workspace theo feature (vd: "factory") */
+  workspaceFeature?: WorkspaceFeature;
 }
 
 /** Giao diện mobile: header gọn + bottom navigation, thay cho sidebar */
 export function MobileAppLayout(props: MobileAppLayoutProps) {
   return (
-    <WorkspaceProvider>
+    <WorkspaceProvider feature={props.workspaceFeature}>
       <MobileAppLayoutContent {...props} />
     </WorkspaceProvider>
   );

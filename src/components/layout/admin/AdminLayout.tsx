@@ -35,7 +35,9 @@ export interface AdminLayoutProps {
 
 export function AdminLayout(props: AdminLayoutProps) {
   return (
-    <WorkspaceProvider>
+    <WorkspaceProvider
+      feature={props.isFactory || props.isOwnerFactory ? "factory" : undefined}
+    >
       <AdminLayoutContent {...props} />
     </WorkspaceProvider>
   );

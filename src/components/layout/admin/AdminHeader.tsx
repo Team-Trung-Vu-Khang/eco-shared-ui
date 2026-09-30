@@ -50,6 +50,7 @@ export function AdminHeader({
     currentWorkspace,
     setCurrentWorkspaceId,
     selectWorkspace,
+    feature: workspaceFeature,
   } = useWorkspace();
 
   const [workspaceOpen, setWorkspaceOpen] = React.useState(false);
@@ -108,6 +109,7 @@ export function AdminHeader({
           (
             await workspaceApi.getWorkspaces({
               keyword: trimmedSearch,
+              feature: workspaceFeature,
               page: 0,
               size: 100,
             })
@@ -135,7 +137,7 @@ export function AdminHeader({
       isActive = false;
       window.clearTimeout(timeoutId);
     };
-  }, [workspaceOpen, workspaceSearch]);
+  }, [workspaceOpen, workspaceSearch, workspaceFeature]);
 
   const activeWorkspace = React.useMemo(() => {
     return (

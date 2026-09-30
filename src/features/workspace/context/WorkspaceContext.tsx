@@ -1,6 +1,6 @@
 import * as React from "react";
 import { workspaceApi } from "../api/workspace.api";
-import type { Workspace } from "../types/workspace.type";
+import type { Workspace, WorkspaceFeature } from "../types/workspace.type";
 
 export type WorkspaceItem = {
   id: string;
@@ -56,6 +56,8 @@ function resolveWorkspaceId(
 }
 
 export interface WorkspaceContextType {
+  /** Feature đang lọc workspace (vd: factory), undefined = không lọc */
+  feature?: WorkspaceFeature;
   workspaces: WorkspaceItem[];
   isLoading: boolean;
   error: string | null;
@@ -68,38 +70,55 @@ export interface WorkspaceContextType {
 
 const WorkspaceContext = React.createContext<WorkspaceContextType | null>(null);
 
-let cachedDefaultWorkspaceItems: WorkspaceItem[] | null = null;
-let cachedDefaultWorkspacePromise: Promise<WorkspaceItem[]> | null = null;
+// Cache danh sách mặc định theo feature ("" = không lọc feature)
+const cachedDefaultWorkspaceItems = new Map<string, WorkspaceItem[]>();
+const cachedDefaultWorkspacePromises = new Map<
+  string,
+  Promise<WorkspaceItem[]>
+>();
 
-async function getDefaultWorkspaceItems() {
-  if (cachedDefaultWorkspaceItems) {
-    return cachedDefaultWorkspaceItems;
+async function getDefaultWorkspaceItems(feature?: WorkspaceFeature) {
+  const cacheKey = feature ?? "";
+  const cachedItems = cachedDefaultWorkspaceItems.get(cacheKey);
+  if (cachedItems) {
+    return cachedItems;
   }
 
-  if (!cachedDefaultWorkspacePromise) {
-    cachedDefaultWorkspacePromise = workspaceApi
+  let promise = cachedDefaultWorkspacePromises.get(cacheKey);
+  if (!promise) {
+    promise = workspaceApi
       .getWorkspaces({
+        feature,
         page: 0,
         size: 100,
       })
       .then((response) => {
-        cachedDefaultWorkspaceItems = mapWorkspaceItems(response.content);
-        return cachedDefaultWorkspaceItems;
+        const items = mapWorkspaceItems(response.content);
+        cachedDefaultWorkspaceItems.set(cacheKey, items);
+        return items;
       })
       .finally(() => {
-        cachedDefaultWorkspacePromise = null;
+        cachedDefaultWorkspacePromises.delete(cacheKey);
       });
+    cachedDefaultWorkspacePromises.set(cacheKey, promise);
   }
 
-  return cachedDefaultWorkspacePromise;
+  return promise;
 }
 
-export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
+export interface WorkspaceProviderProps {
+  children: React.ReactNode;
+  /** Lọc workspace theo feature (vd: factory → chỉ workspace user có quyền nhà máy) */
+  feature?: WorkspaceFeature;
+}
+
+export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps) {
+  const cacheKey = feature ?? "";
   const [workspaces, setWorkspaces] = React.useState<WorkspaceItem[]>(
-    cachedDefaultWorkspaceItems || [],
+    cachedDefaultWorkspaceItems.get(cacheKey) || [],
   );
   const [isLoading, setIsLoading] = React.useState(
-    !cachedDefaultWorkspaceItems,
+    !cachedDefaultWorkspaceItems.has(cacheKey),
   );
   const [error, setError] = React.useState<string | null>(null);
   const [currentWorkspaceId, setCurrentWorkspaceId] = React.useState<
@@ -130,7 +149,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     let isActive = true;
 
     workspaceApi
-      .getCurrentWorkspace(currentWorkspaceId)
+      .getCurrentWorkspace(currentWorkspaceId, feature)
       .then((workspace) => {
         if (!isActive) return;
         const [item] = mapWorkspaceItems([workspace]);
@@ -145,18 +164,18 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     return () => {
       isActive = false;
     };
-  }, [currentWorkspaceId]);
+  }, [currentWorkspaceId, feature]);
 
   const loadWorkspaces = React.useCallback(async (isRefetch = false) => {
     if (isRefetch) {
-      cachedDefaultWorkspaceItems = null;
+      cachedDefaultWorkspaceItems.delete(cacheKey);
     }
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const items = await getDefaultWorkspaceItems();
+      const items = await getDefaultWorkspaceItems(feature);
       setWorkspaces(items);
       setCurrentWorkspaceId((currentId) =>
         resolveWorkspaceId(items, currentId),
@@ -168,13 +187,13 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [cacheKey, feature]);
 
   React.useEffect(() => {
     let isActive = true;
     const initialize = async () => {
       try {
-        const nextItems = await getDefaultWorkspaceItems();
+        const nextItems = await getDefaultWorkspaceItems(feature);
         if (!isActive) return;
         setWorkspaces(nextItems);
         setCurrentWorkspaceId((currentId) =>
@@ -195,7 +214,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [feature]);
 
   React.useEffect(() => {
     if (isLoading || error || workspaces.length > 0) {
@@ -205,12 +224,13 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     const intervalId = setInterval(async () => {
       try {
         const response = await workspaceApi.getWorkspaces({
+          feature,
           page: 0,
           size: 100,
         });
         const items = mapWorkspaceItems(response.content);
         if (items.length > 0) {
-          cachedDefaultWorkspaceItems = items;
+          cachedDefaultWorkspaceItems.set(cacheKey, items);
           setWorkspaces(items);
           setCurrentWorkspaceId((currentId) =>
             resolveWorkspaceId(items, currentId),
@@ -222,7 +242,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [workspaces.length, isLoading, error]);
+  }, [workspaces.length, isLoading, error, cacheKey, feature]);
 
   const selectWorkspace = React.useCallback((workspace: WorkspaceItem) => {
     setCurrentWorkspaceId(workspace.id);
@@ -234,6 +254,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
 
   const value = React.useMemo(
     () => ({
+      feature,
       workspaces,
       isLoading,
       error,
@@ -244,6 +265,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
       refetchWorkspaces,
     }),
     [
+      feature,
       workspaces,
       isLoading,
       error,
