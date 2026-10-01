@@ -44,7 +44,13 @@ function readSessionStorage(key: string) {
 function resolveWorkspaceId(
   items: WorkspaceItem[],
   currentId: string | null,
+  feature?: WorkspaceFeature,
 ): string | null {
+  // Danh sách lọc theo feature rỗng → user không có workspace cho feature này,
+  // bỏ id cũ (có thể thuộc feature khác) để tránh gọi /current lỗi.
+  if (feature && items.length === 0) {
+    return null;
+  }
   // Keep an already-selected id even if it's outside the default page —
   // it may belong to a workspace found via search, which gets hydrated
   // separately by fetching /api/center/workspaces/current.
@@ -110,9 +116,15 @@ export interface WorkspaceProviderProps {
   children: React.ReactNode;
   /** Lọc workspace theo feature (vd: factory → chỉ workspace user có quyền nhà máy) */
   feature?: WorkspaceFeature;
+  /** Polling khi danh sách rỗng (chờ hệ thống khởi tạo workspace). Mặc định true */
+  pollWhenEmpty?: boolean;
 }
 
-export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps) {
+export function WorkspaceProvider({
+  children,
+  feature,
+  pollWhenEmpty = true,
+}: WorkspaceProviderProps) {
   const cacheKey = feature ?? "";
   const [workspaces, setWorkspaces] = React.useState<WorkspaceItem[]>(
     cachedDefaultWorkspaceItems.get(cacheKey) || [],
@@ -178,7 +190,7 @@ export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps)
       const items = await getDefaultWorkspaceItems(feature);
       setWorkspaces(items);
       setCurrentWorkspaceId((currentId) =>
-        resolveWorkspaceId(items, currentId),
+        resolveWorkspaceId(items, currentId, feature),
       );
       return items;
     } catch {
@@ -197,7 +209,7 @@ export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps)
         if (!isActive) return;
         setWorkspaces(nextItems);
         setCurrentWorkspaceId((currentId) =>
-          resolveWorkspaceId(nextItems, currentId),
+          resolveWorkspaceId(nextItems, currentId, feature),
         );
       } catch {
         if (isActive) {
@@ -217,7 +229,7 @@ export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps)
   }, [feature]);
 
   React.useEffect(() => {
-    if (isLoading || error || workspaces.length > 0) {
+    if (!pollWhenEmpty || isLoading || error || workspaces.length > 0) {
       return;
     }
 
@@ -233,7 +245,7 @@ export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps)
           cachedDefaultWorkspaceItems.set(cacheKey, items);
           setWorkspaces(items);
           setCurrentWorkspaceId((currentId) =>
-            resolveWorkspaceId(items, currentId),
+            resolveWorkspaceId(items, currentId, feature),
           );
         }
       } catch {
@@ -242,7 +254,7 @@ export function WorkspaceProvider({ children, feature }: WorkspaceProviderProps)
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [workspaces.length, isLoading, error, cacheKey, feature]);
+  }, [pollWhenEmpty, workspaces.length, isLoading, error, cacheKey, feature]);
 
   const selectWorkspace = React.useCallback((workspace: WorkspaceItem) => {
     setCurrentWorkspaceId(workspace.id);

@@ -37,6 +37,8 @@ export function AdminLayout(props: AdminLayoutProps) {
   return (
     <WorkspaceProvider
       feature={props.isFactory || props.isOwnerFactory ? "factory" : undefined}
+      // Trang factory (không phải owner): không có workspace là hợp lệ → không polling
+      pollWhenEmpty={!props.isFactory || !!props.isOwnerFactory}
     >
       <AdminLayoutContent {...props} />
     </WorkspaceProvider>
@@ -108,7 +110,8 @@ function AdminLayoutContent({
   const [location] = useLocation();
   const { user, isLoading } = useAuth();
   const { workspaces, isLoading: isWorkspaceLoading } = useWorkspace();
-  const needsWorkspace = !isEcoSystemAdmin;
+  // Trang factory: role factory khác (không phải owner) có thể không có workspace
+  const needsWorkspace = !isEcoSystemAdmin && !(isFactory && !isOwnerFactory);
 
   const userContext = useMemo(
     () => ({
