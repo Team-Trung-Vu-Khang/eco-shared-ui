@@ -229,7 +229,9 @@ export function AdminHeader({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium">
-                      {activeWorkspace?.organizationName ?? "Đơn vị / Tổ chức"}
+                      {activeWorkspace?.organizationName
+                        ? `${workspaceFeature === "factory" ? "Nhà máy" : "Nông hộ"} ${activeWorkspace.organizationName}`
+                        : "Đơn vị / Tổ chức"}
                     </span>
                   </div>
                   <p className="truncate text-xs text-muted-foreground">
@@ -326,6 +328,9 @@ export function AdminHeader({
                               <div className="min-w-0 space-y-1">
                                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                                   <span className="truncate text-sm font-semibold text-foreground">
+                                    {workspaceFeature === "factory"
+                                      ? "Nhà máy"
+                                      : "Nông hộ"}{" "}
                                     {item.organizationName}
                                   </span>
                                   <Badge className="h-5 rounded-full border-0 bg-amber-100 px-2 text-[10px] font-semibold text-amber-800 hover:bg-amber-100">

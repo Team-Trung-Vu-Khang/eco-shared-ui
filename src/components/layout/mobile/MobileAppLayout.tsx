@@ -42,7 +42,7 @@ function MobileAppLayoutContent({
   headerActions,
 }: MobileAppLayoutProps) {
   const [location] = useLocation();
-  const { currentWorkspace } = useWorkspace();
+  const { currentWorkspace, feature } = useWorkspace();
 
   return (
     <div className="min-h-dvh bg-slate-50">
@@ -56,7 +56,8 @@ function MobileAppLayoutContent({
           </p>
           <p className="truncate text-xs text-slate-500">
             {brandSubtitle ??
-              currentWorkspace?.organizationName ??
+              (currentWorkspace?.organizationName &&
+                `${feature === "factory" ? "Nhà máy" : "Nông hộ"} ${currentWorkspace.organizationName}`) ??
               "Đang tải đơn vị..."}
           </p>
         </div>
