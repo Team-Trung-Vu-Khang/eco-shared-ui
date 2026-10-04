@@ -64,17 +64,17 @@ function MobileAppLayoutContent({
         {headerActions}
       </header>
 
-      {/* Chừa chỗ cho thanh điều hướng nổi + vùng an toàn (thanh home iOS) */}
-      <main className="min-w-0 px-4 pt-4 pb-[calc(7rem+env(safe-area-inset-bottom))]">
+      {/* Chừa chỗ cho thanh điều hướng + vùng an toàn (thanh home iOS) */}
+      <main className="min-w-0 px-4 pt-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
         {children}
       </main>
 
       <nav
         aria-label="Điều hướng chính"
-        className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-40"
+        className="fixed inset-x-0 bottom-0 z-40 rounded-t-3xl bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(15,23,42,0.08)]"
       >
         <ul
-          className="grid h-16 items-center rounded-[1.75rem] bg-white px-1 shadow-[0_4px_20px_rgba(15,23,42,0.08)]"
+          className="grid h-[4.5rem] items-stretch px-2"
           style={{
             gridTemplateColumns: `repeat(${Math.max(navItems.length, 1)}, minmax(0, 1fr))`,
           }}
@@ -83,75 +83,38 @@ function MobileAppLayoutContent({
             const isActive = isNavItemActive(item, location);
             const Icon = item.icon;
 
-            if (item.isPrimary) {
-              return (
-                <li key={item.href} className="relative flex justify-center">
-                  <Link
-                    href={item.href}
-                    aria-label={item.label}
-                    aria-current={isActive ? "page" : undefined}
-                    className="group absolute -top-11 flex flex-col items-center gap-1"
-                  >
-                    <span
-                      className={cn(
-                        "flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-4 ring-white transition-transform duration-200 group-active:scale-90",
-                        isActive ? "rotate-0" : "rotate-45",
-                      )}
-                    >
-                      <Icon
-                        className={cn(
-                          "h-6 w-6 transition-transform duration-200",
-                          !isActive && "-rotate-45",
-                        )}
-                      />
-                    </span>
-                    <span
-                      className={cn(
-                        "text-[10px] font-semibold",
-                        isActive ? "text-primary" : "text-slate-600",
-                      )}
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
-                </li>
-              );
-            }
-
             return (
-              <li key={item.href} className="flex justify-center">
+              <li key={item.href} className="flex">
                 <Link
                   href={item.href}
+                  aria-label={item.label}
                   aria-current={isActive ? "page" : undefined}
-                  className="relative flex min-h-14 w-full flex-col items-center justify-center gap-0.5 transition-transform active:scale-95"
+                  className={cn(
+                    "relative flex w-full flex-col items-center justify-center gap-1 transition-colors active:scale-95",
+                    isActive ? "text-primary" : "text-slate-500",
+                  )}
                 >
-                  {/* Vạch sáng phía trên tab đang chọn */}
-                  <span
-                    className={cn(
-                      "absolute -top-1 h-1 rounded-full bg-primary transition-all duration-300",
-                      isActive ? "w-6 opacity-100" : "w-0 opacity-0",
-                    )}
+                  <Icon
+                    className="h-6 w-6"
+                    strokeWidth={isActive ? 2.4 : 1.6}
+                    fill={isActive ? "currentColor" : "none"}
+                    fillOpacity={isActive ? 0.15 : 0}
                   />
                   <span
                     className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-300",
-                      isActive
-                        ? "-translate-y-0.5 bg-primary/10 text-primary"
-                        : "text-slate-400",
-                    )}
-                  >
-                    <Icon className="h-5 w-5" strokeWidth={isActive ? 2.4 : 2} />
-                  </span>
-                  <span
-                    className={cn(
-                      "line-clamp-2 max-w-full px-0.5 text-center text-[10px] leading-tight transition-colors",
-                      isActive
-                        ? "font-bold text-primary"
-                        : "font-medium text-slate-500",
+                      "line-clamp-1 max-w-full px-0.5 text-center text-[11px] leading-tight",
+                      isActive ? "font-bold" : "font-medium",
                     )}
                   >
                     {item.label}
                   </span>
+                  {/* Gạch chân dưới tab đang chọn */}
+                  <span
+                    className={cn(
+                      "absolute bottom-1.5 h-[3px] rounded-full bg-primary transition-all duration-300",
+                      isActive ? "w-8 opacity-100" : "w-0 opacity-0",
+                    )}
+                  />
                 </Link>
               </li>
             );
