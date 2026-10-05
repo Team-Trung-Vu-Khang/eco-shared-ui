@@ -11,6 +11,8 @@ export type WorkspaceItem = {
   businessLineName: string;
   mainCropName: string;
   totalAcreage: number;
+  /** SĐT tài khoản chủ workspace */
+  ownerPhoneNumber?: string;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -31,6 +33,7 @@ export function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
       "Đang cập nhật",
     totalAcreage: item.totalAcreage || 0,
     mainCropName: item.mainCrop?.name || "",
+    ownerPhoneNumber: item.owner?.phoneNumber || undefined,
   }));
 }
 

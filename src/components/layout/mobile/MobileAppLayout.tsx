@@ -3,12 +3,14 @@ import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
 import {
   MOBILE_NAV_ITEMS,
   isNavItemActive,
   type MobileNavItem,
 } from "./mobileNav";
+import { ModuleSwitcher, type ModuleSwitcherProps } from "../ModuleSwitcher";
 
 export interface MobileAppLayoutProps {
   children: ReactNode;
@@ -16,12 +18,14 @@ export interface MobileAppLayoutProps {
   navItems?: MobileNavItem[];
   brandIcon?: ElementType;
   brandTitle?: ReactNode;
-  /** Mặc định hiển thị tên đơn vị (workspace) đang chọn */
+  /** Mặc định: admin hiện "Admin (SĐT)" + workspace; tk thường chỉ workspace */
   brandSubtitle?: ReactNode;
   /** Nội dung bên phải header (vd: chuông thông báo) */
   headerActions?: ReactNode;
   /** Lọc workspace theo feature (vd: "factory") */
   workspaceFeature?: WorkspaceFeature;
+  /** Truyền để hiện nút chuyển phân hệ trên header */
+  moduleSwitcher?: ModuleSwitcherProps;
 }
 
 /** Giao diện mobile: header gọn + bottom navigation, thay cho sidebar */
@@ -33,6 +37,14 @@ export function MobileAppLayout(props: MobileAppLayoutProps) {
   );
 }
 
+/** Role được xem là admin (đang làm việc trên workspace của người khác) */
+const ADMIN_ROLES = [
+  "MEVI_SUPER_ADMIN",
+  "MEVI_ADMIN",
+  "MEVI_FARM_ADMIN",
+  "MEVI_FACTORY_ADMIN",
+];
+
 function MobileAppLayoutContent({
   children,
   navItems = MOBILE_NAV_ITEMS,
@@ -40,13 +52,33 @@ function MobileAppLayoutContent({
   brandTitle = "Eco Farm",
   brandSubtitle,
   headerActions,
+  moduleSwitcher,
 }: MobileAppLayoutProps) {
   const [location] = useLocation();
+  const { user } = useAuth();
   const { currentWorkspace, feature } = useWorkspace();
+
+  const roles = (user?.roles ??
+    (user?.role ? [user.role].flat() : [])) as string[];
+  const isAdmin = roles.some((role) => ADMIN_ROLES.includes(role));
+
+  const withPhone = (label: string, phone?: string | null) =>
+    phone ? `${label} (${phone})` : label;
+
+  // Admin: "Admin (SĐT)" + "Nhà máy A (SĐT tài khoản nhà máy)"; tk thường: chỉ dòng 2
+  const adminLabel = isAdmin ? withPhone("Admin", user?.phoneNumber) : null;
+  const workspaceLabel = currentWorkspace?.organizationName
+    ? withPhone(
+        `${feature === "factory" ? "Nhà máy" : "Nông trại"} ${currentWorkspace.organizationName}`,
+        currentWorkspace.ownerPhoneNumber ??
+          (isAdmin ? undefined : user?.phoneNumber),
+      )
+    : // Không có workspace (vd: member nhà máy) => chỉ hiện tài khoản
+      withPhone(user?.name || "Tài khoản", user?.phoneNumber);
 
   return (
     <div className="min-h-dvh bg-slate-50">
-      <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-slate-200 bg-white/95 px-4 backdrop-blur">
+      <header className="sticky top-0 z-40 flex min-h-14 items-center py-1.5 gap-3 border-b border-slate-200 bg-white/95 px-4 backdrop-blur">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <BrandIcon className="h-5 w-5" />
         </div>
@@ -54,14 +86,23 @@ function MobileAppLayoutContent({
           <p className="text-sm font-bold leading-tight text-slate-900">
             {brandTitle}
           </p>
-          <p className="truncate text-xs text-slate-500">
-            {brandSubtitle ??
-              (currentWorkspace?.organizationName &&
-                `${feature === "factory" ? "Nhà máy" : "Nông hộ"} ${currentWorkspace.organizationName}`) ??
-              "Đang tải đơn vị..."}
-          </p>
+          {brandSubtitle ? (
+            <p className="truncate text-xs text-slate-500">{brandSubtitle}</p>
+          ) : (
+            <>
+              {adminLabel && (
+                <p className="truncate text-xs font-medium text-primary">
+                  {adminLabel}
+                </p>
+              )}
+              <p className="truncate text-xs text-slate-500">
+                {workspaceLabel}
+              </p>
+            </>
+          )}
         </div>
         {headerActions}
+        {moduleSwitcher && <ModuleSwitcher {...moduleSwitcher} />}
       </header>
 
       {/* Chừa chỗ cho thanh điều hướng + vùng an toàn (thanh home iOS) */}

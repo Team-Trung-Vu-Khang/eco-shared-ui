@@ -2,6 +2,7 @@ import type { ElementType, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
+import type { ModuleSwitcherProps } from "../ModuleSwitcher";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLocation } from "wouter";
@@ -31,6 +32,8 @@ export interface AdminLayoutProps {
   brandIcon?: ElementType;
   brandTitle?: ReactNode;
   brandSubtitle?: ReactNode;
+  /** Truyền để hiện nút chuyển phân hệ trên header */
+  moduleSwitcher?: ModuleSwitcherProps;
 }
 
 export function AdminLayout(props: AdminLayoutProps) {
@@ -60,6 +63,7 @@ function AdminLayoutContent({
   brandIcon,
   brandTitle,
   brandSubtitle,
+  moduleSwitcher,
 }: AdminLayoutProps) {
   const isMobile = useIsMobile();
   const [sidebarPreferenceCollapsed, setSidebarPreferenceCollapsed] = useState(
@@ -219,6 +223,7 @@ function AdminLayoutContent({
       >
         <AdminHeader
           isEcoSystemAdmin={isEcoSystemAdmin}
+          moduleSwitcher={moduleSwitcher}
           onToggleSidebar={
             isMobile ? () => setMobileSidebarOpen(true) : undefined
           }

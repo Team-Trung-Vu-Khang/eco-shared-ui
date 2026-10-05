@@ -30,13 +30,17 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLocation } from "wouter";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ModuleSwitcher, type ModuleSwitcherProps } from "../ModuleSwitcher";
 
 export function AdminHeader({
   isEcoSystemAdmin = false,
   onToggleSidebar,
+  moduleSwitcher,
 }: {
   isEcoSystemAdmin?: boolean;
   onToggleSidebar?: () => void;
+  /** Truyền để hiện nút chuyển phân hệ */
+  moduleSwitcher?: ModuleSwitcherProps;
 }) {
   const { user } = useAuth();
   const isMobile = useIsMobile();
@@ -187,11 +191,15 @@ export function AdminHeader({
           </Button>
         )}
 
+        {moduleSwitcher && (
+          <ModuleSwitcher {...moduleSwitcher} className="ml-auto" />
+        )}
+
         <DropdownMenu open={accountMenuOpen} onOpenChange={setAccountMenuOpen}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="ml-auto h-auto gap-2 rounded-full px-2 py-1.5 sm:gap-3"
+              className={(moduleSwitcher ? "" : "ml-auto ") + "h-auto gap-2 rounded-full px-2 py-1.5 sm:gap-3"}
               data-testid="user-menu"
             >
               <Avatar className="h-7 w-7 sm:h-8 sm:w-8">

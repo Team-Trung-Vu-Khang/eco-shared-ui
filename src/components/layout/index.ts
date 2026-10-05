@@ -6,6 +6,9 @@ export * from "./admin/AdminSidebar";
 export * from "./admin/AdminTestSidebar";
 export * from "./admin/AdminTestLayout";
 
+// Chuyển phân hệ
+export * from "./ModuleSwitcher";
+
 // Mobile layouts
 export * from "./mobile/MobileAppLayout";
 export * from "./mobile/mobileNav";
