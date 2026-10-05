@@ -65,12 +65,16 @@ function MobileAppLayoutContent({
   const withPhone = (label: string, phone?: string | null) =>
     phone ? `${label} (${phone})` : label;
 
-  // Admin: "Admin (SĐT)" + "Nhà máy A (SĐT tài khoản nhà máy)"; tk thường: chỉ dòng 2
+  // Admin: "Admin (SĐT)" + "Nhà máy <tên chủ> (SĐT)"; tk thường: chỉ dòng 2
   const adminLabel = isAdmin ? withPhone("Admin", user?.phoneNumber) : null;
-  const workspaceLabel = currentWorkspace?.organizationName
+  const workspaceOwnerName =
+    currentWorkspace?.ownerName ||
+    (isAdmin ? undefined : user?.name) ||
+    currentWorkspace?.organizationName;
+  const workspaceLabel = workspaceOwnerName
     ? withPhone(
-        `${feature === "factory" ? "Nhà máy" : "Nông trại"} ${currentWorkspace.organizationName}`,
-        currentWorkspace.ownerPhoneNumber ??
+        `${feature === "factory" ? "Nhà máy" : "Nông trại"} ${workspaceOwnerName}`,
+        currentWorkspace?.ownerPhoneNumber ??
           (isAdmin ? undefined : user?.phoneNumber),
       )
     : // Không có workspace (vd: member nhà máy) => chỉ hiện tài khoản
