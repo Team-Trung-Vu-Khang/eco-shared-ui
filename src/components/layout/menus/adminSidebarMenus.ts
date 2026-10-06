@@ -2179,18 +2179,18 @@ export const menuMeviDevGroups: MenuSection[] = [
             label: "Vùng canh tác",
             href: "/cultivation-region",
           },
-          {
-            id: "crop-identification",
-            roles: ["MEVI_FARM_MEMBER"],
-            label: "Định danh cây trồng",
-            href: "/plant-identification",
-          },
-          {
-            id: "search-crop",
-            roles: ["MEVI_FARM_MEMBER"],
-            label: "Tìm kiếm cây trồng",
-            href: "/search-crop",
-          },
+          // {
+          //   id: "crop-identification",
+          //   roles: ["MEVI_FARM_MEMBER"],
+          //   label: "Định danh cây trồng",
+          //   href: "/plant-identification",
+          // },
+          // {
+          //   id: "search-crop",
+          //   roles: ["MEVI_FARM_MEMBER"],
+          //   label: "Tìm kiếm cây trồng",
+          //   href: "/search-crop",
+          // },
           {
             id: "plan-growth",
             roles: ["MEVI_FARM_MEMBER"],
