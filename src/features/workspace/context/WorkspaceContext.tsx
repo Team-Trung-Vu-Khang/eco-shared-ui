@@ -13,6 +13,7 @@ export function formatWorkspaceDisplayName({
   ownerPhoneNumber?: string | null;
   fallback?: string;
 }): string {
+  const cleanFacilityName = facilityName?.trim();
   const accountDetails = [
     ownerName?.trim(),
     ownerPhoneNumber?.trim() ? `(${ownerPhoneNumber.trim()})` : null,
@@ -20,10 +21,10 @@ export function formatWorkspaceDisplayName({
     .filter(Boolean)
     .join(" ");
 
-  if (facilityName && accountDetails) {
-    return `${facilityName} - ${accountDetails}`;
+  if (cleanFacilityName && accountDetails) {
+    return `${cleanFacilityName} - ${accountDetails}`;
   }
-  return facilityName || accountDetails || fallback;
+  return cleanFacilityName || accountDetails || fallback;
 }
 
 export type WorkspaceItem = {
@@ -54,13 +55,13 @@ export function mapWorkspaceItems(
 ): WorkspaceItem[] {
   return items.map((item) => {
     const meta = item.metadataJson;
-    const displayName =
-      (feature === "factory" ? meta?.factoryDisplayName : undefined) ??
-      (feature === "farm" ? meta?.farmDisplayName : undefined) ??
-      meta?.factoryDisplayName ??
-      meta?.farmDisplayName;
+    const facilityName =
+      feature === "factory"
+        ? meta?.factoryDisplayName?.trim()
+        : feature === "farm"
+          ? meta?.farmDisplayName?.trim()
+          : undefined;
 
-    const facilityName = displayName || item.brandName || item.name;
     const fullDisplayName = formatWorkspaceDisplayName({
       facilityName,
       ownerName: item.owner?.fullName,
@@ -69,26 +70,26 @@ export function mapWorkspaceItems(
 
     return {
       id: String(item.id),
-      organizationName: facilityName,
+      organizationName: facilityName || item.brandName || item.name,
       fullDisplayName,
       factoryDisplayName: meta?.factoryDisplayName,
       farmDisplayName: meta?.farmDisplayName,
       organizationGroup:
-      item.organizationType?.name ?? item.organizationType?.code ?? "Đơn vị",
-    representativeName: item.representative || "Chưa có người đại diện",
-    taxCode: item.taxCode || item.code || "--",
-    businessLineName:
-      item.businessLines
-        ?.map((businessLine) => businessLine?.name)
-        .filter(Boolean)
-        .join(", ") ||
-      item.mainCrop?.name ||
-      "Đang cập nhật",
-    totalAcreage: item.totalAcreage || 0,
-    mainCropName: item.mainCrop?.name || "",
-    ownerPhoneNumber: item.owner?.phoneNumber || undefined,
-    ownerName: item.owner?.fullName || undefined,
-  };
+        item.organizationType?.name ?? item.organizationType?.code ?? "Đơn vị",
+      representativeName: item.representative || "Chưa có người đại diện",
+      taxCode: item.taxCode || item.code || "--",
+      businessLineName:
+        item.businessLines
+          ?.map((businessLine) => businessLine?.name)
+          .filter(Boolean)
+          .join(", ") ||
+        item.mainCrop?.name ||
+        "Đang cập nhật",
+      totalAcreage: item.totalAcreage || 0,
+      mainCropName: item.mainCrop?.name || "",
+      ownerPhoneNumber: item.owner?.phoneNumber || undefined,
+      ownerName: item.owner?.fullName || undefined,
+    };
   });
 }
 
@@ -236,28 +237,31 @@ export function WorkspaceProvider({
     };
   }, [currentWorkspaceId, feature]);
 
-  const loadWorkspaces = React.useCallback(async (isRefetch = false) => {
-    if (isRefetch) {
-      cachedDefaultWorkspaceItems.delete(cacheKey);
-    }
+  const loadWorkspaces = React.useCallback(
+    async (isRefetch = false) => {
+      if (isRefetch) {
+        cachedDefaultWorkspaceItems.delete(cacheKey);
+      }
 
-    setIsLoading(true);
-    setError(null);
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const items = await getDefaultWorkspaceItems(feature);
-      setWorkspaces(items);
-      setCurrentWorkspaceId((currentId) =>
-        resolveWorkspaceId(items, currentId, feature),
-      );
-      return items;
-    } catch {
-      setError("Không tải được danh sách đơn vị.");
-      return [];
-    } finally {
-      setIsLoading(false);
-    }
-  }, [cacheKey, feature]);
+      try {
+        const items = await getDefaultWorkspaceItems(feature);
+        setWorkspaces(items);
+        setCurrentWorkspaceId((currentId) =>
+          resolveWorkspaceId(items, currentId, feature),
+        );
+        return items;
+      } catch {
+        setError("Không tải được danh sách đơn vị.");
+        return [];
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [cacheKey, feature],
+  );
 
   React.useEffect(() => {
     let isActive = true;

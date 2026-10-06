@@ -2,7 +2,11 @@ import type { ElementType, ReactNode } from "react";
 import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { WorkspaceProvider, useWorkspace, formatWorkspaceDisplayName } from "@/features/workspace";
+import {
+  WorkspaceProvider,
+  useWorkspace,
+  formatWorkspaceDisplayName,
+} from "@/features/workspace";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
 import {
@@ -68,17 +72,17 @@ function MobileAppLayoutContent({
   // Pattern: "tên farm/factory - Tên (số đt của account)"
   const adminLabel = isAdmin ? withPhone("Admin", user?.phoneNumber) : null;
   const facilityName =
-    (feature === "factory"
+    feature === "factory"
       ? currentWorkspace?.factoryDisplayName
       : feature === "farm"
         ? currentWorkspace?.farmDisplayName
-        : undefined) ||
-    currentWorkspace?.organizationName;
+        : undefined;
 
   const ownerName =
     currentWorkspace?.ownerName || (isAdmin ? undefined : user?.name);
   const ownerPhone =
-    currentWorkspace?.ownerPhoneNumber || (isAdmin ? undefined : user?.phoneNumber);
+    currentWorkspace?.ownerPhoneNumber ||
+    (isAdmin ? undefined : user?.phoneNumber);
 
   const workspaceLabel = currentWorkspace
     ? formatWorkspaceDisplayName({

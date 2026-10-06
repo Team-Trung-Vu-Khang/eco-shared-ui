@@ -2128,12 +2128,7 @@ export const menuMeviDevGroups: MenuSection[] = [
       },
       {
         id: "search-zone",
-        roles: [
-          "MEVI_FARM_MEMBER",
-          "MEVI_FARM_ADMIN",
-          "MEVI_SUPER_ADMIN",
-          "MEVI_ADMIN",
-        ],
+        roles: ["MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN", "MEVI_ADMIN"],
         label: "Tìm kiếm vùng trồng",
         icon: Search,
         href: "/search-zone",
