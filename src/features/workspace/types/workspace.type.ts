@@ -38,7 +38,14 @@ export interface WorkspaceOwner {
 }
 
 /** Feature hỗ trợ lọc quyền + load hồ sơ (không phân biệt hoa thường) */
-export type WorkspaceFeature = "factory"
+export type WorkspaceFeature = "factory" | "farm" | (string & {})
+
+export interface WorkspaceMetadata {
+  source?: string
+  factoryDisplayName?: string
+  farmDisplayName?: string
+  [key: string]: unknown
+}
 
 export interface Workspace {
   id: number
@@ -67,7 +74,7 @@ export interface Workspace {
   imageUrl: string | null
   description: string | null
   status: WorkspaceStatus
-  metadataJson: Record<string, unknown> | null
+  metadataJson: WorkspaceMetadata | null
   createdAt: string
   updatedAt: string
   /** Hồ sơ theo feature, chỉ có khi truyền `feature` (vd: factory → hồ sơ nhà máy) */
@@ -114,5 +121,5 @@ export interface UpdateWorkspaceRequest {
   mainCropId?: number | null
   status?: WorkspaceStatus
   displayOrder?: number
-  metadataJson?: Record<string, unknown> | null
+  metadataJson?: WorkspaceMetadata | null
 }

@@ -2,9 +2,35 @@ import * as React from "react";
 import { workspaceApi } from "../api/workspace.api";
 import type { Workspace, WorkspaceFeature } from "../types/workspace.type";
 
+export function formatWorkspaceDisplayName({
+  facilityName,
+  ownerName,
+  ownerPhoneNumber,
+  fallback = "Đơn vị",
+}: {
+  facilityName?: string | null;
+  ownerName?: string | null;
+  ownerPhoneNumber?: string | null;
+  fallback?: string;
+}): string {
+  const accountDetails = [
+    ownerName?.trim(),
+    ownerPhoneNumber?.trim() ? `(${ownerPhoneNumber.trim()})` : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  if (facilityName && accountDetails) {
+    return `${facilityName} - ${accountDetails}`;
+  }
+  return facilityName || accountDetails || fallback;
+}
+
 export type WorkspaceItem = {
   id: string;
   organizationName: string;
+  /** Tên đầy đủ theo pattern: Tên farm/factory - Tên (SĐT) */
+  fullDisplayName: string;
   organizationGroup: string;
   representativeName: string;
   taxCode: string;
@@ -15,14 +41,39 @@ export type WorkspaceItem = {
   ownerPhoneNumber?: string;
   /** Tên tài khoản chủ workspace */
   ownerName?: string;
+  /** Tên hiển thị phía nhà máy */
+  factoryDisplayName?: string;
+  /** Tên hiển thị phía farm */
+  farmDisplayName?: string;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
-  return items.map((item) => ({
-    id: String(item.id),
-    organizationName: item.brandName || item.name,
-    organizationGroup:
+export function mapWorkspaceItems(
+  items: Array<Workspace>,
+  feature?: WorkspaceFeature,
+): WorkspaceItem[] {
+  return items.map((item) => {
+    const meta = item.metadataJson;
+    const displayName =
+      (feature === "factory" ? meta?.factoryDisplayName : undefined) ??
+      (feature === "farm" ? meta?.farmDisplayName : undefined) ??
+      meta?.factoryDisplayName ??
+      meta?.farmDisplayName;
+
+    const facilityName = displayName || item.brandName || item.name;
+    const fullDisplayName = formatWorkspaceDisplayName({
+      facilityName,
+      ownerName: item.owner?.fullName,
+      ownerPhoneNumber: item.owner?.phoneNumber,
+    });
+
+    return {
+      id: String(item.id),
+      organizationName: facilityName,
+      fullDisplayName,
+      factoryDisplayName: meta?.factoryDisplayName,
+      farmDisplayName: meta?.farmDisplayName,
+      organizationGroup:
       item.organizationType?.name ?? item.organizationType?.code ?? "Đơn vị",
     representativeName: item.representative || "Chưa có người đại diện",
     taxCode: item.taxCode || item.code || "--",
@@ -37,7 +88,8 @@ export function mapWorkspaceItems(items: Array<Workspace>): WorkspaceItem[] {
     mainCropName: item.mainCrop?.name || "",
     ownerPhoneNumber: item.owner?.phoneNumber || undefined,
     ownerName: item.owner?.fullName || undefined,
-  }));
+  };
+  });
 }
 
 function readSessionStorage(key: string) {
@@ -105,7 +157,7 @@ async function getDefaultWorkspaceItems(feature?: WorkspaceFeature) {
         size: 100,
       })
       .then((response) => {
-        const items = mapWorkspaceItems(response.content);
+        const items = mapWorkspaceItems(response.content, feature);
         cachedDefaultWorkspaceItems.set(cacheKey, items);
         return items;
       })
@@ -170,7 +222,7 @@ export function WorkspaceProvider({
       .getCurrentWorkspace(currentWorkspaceId, feature)
       .then((workspace) => {
         if (!isActive) return;
-        const [item] = mapWorkspaceItems([workspace]);
+        const [item] = mapWorkspaceItems([workspace], feature);
         setCurrentWorkspace(item ?? null);
       })
       .catch(() => {
@@ -246,7 +298,7 @@ export function WorkspaceProvider({
           page: 0,
           size: 100,
         });
-        const items = mapWorkspaceItems(response.content);
+        const items = mapWorkspaceItems(response.content, feature);
         if (items.length > 0) {
           cachedDefaultWorkspaceItems.set(cacheKey, items);
           setWorkspaces(items);

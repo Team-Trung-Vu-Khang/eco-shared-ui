@@ -1211,6 +1211,18 @@ export const menuDevGroups: MenuSection[] = [
             roles: ["MEVI_FARM_MEMBER"],
           },
           {
+            id: "biological-product",
+            label: "Chế phẩm sinh học",
+            href: "/cultivation-material/biological-product",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
+            id: "byproduct",
+            label: "Phụ phẩm",
+            href: "/cultivation-material/byproduct",
+            roles: ["MEVI_FARM_MEMBER"],
+          },
+          {
             id: "equipment",
             label: "Dụng cụ – Máy móc",
             href: "/cultivation-material/equipment",
@@ -2540,6 +2552,7 @@ export const menuMeviDevGroups: MenuSection[] = [
     ],
   },
 ];
+
 export const menuEcoSystemAdminGroups: MenuSection[] = [
   {
     title: "Quản lý người giới thiệu",

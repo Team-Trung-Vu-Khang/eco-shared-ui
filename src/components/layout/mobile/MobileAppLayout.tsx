@@ -2,7 +2,7 @@ import type { ElementType, ReactNode } from "react";
 import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
+import { WorkspaceProvider, useWorkspace, formatWorkspaceDisplayName } from "@/features/workspace";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
 import {
@@ -65,20 +65,28 @@ function MobileAppLayoutContent({
   const withPhone = (label: string, phone?: string | null) =>
     phone ? `${label} (${phone})` : label;
 
-  // Admin: "Admin (SĐT)" + "Nhà máy <tên chủ> (SĐT)"; tk thường: chỉ dòng 2
+  // Pattern: "tên farm/factory - Tên (số đt của account)"
   const adminLabel = isAdmin ? withPhone("Admin", user?.phoneNumber) : null;
-  const workspaceOwnerName =
-    currentWorkspace?.ownerName ||
-    (isAdmin ? undefined : user?.name) ||
+  const facilityName =
+    (feature === "factory"
+      ? currentWorkspace?.factoryDisplayName
+      : feature === "farm"
+        ? currentWorkspace?.farmDisplayName
+        : undefined) ||
     currentWorkspace?.organizationName;
-  const workspaceLabel = workspaceOwnerName
-    ? withPhone(
-        `${feature === "factory" ? "Nhà máy" : "Nông trại"} ${workspaceOwnerName}`,
-        currentWorkspace?.ownerPhoneNumber ??
-          (isAdmin ? undefined : user?.phoneNumber),
-      )
-    : // Không có workspace (vd: member nhà máy) => chỉ hiện tài khoản
-      withPhone(user?.name || "Tài khoản", user?.phoneNumber);
+
+  const ownerName =
+    currentWorkspace?.ownerName || (isAdmin ? undefined : user?.name);
+  const ownerPhone =
+    currentWorkspace?.ownerPhoneNumber || (isAdmin ? undefined : user?.phoneNumber);
+
+  const workspaceLabel = currentWorkspace
+    ? formatWorkspaceDisplayName({
+        facilityName,
+        ownerName,
+        ownerPhoneNumber: ownerPhone,
+      })
+    : withPhone(user?.name || "Tài khoản", user?.phoneNumber);
 
   return (
     <div className="min-h-dvh bg-slate-50">
