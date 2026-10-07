@@ -2235,13 +2235,13 @@ export const menuMeviDevGroups: MenuSection[] = [
         href: "/lookup-material",
         roles: ["MEVI_FARM_MEMBER", "MEVI_SUPER_ADMIN"],
       },
-      {
-        id: "supply-conversion-rules",
-        label: "Đơn vị quy đổi",
-        icon: Scale,
-        href: "/supply-conversion-rules",
-        roles: ["MEVI_FARM_MEMBER", "MEVI_SUPER_ADMIN"],
-      },
+      // {
+      //   id: "supply-conversion-rules",
+      //   label: "Đơn vị quy đổi",
+      //   icon: Scale,
+      //   href: "/supply-conversion-rules",
+      //   roles: ["MEVI_FARM_MEMBER", "MEVI_SUPER_ADMIN"],
+      // },
       {
         id: "pesticide",
         label: "Thuốc BVTV",
