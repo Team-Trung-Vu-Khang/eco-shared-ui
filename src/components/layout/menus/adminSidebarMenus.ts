@@ -2361,13 +2361,13 @@ export const menuMeviDevGroups: MenuSection[] = [
           },
         ],
       },
-      {
-        id: "season",
-        roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
-        label: "Chu kỳ sinh trưởng",
-        icon: CalendarDays,
-        href: "/season",
-      },
+      // {
+      //   id: "season",
+      //   roles: ["MEVI_ADMIN", "MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN"],
+      //   label: "Chu kỳ sinh trưởng",
+      //   icon: CalendarDays,
+      //   href: "/season",
+      // },
       {
         id: "land-and-terrain",
         label: "Đất đai và Địa hình",
