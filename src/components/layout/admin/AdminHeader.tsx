@@ -152,7 +152,20 @@ export function AdminHeader({
     );
   }, [currentWorkspace, workspaceItems, currentWorkspaceId]);
 
-  const phoneNumber = user?.phoneNumber || "";
+  const facilitySubtitle = React.useMemo(() => {
+    const isFactory = workspaceFeature === "factory";
+    const facilityName = isFactory
+      ? activeWorkspace?.factoryDisplayName?.trim()
+      : activeWorkspace?.farmDisplayName?.trim();
+
+    return (
+      facilityName ||
+      activeWorkspace?.ownerName?.trim() ||
+      activeWorkspace?.representativeName?.trim() ||
+      activeWorkspace?.organizationName?.trim() ||
+      ""
+    );
+  }, [activeWorkspace, workspaceFeature]);
 
   const openWorkspace = (itemId: string) => {
     const selected = workspaceItems.find((item) => item.id === itemId);
@@ -200,7 +213,10 @@ export function AdminHeader({
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className={(moduleSwitcher ? "" : "ml-auto ") + "h-auto gap-2 rounded-full px-2 py-1.5 sm:gap-3"}
+              className={
+                (moduleSwitcher ? "" : "ml-auto ") +
+                "h-auto gap-2 rounded-full px-2 py-1.5 sm:gap-3"
+              }
               data-testid="user-menu"
             >
               <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
@@ -209,13 +225,15 @@ export function AdminHeader({
                   {avatarFallback || "A"}
                 </AvatarFallback>
               </Avatar>
-              <div className="min-w-0 flex max-w-[11rem] flex-col items-start text-left">
+              <div className="min-w-0 flex max-w-[12rem] flex-col items-start text-left">
                 <span className="truncate text-[13px] font-medium leading-tight sm:text-sm">
                   {displayName || "Người dùng"}
                 </span>
-                <span className="truncate text-[11px] text-muted-foreground sm:text-xs">
-                  {phoneNumber || "Chưa có số điện thoại"}
-                </span>
+                {facilitySubtitle && (
+                  <span className="truncate text-[11px] text-muted-foreground sm:text-xs">
+                    {facilitySubtitle}
+                  </span>
+                )}
               </div>
             </Button>
           </DropdownMenuTrigger>
@@ -238,7 +256,9 @@ export function AdminHeader({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="truncate font-medium">
-                      {activeWorkspace?.fullDisplayName || activeWorkspace?.organizationName || "Đơn vị / Tổ chức"}
+                      {activeWorkspace?.fullDisplayName ||
+                        activeWorkspace?.organizationName ||
+                        "Đơn vị / Tổ chức"}
                     </span>
                   </div>
                   <p className="truncate text-xs text-muted-foreground">
@@ -335,7 +355,8 @@ export function AdminHeader({
                               <div className="min-w-0 space-y-1">
                                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                                   <span className="truncate text-sm font-semibold text-foreground">
-                                    {item.fullDisplayName || item.organizationName}
+                                    {item.fullDisplayName ||
+                                      item.organizationName}
                                   </span>
                                   <Badge className="h-5 rounded-full border-0 bg-amber-100 px-2 text-[10px] font-semibold text-amber-800 hover:bg-amber-100">
                                     {item.organizationGroup}

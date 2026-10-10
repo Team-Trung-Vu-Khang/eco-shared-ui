@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import {
   WorkspaceProvider,
   useWorkspace,
-  formatWorkspaceDisplayName,
 } from "@/features/workspace";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
@@ -66,31 +65,24 @@ function MobileAppLayoutContent({
     (user?.role ? [user.role].flat() : [])) as string[];
   const isAdmin = roles.some((role) => ADMIN_ROLES.includes(role));
 
-  const withPhone = (label: string, phone?: string | null) =>
-    phone ? `${label} (${phone})` : label;
-
-  // Pattern: "tên farm/factory - Tên (số đt của account)"
-  const adminLabel = isAdmin ? withPhone("Admin", user?.phoneNumber) : null;
+  const adminLabel = isAdmin ? "Admin" : null;
   const facilityName =
     feature === "factory"
-      ? currentWorkspace?.factoryDisplayName
-      : feature === "farm"
-        ? currentWorkspace?.farmDisplayName
-        : undefined;
+      ? currentWorkspace?.factoryDisplayName?.trim()
+      : currentWorkspace?.farmDisplayName?.trim();
 
   const ownerName =
-    currentWorkspace?.ownerName || (isAdmin ? undefined : user?.name);
-  const ownerPhone =
-    currentWorkspace?.ownerPhoneNumber ||
-    (isAdmin ? undefined : user?.phoneNumber);
+    currentWorkspace?.ownerName ||
+    currentWorkspace?.representativeName ||
+    currentWorkspace?.organizationName ||
+    (isAdmin ? undefined : user?.name);
 
-  const workspaceLabel = currentWorkspace
-    ? formatWorkspaceDisplayName({
-        facilityName,
-        ownerName,
-        ownerPhoneNumber: ownerPhone,
-      })
-    : withPhone(user?.name || "Tài khoản", user?.phoneNumber);
+  // Hiển thị tên Farm/Factory; fallback tên chủ workspace hoặc tên tài khoản (bỏ số điện thoại)
+  const workspaceLabel =
+    facilityName?.trim() ||
+    ownerName?.trim() ||
+    user?.name?.trim() ||
+    "Nông trại";
 
   return (
     <div className="min-h-dvh bg-slate-50">
