@@ -2,7 +2,11 @@ import { useEffect, type ElementType, type ReactNode } from "react";
 import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
+import {
+  WorkspaceProvider,
+  useWorkspace,
+  formatWorkspaceFeatureName,
+} from "@/features/workspace";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
 import {
@@ -27,6 +31,8 @@ export interface MobileAppLayoutProps {
   workspaceFeature?: WorkspaceFeature;
   /** Truyền để hiện nút chuyển phân hệ trên header */
   moduleSwitcher?: ModuleSwitcherProps;
+  /** Danh sách prefix tùy chỉnh ghi đè theo feature (vd: { farm: "Trang trại" }) */
+  workspacePrefixes?: Record<string, string>;
   /** Danh sách route ẩn header (vd: ["/home", "/"]). Mặc định ẩn trên trang chủ mobile */
   ignoredHeaderRoutes?: string[];
   /** Tuỳ chọn ẩn hoàn toàn header */
@@ -64,6 +70,7 @@ function MobileAppLayoutContent({
   brandSubtitle,
   headerActions,
   moduleSwitcher,
+  workspacePrefixes,
   ignoredHeaderRoutes = DEFAULT_IGNORED_HEADER_ROUTES,
   hideHeader = false,
   shouldHideHeader,
@@ -94,10 +101,16 @@ function MobileAppLayoutContent({
   const isAdmin = roles.some((role) => ADMIN_ROLES.includes(role));
 
   const adminLabel = isAdmin ? "Admin" : null;
-  const facilityName =
+  const rawFacilityName =
     feature === "factory"
       ? currentWorkspace?.factoryDisplayName?.trim()
       : currentWorkspace?.farmDisplayName?.trim();
+
+  const facilityName = rawFacilityName
+    ? formatWorkspaceFeatureName(rawFacilityName, feature ?? "farm", {
+        prefixes: workspacePrefixes,
+      })
+    : undefined;
 
   const ownerName =
     currentWorkspace?.ownerName ||
