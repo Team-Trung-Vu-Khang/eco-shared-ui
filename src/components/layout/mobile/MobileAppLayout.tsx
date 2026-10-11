@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from "react";
+import { useEffect, type ElementType, type ReactNode } from "react";
 import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
@@ -72,6 +72,10 @@ function MobileAppLayoutContent({
   const [location] = useLocation();
   const { user } = useAuth();
   const { currentWorkspace, feature } = useWorkspace();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location]);
 
   const isHeaderIgnored =
     hideHeader ||

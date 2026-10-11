@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
@@ -17,6 +17,7 @@ interface StepperFormProps {
   onCancel: () => void;
   loading?: boolean;
   completeLabel?: string;
+  onStepChange?: (stepIndex: number) => void;
 }
 
 export function StepperForm({
@@ -25,8 +26,21 @@ export function StepperForm({
   onCancel,
   loading = false,
   completeLabel = "Hoàn thành",
+  onStepChange,
 }: StepperFormProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    onStepChange?.(currentStep);
+  }, [currentStep, onStepChange]);
 
   const goNext = () => {
     if (currentStep < steps.length - 1) {
@@ -44,7 +58,7 @@ export function StepperForm({
   const isFirstStep = currentStep === 0;
 
   return (
-    <div className="space-y-4">
+    <div ref={containerRef} className="space-y-4">
       <div className="w-full max-w-5xl mx-auto px-4">
         <div className="relative flex w-full">
           {/* Progress Lines Background Container */}
