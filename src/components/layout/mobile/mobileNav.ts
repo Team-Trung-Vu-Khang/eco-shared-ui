@@ -1,8 +1,8 @@
 import {
-  History,
+  ClipboardList,
   Home,
-  Map,
-  NotebookPen,
+  Plus,
+  Sprout,
   UserRound,
   type LucideIcon,
 } from "lucide-react";
@@ -27,23 +27,23 @@ export const MOBILE_NAV_ITEMS: MobileNavItem[] = [
     matchPrefixes: [MOBILE_HOME_PATH],
   },
   {
-    label: "Vùng trồng",
+    label: "Vườn",
     href: "/dashboard",
-    icon: Map,
+    icon: Sprout,
     matchPrefixes: ["/dashboard"],
   },
   {
-    label: "Cập nhật",
+    label: "Ghi nhật ký",
     href: "/diary/incident",
-    icon: NotebookPen,
+    icon: Plus,
     matchPrefixes: ["/diary/incident"],
     isPrimary: true,
   },
   {
-    label: "Lịch sử",
+    label: "Nhật ký",
     href: "/diary/daily-history",
-    icon: History,
-    matchPrefixes: ["/diary/daily-history", "/diary/update"],
+    icon: ClipboardList,
+    matchPrefixes: ["/diary/daily-history", "/diary/update", "/diary/history"],
   },
   {
     label: "Tài khoản",

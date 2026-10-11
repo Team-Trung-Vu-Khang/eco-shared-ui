@@ -2,13 +2,11 @@ import type { ElementType, ReactNode } from "react";
 import { Sprout } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import {
-  WorkspaceProvider,
-  useWorkspace,
-} from "@/features/workspace";
+import { WorkspaceProvider, useWorkspace } from "@/features/workspace";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type";
 import {
+  MOBILE_HOME_PATH,
   MOBILE_NAV_ITEMS,
   isNavItemActive,
   type MobileNavItem,
@@ -29,6 +27,14 @@ export interface MobileAppLayoutProps {
   workspaceFeature?: WorkspaceFeature;
   /** Truyền để hiện nút chuyển phân hệ trên header */
   moduleSwitcher?: ModuleSwitcherProps;
+  /** Danh sách route ẩn header (vd: ["/home", "/"]). Mặc định ẩn trên trang chủ mobile */
+  ignoredHeaderRoutes?: string[];
+  /** Tuỳ chọn ẩn hoàn toàn header */
+  hideHeader?: boolean;
+  /** Hàm điều kiện kiểm tra ẩn header theo pathname */
+  shouldHideHeader?: (location: string) => boolean;
+  /** Tuỳ chỉnh className cho thẻ main */
+  mainClassName?: string;
 }
 
 /** Giao diện mobile: header gọn + bottom navigation, thay cho sidebar */
@@ -48,6 +54,8 @@ const ADMIN_ROLES = [
   "MEVI_FACTORY_ADMIN",
 ];
 
+const DEFAULT_IGNORED_HEADER_ROUTES = [MOBILE_HOME_PATH, "/"];
+
 function MobileAppLayoutContent({
   children,
   navItems = MOBILE_NAV_ITEMS,
@@ -56,10 +64,26 @@ function MobileAppLayoutContent({
   brandSubtitle,
   headerActions,
   moduleSwitcher,
+  ignoredHeaderRoutes = DEFAULT_IGNORED_HEADER_ROUTES,
+  hideHeader = false,
+  shouldHideHeader,
+  mainClassName,
 }: MobileAppLayoutProps) {
   const [location] = useLocation();
   const { user } = useAuth();
   const { currentWorkspace, feature } = useWorkspace();
+
+  const isHeaderIgnored =
+    hideHeader ||
+    shouldHideHeader?.(location) ||
+    Boolean(
+      ignoredHeaderRoutes?.some((route) => {
+        if (route === "/" || route === "") {
+          return location === "/" || location === "";
+        }
+        return location === route || location.startsWith(`${route}/`);
+      }),
+    );
 
   const roles = (user?.roles ??
     (user?.role ? [user.role].flat() : [])) as string[];
@@ -86,35 +110,43 @@ function MobileAppLayoutContent({
 
   return (
     <div className="min-h-dvh bg-slate-50">
-      <header className="sticky top-0 z-40 flex min-h-14 items-center py-1.5 gap-3 border-b border-slate-200 bg-white/95 px-4 backdrop-blur">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <BrandIcon className="h-5 w-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold leading-tight text-slate-900">
-            {brandTitle}
-          </p>
-          {brandSubtitle ? (
-            <p className="truncate text-xs text-slate-500">{brandSubtitle}</p>
-          ) : (
-            <>
-              {adminLabel && (
-                <p className="truncate text-xs font-medium text-primary">
-                  {adminLabel}
+      {!isHeaderIgnored && (
+        <header className="sticky top-0 z-40 flex min-h-14 items-center py-1.5 gap-3 border-b border-slate-200 bg-white/95 px-4 backdrop-blur">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <BrandIcon className="h-5 w-5" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold leading-tight text-slate-900">
+              {brandTitle}
+            </p>
+            {brandSubtitle ? (
+              <p className="truncate text-xs text-slate-500">{brandSubtitle}</p>
+            ) : (
+              <>
+                {adminLabel && (
+                  <p className="truncate text-xs font-medium text-primary">
+                    {adminLabel}
+                  </p>
+                )}
+                <p className="truncate text-xs text-slate-500">
+                  {workspaceLabel}
                 </p>
-              )}
-              <p className="truncate text-xs text-slate-500">
-                {workspaceLabel}
-              </p>
-            </>
-          )}
-        </div>
-        {headerActions}
-        {moduleSwitcher && <ModuleSwitcher {...moduleSwitcher} />}
-      </header>
+              </>
+            )}
+          </div>
+          {headerActions}
+          {moduleSwitcher && <ModuleSwitcher {...moduleSwitcher} />}
+        </header>
+      )}
 
       {/* Chừa chỗ cho thanh điều hướng + vùng an toàn (thanh home iOS) */}
-      <main className="min-w-0 px-4 pt-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
+      <main
+        className={cn(
+          "min-w-0 pb-[calc(5.5rem+env(safe-area-inset-bottom))]",
+          isHeaderIgnored ? "pt-0 px-0" : "px-4 pt-4",
+          mainClassName,
+        )}
+      >
         {children}
       </main>
 
@@ -131,6 +163,36 @@ function MobileAppLayoutContent({
           {navItems.map((item) => {
             const isActive = isNavItemActive(item, location);
             const Icon = item.icon;
+
+            if (item.isPrimary) {
+              return (
+                <li
+                  key={item.href}
+                  className="flex items-center justify-center"
+                >
+                  <Link
+                    href={item.href}
+                    aria-label={item.label}
+                    aria-current={isActive ? "page" : undefined}
+                    className="relative -top-3 flex flex-col items-center justify-center gap-1 group active:scale-90 transition-transform"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/35 ring-4 ring-white transition-all group-active:scale-95">
+                      <Icon className="h-6 w-6 stroke-[2.5]" />
+                    </div>
+                    <span
+                      className={cn(
+                        "line-clamp-1 max-w-full px-0.5 text-center text-[10px] leading-tight",
+                        isActive
+                          ? "text-primary font-bold"
+                          : "text-slate-600 font-medium",
+                      )}
+                    >
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            }
 
             return (
               <li key={item.href} className="flex">

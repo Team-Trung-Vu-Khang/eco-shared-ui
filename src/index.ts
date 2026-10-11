@@ -6,3 +6,5 @@ export * from "./components/index";
 export * from "./hooks/index";
 export * from "./lib/index";
 export * from "./pages/index";
+
+export * from "./features/workspace/index";
