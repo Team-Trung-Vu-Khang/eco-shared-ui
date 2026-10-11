@@ -12,10 +12,32 @@ export * from "./ModuleSwitcher";
 // Mobile layouts
 export * from "./mobile/MobileAppLayout";
 export * from "./mobile/mobileNav";
+export * from "./mobile/mobileNavContext";
 
 // Factory (nhà máy sản xuất)
 export * from "./factory/factoryNav";
 export * from "./factory/FactoryAdminLayout";
 export * from "./factory/FactoryMobileLayout";
 
-export type { MenuSection as AdminMenuSection } from "./menus/adminSidebarMenus";
+// Sidebar menu & Account permissions
+export * from "./sidebar/useAccountSidebarMenu";
+export {
+  filterMenuByContext,
+  getIconComponent,
+  isRouteAuthorized,
+  getCachedFilteredMenu,
+  getCachedMasterMenu,
+} from "./sidebar/menuUtils";
+export * from "./menus/resolveAdminMenu";
+export type {
+  MenuSection as AdminMenuSection,
+  MenuGroup,
+  MenuNote,
+} from "./menus/adminSidebarMenus";
+export type {
+  MenuItem,
+  MenuChild,
+  UserContext,
+  FarmRole,
+  MenuCondition,
+} from "./sidebar/types";

@@ -15,6 +15,7 @@ import {
   isNavItemActive,
   type MobileNavItem,
 } from "./mobileNav";
+import { MobileNavProvider } from "./mobileNavContext";
 import { ModuleSwitcher, type ModuleSwitcherProps } from "../ModuleSwitcher";
 
 export interface MobileAppLayoutProps {
@@ -39,6 +40,8 @@ export interface MobileAppLayoutProps {
   hideHeader?: boolean;
   /** Hàm điều kiện kiểm tra ẩn header theo pathname */
   shouldHideHeader?: (location: string) => boolean;
+  /** Danh sách các route/tiền tố bổ sung cần loại trừ khỏi sidebar profile mobile */
+  extraExcludedPaths?: string[];
   /** Tuỳ chỉnh className cho thẻ main */
   mainClassName?: string;
 }
@@ -47,7 +50,12 @@ export interface MobileAppLayoutProps {
 export function MobileAppLayout(props: MobileAppLayoutProps) {
   return (
     <WorkspaceProvider feature={props.workspaceFeature}>
-      <MobileAppLayoutContent {...props} />
+      <MobileNavProvider
+        navItems={props.navItems}
+        extraExcludedPaths={props.extraExcludedPaths}
+      >
+        <MobileAppLayoutContent {...props} />
+      </MobileNavProvider>
     </WorkspaceProvider>
   );
 }

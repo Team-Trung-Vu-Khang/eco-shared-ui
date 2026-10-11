@@ -15,6 +15,11 @@ export interface Column<T> {
    */
   mobilePriority?: "primary" | "secondary" | "badge" | "hidden";
   /**
+   * Thứ tự hiển thị ưu tiên riêng trên Mobile Card (số nhỏ hơn đứng trước).
+   * Giúp tách biệt hoàn toàn thứ tự cột trên PC và thứ tự trên Mobile Card.
+   */
+  mobileOrder?: number;
+  /**
    * Tùy chỉnh hiển thị riêng cho ô dữ liệu trên mobile card nếu khác desktop
    */
   mobileRender?: (value: unknown, row: T) => React.ReactNode;

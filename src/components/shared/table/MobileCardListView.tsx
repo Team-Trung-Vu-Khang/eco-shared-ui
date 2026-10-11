@@ -1,14 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Search,
-  Loader2,
-  Eye,
-  Pencil,
-  Trash2,
-  Copy,
-} from "lucide-react";
+import { Search, Loader2, Eye, Pencil, Trash2, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TableControllerReturn } from "./useTableController";
 import type { Column } from "./types";
@@ -79,12 +72,14 @@ export function MobileCardListView<T extends { id: string | number }>({
 
   const badgeCol = visibleColList.find((c) => c.mobilePriority === "badge");
 
-  const secondaryCols = visibleColList.filter(
-    (c) =>
-      c.key !== primaryCol?.key &&
-      c.key !== badgeCol?.key &&
-      c.mobilePriority !== "hidden",
-  );
+  const secondaryCols = visibleColList
+    .filter(
+      (c) =>
+        c.key !== primaryCol?.key &&
+        c.key !== badgeCol?.key &&
+        c.mobilePriority !== "hidden",
+    )
+    .sort((a, b) => (a.mobileOrder ?? 999) - (b.mobileOrder ?? 999));
 
   return (
     <div className="space-y-3">
@@ -151,9 +146,7 @@ export function MobileCardListView<T extends { id: string | number }>({
                 </div>
               </div>
 
-              {badgeVal && (
-                <div className="shrink-0">{badgeVal}</div>
-              )}
+              {badgeVal && <div className="shrink-0">{badgeVal}</div>}
             </div>
 
             {/* Body của Card: Các cột phụ */}
