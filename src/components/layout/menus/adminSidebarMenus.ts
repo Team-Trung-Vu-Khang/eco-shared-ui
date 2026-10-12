@@ -2129,7 +2129,7 @@ export const menuMeviDevGroups: MenuSection[] = [
       {
         id: "search-zone",
         roles: ["MEVI_FARM_ADMIN", "MEVI_SUPER_ADMIN", "MEVI_ADMIN"],
-        label: "Tìm kiếm vùng trồng",
+        label: "Tìm kiếm vườn",
         icon: Search,
         href: "/search-zone",
       },
@@ -2142,20 +2142,14 @@ export const menuMeviDevGroups: MenuSection[] = [
         children: [
           {
             id: "region-dist",
-            label: "Phân bố vùng",
+            label: "Phân bố vùng trồng",
             href: "/region-distribution",
             roles: ["MEVI_FARM_MEMBER"],
           },
           {
             id: "area-dist",
-            label: "Phân bố khu vực",
-            href: "/area-distribution",
-            roles: ["MEVI_FARM_MEMBER"],
-          },
-          {
-            id: "plot-dist",
             label: "Phân bố lô",
-            href: "/plot-distribution",
+            href: "/area-distribution",
             roles: ["MEVI_FARM_MEMBER"],
           },
           {
@@ -2176,7 +2170,7 @@ export const menuMeviDevGroups: MenuSection[] = [
           {
             id: "cultivation-region",
             roles: ["MEVI_FARM_MEMBER"],
-            label: "Vùng canh tác",
+            label: "Vườn",
             href: "/cultivation-region",
           },
           // {
