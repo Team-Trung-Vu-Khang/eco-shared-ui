@@ -2308,7 +2308,12 @@ export const menuMeviDevGroups: MenuSection[] = [
           {
             id: "daily-diary-history",
             label: "Lịch sử cập nhật",
-            roles: ["MEVI_FARM_MEMBER"],
+            roles: [
+              "MEVI_FARM_MEMBER",
+              "MEVI_FARM_MEMBER",
+              "MEVI_FARM_ADMIN",
+              "MEVI_SUPER_ADMIN",
+            ],
             href: "/diary/daily-history",
           },
         ],
