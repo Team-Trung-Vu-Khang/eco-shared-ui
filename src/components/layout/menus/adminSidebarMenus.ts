@@ -2287,12 +2287,22 @@ export const menuMeviDevGroups: MenuSection[] = [
         id: "farm-diary-daily",
         label: "Nhật ký thường nhật",
         icon: Zap,
-        roles: ["MEVI_FARM_MEMBER"],
+        roles: [
+          "MEVI_FARM_MEMBER",
+          "MEVI_FARM_ADMIN",
+          "MEVI_SUPER_ADMIN",
+          "MEVI_ADMIN",
+        ],
         children: [
           {
             id: "daily-diary-update",
             label: "Cập nhật thông tin",
-            roles: ["MEVI_FARM_MEMBER"],
+            roles: [
+              "MEVI_FARM_MEMBER",
+              "MEVI_FARM_ADMIN",
+              "MEVI_SUPER_ADMIN",
+              "MEVI_ADMIN",
+            ],
             href: "/diary/incident",
           },
           {
