@@ -56,3 +56,6 @@ export function stripWorkspaceFeaturePrefix(
   );
   return trimmed.replace(pattern, "").trim();
 }
+
+export const SELECTED_WORKSPACE_STORAGE_KEY = "admin_selected_workspace";
+export const WORKSPACE_CHANGE_EVENT = "eco-farm:workspace-change";

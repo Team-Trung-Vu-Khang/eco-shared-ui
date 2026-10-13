@@ -1,6 +1,10 @@
 import * as React from "react";
 import { workspaceApi } from "../api/workspace.api";
 import type { Workspace, WorkspaceFeature } from "../types/workspace.type";
+import {
+  SELECTED_WORKSPACE_STORAGE_KEY,
+  WORKSPACE_CHANGE_EVENT,
+} from "../constants/workspace.constants";
 
 export function formatWorkspaceDisplayName({
   facilityName,
@@ -116,7 +120,7 @@ function resolveWorkspaceId(
   if (currentId) {
     return currentId;
   }
-  const savedWorkspaceId = readSessionStorage("admin_selected_workspace");
+  const savedWorkspaceId = readSessionStorage(SELECTED_WORKSPACE_STORAGE_KEY);
   return savedWorkspaceId || items[0]?.id || null;
 }
 
@@ -194,7 +198,7 @@ export function WorkspaceProvider({
   const [error, setError] = React.useState<string | null>(null);
   const [currentWorkspaceId, setCurrentWorkspaceId] = React.useState<
     string | null
-  >(() => readSessionStorage("admin_selected_workspace"));
+  >(() => readSessionStorage(SELECTED_WORKSPACE_STORAGE_KEY));
 
   const [currentWorkspace, setCurrentWorkspace] =
     React.useState<WorkspaceItem | null>(null);
@@ -202,10 +206,27 @@ export function WorkspaceProvider({
   React.useEffect(() => {
     if (currentWorkspaceId) {
       window.sessionStorage.setItem(
-        "admin_selected_workspace",
+        SELECTED_WORKSPACE_STORAGE_KEY,
         currentWorkspaceId,
       );
     }
+  }, [currentWorkspaceId]);
+
+  React.useEffect(() => {
+    const handleWorkspaceChange = () => {
+      const storedId = readSessionStorage(SELECTED_WORKSPACE_STORAGE_KEY);
+      if (storedId && storedId !== currentWorkspaceId) {
+        setCurrentWorkspaceId(storedId);
+      }
+    };
+
+    window.addEventListener(WORKSPACE_CHANGE_EVENT, handleWorkspaceChange);
+    window.addEventListener("storage", handleWorkspaceChange);
+
+    return () => {
+      window.removeEventListener(WORKSPACE_CHANGE_EVENT, handleWorkspaceChange);
+      window.removeEventListener("storage", handleWorkspaceChange);
+    };
   }, [currentWorkspaceId]);
 
   // Always trust the API for the currently selected workspace's details —
