@@ -6,6 +6,7 @@ import {
   menuProdRiceGroups,
   type MenuSection,
 } from "./adminSidebarMenus";
+import { menuShopAdminGroups } from "../shop/shopNav";
 import { FACTORY_MENU_GROUPS, FACTORY_OWNER_MENU_GROUPS } from "../factory/factoryNav";
 
 export interface AdminMenuOptions {
@@ -18,6 +19,8 @@ export interface AdminMenuOptions {
   isFactory?: boolean;
   /** Tài khoản chủ nhà máy — menu rút gọn */
   isOwnerFactory?: boolean;
+  /** Quản trị cửa hàng */
+  isShop?: boolean;
 }
 
 export function resolveAdminMenu({
@@ -28,8 +31,10 @@ export function resolveAdminMenu({
   isEcoSystemAdmin,
   isFactory,
   isOwnerFactory,
+  isShop,
 }: AdminMenuOptions): MenuSection[] {
   if (menu) return menu;
+  if (isShop) return menuShopAdminGroups;
   if (isMevi) return menuMeviDevGroups;
   if (isDev) return menuDevGroups;
   if (isRice) return menuProdRiceGroups;

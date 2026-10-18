@@ -27,6 +27,8 @@ export interface AdminLayoutProps {
   isEcoSystemAdmin?: boolean;
   isFactory?: boolean;
   isOwnerFactory?: boolean;
+  /** Quản trị cửa hàng — không cần workspace */
+  isShop?: boolean;
   /** Menu sidebar tùy chỉnh — ưu tiên hơn isDev/isMevi/isRice/isEcoSystemAdmin/isFactory */
   menu?: MenuSection[];
   brandIcon?: ElementType;
@@ -59,6 +61,7 @@ function AdminLayoutContent({
   isEcoSystemAdmin = false,
   isFactory = false,
   isOwnerFactory = false,
+  isShop = false,
   menu,
   brandIcon,
   brandTitle,
@@ -115,7 +118,8 @@ function AdminLayoutContent({
   const { user, isLoading } = useAuth();
   const { workspaces, isLoading: isWorkspaceLoading } = useWorkspace();
   // Trang factory: role factory khác (không phải owner) có thể không có workspace
-  const needsWorkspace = !isEcoSystemAdmin && !(isFactory && !isOwnerFactory);
+  const needsWorkspace =
+    !isEcoSystemAdmin && !isShop && !(isFactory && !isOwnerFactory);
 
   const userContext = useMemo(
     () => ({
@@ -136,8 +140,18 @@ function AdminLayoutContent({
         isEcoSystemAdmin,
         isFactory,
         isOwnerFactory,
+        isShop,
       }),
-    [menu, isDev, isMevi, isRice, isEcoSystemAdmin, isFactory, isOwnerFactory],
+    [
+      menu,
+      isDev,
+      isMevi,
+      isRice,
+      isEcoSystemAdmin,
+      isFactory,
+      isOwnerFactory,
+      isShop,
+    ],
   );
 
   const isAuthorized = useMemo(() => {

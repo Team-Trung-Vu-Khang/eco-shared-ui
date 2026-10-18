@@ -19,6 +19,11 @@ export * from "./factory/factoryNav";
 export * from "./factory/FactoryAdminLayout";
 export * from "./factory/FactoryMobileLayout";
 
+// Shop (quản trị cửa hàng)
+export * from "./shop/shopNav";
+export * from "./shop/ShopAdminLayout";
+export * from "./shop/ShopMobileLayout";
+
 // Sidebar menu & Account permissions
 export * from "./sidebar/useAccountSidebarMenu";
 export {
