@@ -115,21 +115,34 @@ function resolveWorkspaceId(
   if (feature && items.length === 0) {
     return null;
   }
-  // Keep an already-selected id even if it's outside the default page —
-  // it may belong to a workspace found via search, which gets hydrated
-  // separately by fetching /api/center/workspaces/current.
-  if (currentId && typeof currentId === "string" && currentId.trim() !== "") {
-    return currentId.trim();
-  }
+
   const savedWorkspaceId = readSessionStorage(SELECTED_WORKSPACE_STORAGE_KEY);
-  if (
-    savedWorkspaceId &&
-    typeof savedWorkspaceId === "string" &&
-    savedWorkspaceId.trim() !== ""
-  ) {
-    return savedWorkspaceId.trim();
+  const candidateId =
+    currentId && typeof currentId === "string" && currentId.trim() !== ""
+      ? currentId.trim()
+      : savedWorkspaceId &&
+          typeof savedWorkspaceId === "string" &&
+          savedWorkspaceId.trim() !== ""
+        ? savedWorkspaceId.trim()
+        : null;
+
+  // 1. Nếu candidateId nằm trong danh sách quyền thực tế của user -> An toàn sử dụng
+  if (candidateId && items.some((item) => item.id === candidateId)) {
+    return candidateId;
   }
-  return items[0]?.id || null;
+
+  // 2. Nếu candidateId không nằm trong items:
+  // - Khi items đã nạp đầy đủ (items.length < 100 - phần lớn là nông dân / farm member chỉ có ít workspace),
+  //   chắc chắn candidateId là rác từ phiên cũ hoặc không có quyền -> Bắt buộc fallback về items[0].
+  // - Khi hệ thống có > 100 workspaces (Admin có thể search farm ở trang sau), mới tạm giữ candidateId.
+  if (items.length > 0) {
+    if (items.length < 100 || !candidateId) {
+      return items[0]?.id || null;
+    }
+    return candidateId;
+  }
+
+  return null;
 }
 
 export interface WorkspaceContextType {
