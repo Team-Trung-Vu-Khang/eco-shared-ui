@@ -4,6 +4,7 @@ import type { Workspace, WorkspaceFeature } from "../types/workspace.type";
 import {
   SELECTED_WORKSPACE_STORAGE_KEY,
   WORKSPACE_CHANGE_EVENT,
+  WORKSPACE_DATA_UPDATED_EVENT,
 } from "../constants/workspace.constants";
 
 export function formatWorkspaceDisplayName({
@@ -117,11 +118,18 @@ function resolveWorkspaceId(
   // Keep an already-selected id even if it's outside the default page —
   // it may belong to a workspace found via search, which gets hydrated
   // separately by fetching /api/center/workspaces/current.
-  if (currentId) {
-    return currentId;
+  if (currentId && typeof currentId === "string" && currentId.trim() !== "") {
+    return currentId.trim();
   }
   const savedWorkspaceId = readSessionStorage(SELECTED_WORKSPACE_STORAGE_KEY);
-  return savedWorkspaceId || items[0]?.id || null;
+  if (
+    savedWorkspaceId &&
+    typeof savedWorkspaceId === "string" &&
+    savedWorkspaceId.trim() !== ""
+  ) {
+    return savedWorkspaceId.trim();
+  }
+  return items[0]?.id || null;
 }
 
 export interface WorkspaceContextType {
@@ -262,9 +270,9 @@ export function WorkspaceProvider({
     async (isRefetch = false) => {
       if (isRefetch) {
         cachedDefaultWorkspaceItems.delete(cacheKey);
+      } else {
+        setIsLoading(true);
       }
-
-      setIsLoading(true);
       setError(null);
 
       try {
@@ -283,6 +291,24 @@ export function WorkspaceProvider({
     },
     [cacheKey, feature],
   );
+
+  React.useEffect(() => {
+    const handleWorkspaceDataUpdated = () => {
+      void loadWorkspaces(true);
+    };
+
+    window.addEventListener(
+      WORKSPACE_DATA_UPDATED_EVENT,
+      handleWorkspaceDataUpdated,
+    );
+
+    return () => {
+      window.removeEventListener(
+        WORKSPACE_DATA_UPDATED_EVENT,
+        handleWorkspaceDataUpdated,
+      );
+    };
+  }, [loadWorkspaces]);
 
   React.useEffect(() => {
     let isActive = true;

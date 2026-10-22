@@ -167,7 +167,7 @@ function AdminLayoutContent({
   const renderContent = () => {
     if (isLoading)
       return <LoadingState message="Đang kiểm tra quyền truy cập..." />;
-    if (needsWorkspace && isWorkspaceLoading)
+    if (needsWorkspace && isWorkspaceLoading && workspaces.length === 0)
       return (
         <LoadingState message="Đang tải danh sách không gian làm việc..." />
       );

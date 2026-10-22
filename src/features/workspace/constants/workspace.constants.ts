@@ -59,3 +59,4 @@ export function stripWorkspaceFeaturePrefix(
 
 export const SELECTED_WORKSPACE_STORAGE_KEY = "admin_selected_workspace";
 export const WORKSPACE_CHANGE_EVENT = "eco-farm:workspace-change";
+export const WORKSPACE_DATA_UPDATED_EVENT = "eco-farm:workspace-data-updated";
