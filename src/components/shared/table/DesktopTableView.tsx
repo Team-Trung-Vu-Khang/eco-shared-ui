@@ -24,6 +24,7 @@ import {
   Pencil,
   Trash2,
   Copy,
+  Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TableControllerReturn } from "./useTableController";
@@ -51,7 +52,13 @@ export function DesktopTableView<T extends { id: string | number }>({
     onEdit,
     onDuplicate,
     onDelete,
+    onWorkflow,
+    onRowClick,
   } = controller;
+
+  const hasActions = Boolean(
+    onView || onEdit || onDuplicate || onDelete || onWorkflow,
+  );
 
   const visibleColumnCount = columns.filter((c) =>
     visibleColumns.has(c.key),
@@ -60,7 +67,7 @@ export function DesktopTableView<T extends { id: string | number }>({
   const rowSpanCount =
     visibleColumnCount +
     (selectable ? 1 : 0) +
-    (onView || onEdit || onDuplicate || onDelete ? 1 : 0);
+    (hasActions ? 1 : 0);
 
   return (
     <div
@@ -95,7 +102,7 @@ export function DesktopTableView<T extends { id: string | number }>({
                   {column.label}
                 </TableHead>
               ))}
-            {(onView || onEdit || onDuplicate || onDelete) && (
+            {hasActions && (
               <TableHead className="px-4 text-center text-xs">
                 Thao tác
               </TableHead>
@@ -141,7 +148,20 @@ export function DesktopTableView<T extends { id: string | number }>({
                   "group transition-all hover:bg-muted/20 border-b border-border last:border-0",
                   selectedRows.has(row.id) &&
                     "bg-primary/5 hover:bg-primary/10",
+                  onRowClick && "cursor-pointer",
                 )}
+                onClick={(e) => {
+                  if (!onRowClick) return;
+                  const target = e.target as HTMLElement | null;
+                  if (
+                    target?.closest(
+                      "button, input, [role='checkbox'], [data-testid^='actions-']",
+                    )
+                  ) {
+                    return;
+                  }
+                  onRowClick(row);
+                }}
                 data-testid={`row-${row.id}`}
               >
                 {selectable && (
@@ -170,7 +190,7 @@ export function DesktopTableView<T extends { id: string | number }>({
                       })()}
                     </TableCell>
                   ))}
-                {(onView || onEdit || onDuplicate || onDelete) && (
+                {hasActions && (
                   <TableCell className="px-4 py-3 text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -209,6 +229,18 @@ export function DesktopTableView<T extends { id: string | number }>({
                           >
                             <Pencil className="w-4 h-4 mr-2" />
                             Chỉnh sửa
+                          </DropdownMenuItem>
+                        )}
+                        {onWorkflow && (
+                          <DropdownMenuItem
+                            onSelect={() =>
+                              runAfterMenuClose(() => onWorkflow(row))
+                            }
+                            data-testid={`workflow-${row.id}`}
+                            className="cursor-pointer"
+                          >
+                            <Workflow className="w-4 h-4 mr-2" />
+                            Quy trình
                           </DropdownMenuItem>
                         )}
                         {onDuplicate && (

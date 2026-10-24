@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Loader2, Eye, Pencil, Trash2, Copy } from "lucide-react";
+import { Search, Loader2, Eye, Pencil, Trash2, Copy, Workflow } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TableControllerReturn } from "./useTableController";
 import type { Column } from "./types";
@@ -27,6 +27,8 @@ export function MobileCardListView<T extends { id: string | number }>({
     onEdit,
     onDuplicate,
     onDelete,
+    onWorkflow,
+    onRowClick,
     renderMobileCard,
   } = controller;
 
@@ -97,6 +99,7 @@ export function MobileCardListView<T extends { id: string | number }>({
                 onEdit: onEdit ? () => onEdit(row) : undefined,
                 onDuplicate: onDuplicate ? () => onDuplicate(row) : undefined,
                 onDelete: onDelete ? () => onDelete(row) : undefined,
+                onWorkflow: onWorkflow ? () => onWorkflow(row) : undefined,
               })}
             </React.Fragment>
           );
@@ -116,7 +119,9 @@ export function MobileCardListView<T extends { id: string | number }>({
             : renderCellValue(rowRecord[badgeCol.key])
           : null;
 
-        const hasActions = Boolean(onView || onEdit || onDuplicate || onDelete);
+        const hasActions = Boolean(
+          onView || onEdit || onWorkflow || onDuplicate || onDelete,
+        );
 
         return (
           <div
@@ -124,7 +129,20 @@ export function MobileCardListView<T extends { id: string | number }>({
             className={cn(
               "rounded-2xl border border-border bg-card p-4 shadow-xs transition-all space-y-3",
               isSelected && "ring-2 ring-primary/40 bg-primary/5",
+              onRowClick && "cursor-pointer",
             )}
+            onClick={(e) => {
+              if (!onRowClick) return;
+              const target = e.target as HTMLElement | null;
+              if (
+                target?.closest(
+                  "button, input, [role='checkbox'], [data-testid^='actions-']",
+                )
+              ) {
+                return;
+              }
+              onRowClick(row);
+            }}
             data-testid={`card-${row.id}`}
           >
             {/* Header của Card: Checkbox + Tiêu đề chính + Badge */}
@@ -205,6 +223,18 @@ export function MobileCardListView<T extends { id: string | number }>({
                   >
                     <Pencil className="w-3.5 h-3.5 text-blue-600" />
                     Sửa
+                  </Button>
+                )}
+                {onWorkflow && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-2.5 rounded-lg text-xs font-semibold gap-1"
+                    onClick={() => onWorkflow(row)}
+                  >
+                    <Workflow className="w-3.5 h-3.5 text-purple-600" />
+                    Quy trình
                   </Button>
                 )}
                 {onDuplicate && (

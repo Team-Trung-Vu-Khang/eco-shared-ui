@@ -3,6 +3,7 @@ import type {
   DataTableProps,
   TableFilterDef,
   TableFilterOption,
+  ColumnFilterOption,
   MobileCardHelpers,
 } from "./table/types";
 import {
@@ -19,6 +20,7 @@ export type {
   DataTableProps,
   TableFilterDef,
   TableFilterOption,
+  ColumnFilterOption,
   MobileCardHelpers,
   TableControllerReturn,
 };

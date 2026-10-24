@@ -24,6 +24,8 @@ export interface TableControllerReturn<T extends { id: string | number }> {
   onEdit?: (row: T) => void;
   onDuplicate?: (row: T) => void;
   onDelete?: (row: T) => void;
+  onWorkflow?: (row: T) => void;
+  onRowClick?: (row: T) => void;
 
   search: string;
   handleSearchChange: (value: string) => void;
@@ -71,6 +73,8 @@ export function useTableController<T extends { id: string | number }>({
   onEdit,
   onDuplicate,
   onDelete,
+  onWorkflow,
+  onRowClick,
   loading = false,
   pageSize = 10,
   mobilePageSize,
@@ -288,6 +292,8 @@ export function useTableController<T extends { id: string | number }>({
     onEdit,
     onDuplicate,
     onDelete,
+    onWorkflow,
+    onRowClick,
 
     search,
     handleSearchChange,

@@ -43,7 +43,7 @@ export function FormDialog({
 
   const contentAriaProps = description
     ? {}
-    : { "aria-describedby": undefined as const };
+    : { "aria-describedby": undefined };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

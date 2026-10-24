@@ -1,9 +1,9 @@
 import type React from "react";
 
-export interface Column<T> {
+export interface Column<T, V = any> {
   key: string;
   label: string;
-  render?: (value: unknown, row: T) => React.ReactNode;
+  render?: (value: V, row: T) => React.ReactNode;
   sortable?: boolean;
   width?: string;
   /**
@@ -22,13 +22,15 @@ export interface Column<T> {
   /**
    * Tùy chỉnh hiển thị riêng cho ô dữ liệu trên mobile card nếu khác desktop
    */
-  mobileRender?: (value: unknown, row: T) => React.ReactNode;
+  mobileRender?: (value: V, row: T) => React.ReactNode;
 }
 
 export interface TableFilterOption {
   label: string;
   value: string;
 }
+
+export type ColumnFilterOption = TableFilterOption;
 
 export interface TableFilterDef {
   key: string;
@@ -44,6 +46,7 @@ export interface MobileCardHelpers<T = unknown> {
   onEdit?: () => void;
   onDuplicate?: () => void;
   onDelete?: () => void;
+  onWorkflow?: () => void;
 }
 
 export interface DataTableProps<T> {
@@ -67,6 +70,8 @@ export interface DataTableProps<T> {
   onEdit?: (row: T) => void;
   onDuplicate?: (row: T) => void;
   onDelete?: (row: T) => void;
+  onWorkflow?: (row: T) => void;
+  onRowClick?: (row: T) => void;
   loading?: boolean;
   pageSize?: number;
   /**

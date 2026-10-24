@@ -9,13 +9,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-interface DeleteDialogProps {
+export interface DeleteDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title?: string;
   description?: string;
   onConfirm: () => void;
   loading?: boolean;
+  isPending?: boolean;
 }
 
 export function DeleteDialog({
@@ -25,7 +26,9 @@ export function DeleteDialog({
   description = "Bạn có chắc chắn muốn xóa mục này? Hành động này không thể hoàn tác.",
   onConfirm,
   loading = false,
+  isPending,
 }: DeleteDialogProps) {
+  const isLoading = isPending !== undefined ? isPending : loading;
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent data-testid="delete-dialog">
@@ -34,12 +37,12 @@ export function DeleteDialog({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={loading} data-testid="delete-cancel">
+          <AlertDialogCancel disabled={isLoading} data-testid="delete-cancel">
             Hủy
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            loading={loading}
+            loading={isLoading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             data-testid="delete-confirm"
           >
