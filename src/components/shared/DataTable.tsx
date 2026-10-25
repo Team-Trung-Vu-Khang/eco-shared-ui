@@ -5,6 +5,7 @@ import type {
   TableFilterOption,
   ColumnFilterOption,
   MobileCardHelpers,
+  RowAction,
 } from "./table/types";
 import {
   useTableController,
@@ -22,6 +23,7 @@ export type {
   TableFilterOption,
   ColumnFilterOption,
   MobileCardHelpers,
+  RowAction,
   TableControllerReturn,
 };
 export { useTableController };

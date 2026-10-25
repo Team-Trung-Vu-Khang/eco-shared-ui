@@ -4,6 +4,7 @@ import type {
   Column,
   TableFilterDef,
   MobileCardHelpers,
+  RowAction,
 } from "./types";
 
 export interface TableControllerReturn<T extends { id: string | number }> {
@@ -26,6 +27,11 @@ export interface TableControllerReturn<T extends { id: string | number }> {
   onDelete?: (row: T) => void;
   onWorkflow?: (row: T) => void;
   onRowClick?: (row: T) => void;
+  rowActions: RowAction<T>[];
+  /** Có thao tác nào cho bảng (mặc định hoặc tuỳ biến) → hiện cột "Thao tác" */
+  hasRowActions: boolean;
+  /** rowActions còn hiển thị với dòng này */
+  actionsFor: (row: T) => RowAction<T>[];
 
   search: string;
   handleSearchChange: (value: string) => void;
@@ -75,6 +81,7 @@ export function useTableController<T extends { id: string | number }>({
   onDelete,
   onWorkflow,
   onRowClick,
+  rowActions = [],
   loading = false,
   pageSize = 10,
   mobilePageSize,
@@ -294,6 +301,9 @@ export function useTableController<T extends { id: string | number }>({
     onDelete,
     onWorkflow,
     onRowClick,
+    rowActions,
+    hasRowActions: Boolean(onView || onEdit || onWorkflow || onDuplicate || onDelete || rowActions.length),
+    actionsFor: (row: T) => rowActions.filter((a) => !a.hidden?.(row)),
 
     search,
     handleSearchChange,

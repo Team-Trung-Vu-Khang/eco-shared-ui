@@ -54,11 +54,9 @@ export function DesktopTableView<T extends { id: string | number }>({
     onDelete,
     onWorkflow,
     onRowClick,
+    hasRowActions,
+    actionsFor,
   } = controller;
-
-  const hasActions = Boolean(
-    onView || onEdit || onDuplicate || onDelete || onWorkflow,
-  );
 
   const visibleColumnCount = columns.filter((c) =>
     visibleColumns.has(c.key),
@@ -67,7 +65,7 @@ export function DesktopTableView<T extends { id: string | number }>({
   const rowSpanCount =
     visibleColumnCount +
     (selectable ? 1 : 0) +
-    (hasActions ? 1 : 0);
+    (hasRowActions ? 1 : 0);
 
   return (
     <div
@@ -102,7 +100,7 @@ export function DesktopTableView<T extends { id: string | number }>({
                   {column.label}
                 </TableHead>
               ))}
-            {hasActions && (
+            {hasRowActions && (
               <TableHead className="px-4 text-center text-xs">
                 Thao tác
               </TableHead>
@@ -190,7 +188,7 @@ export function DesktopTableView<T extends { id: string | number }>({
                       })()}
                     </TableCell>
                   ))}
-                {hasActions && (
+                {hasRowActions && (
                   <TableCell className="px-4 py-3 text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -203,7 +201,7 @@ export function DesktopTableView<T extends { id: string | number }>({
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-40 z-50">
+                      <DropdownMenuContent align="end" className="min-w-40 z-50">
                         <DropdownMenuLabel className="text-[10px] uppercase text-muted-foreground px-2 py-1">
                           Tùy chọn
                         </DropdownMenuLabel>
@@ -255,7 +253,35 @@ export function DesktopTableView<T extends { id: string | number }>({
                             Nhân bản
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuSeparator />
+                        {actionsFor(row)
+                          .filter((a) => !a.destructive)
+                          .map((a) => (
+                            <DropdownMenuItem
+                              key={a.key}
+                              disabled={a.disabled?.(row)}
+                              onSelect={() => runAfterMenuClose(() => a.onClick(row))}
+                              data-testid={`${a.key}-${row.id}`}
+                              className="cursor-pointer"
+                            >
+                              {a.icon && <a.icon className="w-4 h-4 mr-2" />}
+                              {a.label}
+                            </DropdownMenuItem>
+                          ))}
+                        {(onDelete || actionsFor(row).some((a) => a.destructive)) && <DropdownMenuSeparator />}
+                        {actionsFor(row)
+                          .filter((a) => a.destructive)
+                          .map((a) => (
+                            <DropdownMenuItem
+                              key={a.key}
+                              disabled={a.disabled?.(row)}
+                              onSelect={() => runAfterMenuClose(() => a.onClick(row))}
+                              data-testid={`${a.key}-${row.id}`}
+                              className="text-destructive focus:text-destructive cursor-pointer"
+                            >
+                              {a.icon && <a.icon className="w-4 h-4 mr-2" />}
+                              {a.label}
+                            </DropdownMenuItem>
+                          ))}
                         {onDelete && (
                           <DropdownMenuItem
                             onSelect={() =>
