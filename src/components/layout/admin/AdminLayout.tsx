@@ -1,7 +1,7 @@
 import type { ElementType, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
-import { AdminHeader } from "./AdminHeader";
+import { AdminHeader, type AccountMenuItemsProp } from "./AdminHeader";
 import type { ModuleSwitcherProps } from "../ModuleSwitcher";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -36,6 +36,8 @@ export interface AdminLayoutProps {
   brandSubtitle?: ReactNode;
   /** Truyền để hiện nút chuyển phân hệ trên header */
   moduleSwitcher?: ModuleSwitcherProps;
+  /** Tùy biến các mục trong context menu tài khoản của header */
+  accountMenuItems?: AccountMenuItemsProp;
 }
 
 export function AdminLayout(props: AdminLayoutProps) {
@@ -67,6 +69,7 @@ function AdminLayoutContent({
   brandTitle,
   brandSubtitle,
   moduleSwitcher,
+  accountMenuItems,
 }: AdminLayoutProps) {
   const isMobile = useIsMobile();
   const [sidebarPreferenceCollapsed, setSidebarPreferenceCollapsed] = useState(
@@ -238,6 +241,7 @@ function AdminLayoutContent({
         <AdminHeader
           isEcoSystemAdmin={isEcoSystemAdmin}
           moduleSwitcher={moduleSwitcher}
+          accountMenuItems={accountMenuItems}
           onToggleSidebar={
             isMobile ? () => setMobileSidebarOpen(true) : undefined
           }

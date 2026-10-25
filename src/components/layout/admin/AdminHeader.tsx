@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Building2, ExternalLink, Check, Menu, Search } from "lucide-react";
+import {
+  Building2,
+  ExternalLink,
+  Check,
+  Menu,
+  Search,
+} from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { SUPER_ADMIN_ROLE } from "../sidebar/types";
 import {
@@ -32,16 +38,45 @@ import { useLocation } from "wouter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ModuleSwitcher, type ModuleSwitcherProps } from "../ModuleSwitcher";
 
-export function AdminHeader({
-  isEcoSystemAdmin = false,
-  onToggleSidebar,
-  moduleSwitcher,
-}: {
+export interface AccountMenuItemConfig {
+  label: string;
+  icon?: React.ElementType;
+  href?: string;
+  onClick?: (helpers: {
+    closeMenu: () => void;
+    setLocation: (path: string) => void;
+  }) => void;
+  className?: string;
+}
+
+export interface AccountMenuGroupConfig {
+  label?: string;
+  items: AccountMenuItemConfig[];
+}
+
+export type AccountMenuItemsProp =
+  | React.ReactNode
+  | ((helpers: {
+      closeMenu: () => void;
+      setLocation: (path: string) => void;
+    }) => React.ReactNode)
+  | AccountMenuGroupConfig[];
+
+export interface AdminHeaderProps {
   isEcoSystemAdmin?: boolean;
   onToggleSidebar?: () => void;
   /** Truyền để hiện nút chuyển phân hệ */
   moduleSwitcher?: ModuleSwitcherProps;
-}) {
+  /** Tùy biến các mục trong context menu tài khoản */
+  accountMenuItems?: AccountMenuItemsProp;
+}
+
+export function AdminHeader({
+  isEcoSystemAdmin = false,
+  onToggleSidebar,
+  moduleSwitcher,
+  accountMenuItems,
+}: AdminHeaderProps) {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [, setLocation] = useLocation();
@@ -281,6 +316,56 @@ export function AdminHeader({
               <ExternalLink className="mr-2 h-4 w-4" />
               Mevi Center
             </DropdownMenuItem>
+
+            {accountMenuItems ? (
+              typeof accountMenuItems === "function" ? (
+                accountMenuItems({
+                  closeMenu: () => setAccountMenuOpen(false),
+                  setLocation,
+                })
+              ) : Array.isArray(accountMenuItems) ? (
+                accountMenuItems.map((group, gIdx) => (
+                  <React.Fragment key={gIdx}>
+                    <DropdownMenuSeparator />
+                    {group.label && (
+                      <DropdownMenuLabel className="text-xs text-muted-foreground uppercase font-semibold">
+                        {group.label}
+                      </DropdownMenuLabel>
+                    )}
+                    {group.items.map((item, iIdx) => {
+                      const Icon = item.icon;
+                      return (
+                        <DropdownMenuItem
+                          key={iIdx}
+                          className={`cursor-pointer ${item.className || ""}`}
+                          onSelect={() => {
+                            setAccountMenuOpen(false);
+                            if (item.onClick) {
+                              item.onClick({
+                                closeMenu: () => setAccountMenuOpen(false),
+                                setLocation,
+                              });
+                            } else if (item.href) {
+                              setLocation(item.href);
+                            }
+                          }}
+                        >
+                          {Icon && (
+                            <Icon className="mr-2 h-4 w-4 text-emerald-600" />
+                          )}
+                          {item.label}
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </React.Fragment>
+                ))
+              ) : (
+                <>
+                  <DropdownMenuSeparator />
+                  {accountMenuItems}
+                </>
+              )
+            ) : null}
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem
               className="text-destructive"
