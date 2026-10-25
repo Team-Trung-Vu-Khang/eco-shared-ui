@@ -29,6 +29,8 @@ export function MobileCardListView<T extends { id: string | number }>({
     onDelete,
     onWorkflow,
     onRowClick,
+    hasRowActions,
+    actionsFor,
     renderMobileCard,
   } = controller;
 
@@ -100,6 +102,14 @@ export function MobileCardListView<T extends { id: string | number }>({
                 onDuplicate: onDuplicate ? () => onDuplicate(row) : undefined,
                 onDelete: onDelete ? () => onDelete(row) : undefined,
                 onWorkflow: onWorkflow ? () => onWorkflow(row) : undefined,
+                actions: actionsFor(row).map((a) => ({
+                  key: a.key,
+                  label: a.label,
+                  icon: a.icon,
+                  destructive: a.destructive,
+                  disabled: Boolean(a.disabled?.(row)),
+                  run: () => a.onClick(row),
+                })),
               })}
             </React.Fragment>
           );
@@ -119,9 +129,8 @@ export function MobileCardListView<T extends { id: string | number }>({
             : renderCellValue(rowRecord[badgeCol.key])
           : null;
 
-        const hasActions = Boolean(
-          onView || onEdit || onWorkflow || onDuplicate || onDelete,
-        );
+        const extraActions = actionsFor(row);
+        const hasActions = hasRowActions && (Boolean(onView || onEdit || onWorkflow || onDuplicate || onDelete) || extraActions.length > 0);
 
         return (
           <div
@@ -200,7 +209,24 @@ export function MobileCardListView<T extends { id: string | number }>({
 
             {/* Footer của Card: Nút thao tác một chạm */}
             {hasActions && (
-              <div className="flex items-center justify-end gap-1.5 pt-2 border-t border-border/60">
+              <div className="flex flex-wrap items-center justify-end gap-1.5 pt-2 border-t border-border/60">
+                {extraActions.map((a) => (
+                  <Button
+                    key={a.key}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={a.disabled?.(row)}
+                    className={cn(
+                      "h-8 px-2.5 rounded-lg text-xs font-semibold gap-1",
+                      a.destructive && "text-destructive hover:bg-destructive/10",
+                    )}
+                    onClick={() => a.onClick(row)}
+                  >
+                    {a.icon && <a.icon className="w-3.5 h-3.5" />}
+                    {a.label}
+                  </Button>
+                ))}
                 {onView && (
                   <Button
                     type="button"

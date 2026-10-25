@@ -12,7 +12,7 @@ import type { WorkspaceFeature } from "@/features/workspace/types/workspace.type
 import {
   MOBILE_HOME_PATH,
   MOBILE_NAV_ITEMS,
-  isNavItemActive,
+  getActiveNavHref,
   type MobileNavItem,
 } from "./mobileNav";
 import { MobileNavProvider } from "./mobileNavContext";
@@ -133,6 +133,8 @@ function MobileAppLayoutContent({
     user?.name?.trim() ||
     "Nông trại";
 
+  const activeHref = getActiveNavHref(navItems, location);
+
   return (
     <div className="min-h-dvh bg-slate-50">
       {!isHeaderIgnored && (
@@ -186,7 +188,7 @@ function MobileAppLayoutContent({
           }}
         >
           {navItems.map((item) => {
-            const isActive = isNavItemActive(item, location);
+            const isActive = item.href === activeHref;
             const Icon = item.icon;
 
             if (item.isPrimary) {

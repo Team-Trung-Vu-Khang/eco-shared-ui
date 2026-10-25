@@ -38,6 +38,23 @@ export interface TableFilterDef {
   options: TableFilterOption[];
 }
 
+/**
+ * Thao tác tuỳ biến cho từng dòng, hiển thị cùng các thao tác mặc định
+ * (menu "…" trên desktop, nút ở chân Card trên mobile).
+ */
+export interface RowAction<T> {
+  key: string;
+  label: string;
+  icon?: React.ElementType;
+  onClick: (row: T) => void;
+  /** Tô đỏ như "Xóa" và đặt cuối menu */
+  destructive?: boolean;
+  /** Ẩn thao tác với dòng này */
+  hidden?: (row: T) => boolean;
+  /** Hiện nhưng không cho bấm với dòng này */
+  disabled?: (row: T) => boolean;
+}
+
 export interface MobileCardHelpers<T = unknown> {
   row?: T;
   selected: boolean;
@@ -47,6 +64,8 @@ export interface MobileCardHelpers<T = unknown> {
   onDuplicate?: () => void;
   onDelete?: () => void;
   onWorkflow?: () => void;
+  /** `rowActions` đã lọc theo dòng, gắn sẵn `row` */
+  actions: { key: string; label: string; icon?: React.ElementType; destructive?: boolean; disabled: boolean; run: () => void }[];
 }
 
 export interface DataTableProps<T> {
@@ -72,6 +91,8 @@ export interface DataTableProps<T> {
   onDelete?: (row: T) => void;
   onWorkflow?: (row: T) => void;
   onRowClick?: (row: T) => void;
+  /** Thao tác tuỳ biến thêm vào cùng Xem / Sửa / Nhân bản / Xóa */
+  rowActions?: RowAction<T>[];
   loading?: boolean;
   pageSize?: number;
   /**

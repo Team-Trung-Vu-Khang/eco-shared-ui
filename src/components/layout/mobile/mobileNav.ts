@@ -59,6 +59,32 @@ export const isNavItemActive = (item: MobileNavItem, location: string) =>
     (prefix) => location === prefix || location.startsWith(`${prefix}/`),
   );
 
+/** Độ dài tiền tố khớp dài nhất (0 = không khớp) */
+const matchLength = (item: MobileNavItem, location: string) =>
+  Math.max(
+    0,
+    ...[item.href, ...item.matchPrefixes].map((p) =>
+      p && (location === p || location.startsWith(`${p}/`)) ? p.length : 0,
+    ),
+  );
+
+/**
+ * Mục đang active: chỉ MỘT mục khớp cụ thể nhất (tiền tố dài nhất), để
+ * "/admin/products/approval" không làm sáng cả "Sản phẩm" lẫn "Duyệt SP".
+ */
+export function getActiveNavHref(items: MobileNavItem[], location: string) {
+  let best: string | undefined;
+  let bestLen = 0;
+  for (const item of items) {
+    const len = matchLength(item, location);
+    if (len > bestLen) {
+      best = item.href;
+      bestLen = len;
+    }
+  }
+  return best;
+}
+
 /**
  * Trả về danh sách các route và tiền tố thuộc bottom navigation và các luồng bổ sung.
  * Dùng để loại trừ các mục đã có khỏi danh sách sidebar khi hiển thị trên mobile Profile.

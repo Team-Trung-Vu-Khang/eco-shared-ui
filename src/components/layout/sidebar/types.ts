@@ -16,6 +16,7 @@ export type FarmRole =
   | "MEVI_FARM_ADMIN"
   | "MEVI_FACTORY_ADMIN"
   | "MEVI_SHOP_ADMIN"
+  | "MEVI_SHOP_STAFF"
   // Người dùng theo phân hệ
   | "MEVI_EDU_TRAINEES"
   | "MEVI_EDU_LECTURER"
