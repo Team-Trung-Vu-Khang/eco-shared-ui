@@ -51,6 +51,8 @@ import {
   Group,
   Zap,
   HeartPulse,
+  Send,
+  Store,
 } from "lucide-react";
 
 interface MenuItem {
@@ -1711,6 +1713,25 @@ export const menuDevGroups: MenuSection[] = [
             roles: ["MEVI_FARM_MEMBER"],
           },
         ],
+      },
+    ],
+  },
+  {
+    title: "Bán hàng ở Mevi Shop",
+    items: [
+      {
+        id: "mevi-shop-proposals",
+        label: "Đề xuất cung ứng",
+        icon: Send,
+        href: "/shop/proposals",
+        roles: ["MEVI_FARM_MEMBER"],
+      },
+      {
+        id: "mevi-shop-linked-products",
+        label: "Lịch sử liên kết sản phẩm",
+        icon: Store,
+        href: "/shop/linked-products",
+        roles: ["MEVI_FARM_MEMBER"],
       },
     ],
   },
