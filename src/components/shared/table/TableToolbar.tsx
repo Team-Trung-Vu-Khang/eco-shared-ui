@@ -27,6 +27,8 @@ export function TableToolbar<T extends { id: string | number }>({
     handleSearchChange,
     filterable,
     filters,
+    onFilterClick,
+    filterCount,
     activeFilters,
     handleFilterChange,
     clearFilters,
@@ -37,9 +39,10 @@ export function TableToolbar<T extends { id: string | number }>({
     setVisibleColumns,
   } = controller;
 
-  const showFilter = filterable && filters.length > 0;
+  const customFilter = filterable && !!onFilterClick;
+  const showFilter = filterable && !onFilterClick && filters.length > 0;
   const showToolbar =
-    searchable || showFilter || columnToggleable || downloadable;
+    searchable || showFilter || customFilter || columnToggleable || downloadable;
 
   if (!showToolbar && Object.keys(activeFilters).length === 0) {
     return null;
@@ -62,6 +65,25 @@ export function TableToolbar<T extends { id: string | number }>({
                   data-testid="table-search"
                 />
               </div>
+            )}
+
+            {customFilter && (
+              <Button
+                variant="outline"
+                className="h-10 border-muted-foreground/20 gap-2"
+                onClick={onFilterClick}
+              >
+                <Filter className="w-4 h-4" />
+                <span>Bộ lọc</span>
+                {filterCount > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="ml-1 h-5 px-1.5 bg-primary/10 text-primary"
+                  >
+                    {filterCount}
+                  </Badge>
+                )}
+              </Button>
             )}
 
             {showFilter && (
@@ -168,7 +190,7 @@ export function TableToolbar<T extends { id: string | number }>({
         </div>
       )}
 
-      {Object.keys(activeFilters).length > 0 && (
+      {!customFilter && Object.keys(activeFilters).length > 0 && (
         <div className="flex flex-wrap gap-2 items-center">
           <span className="text-xs font-medium text-muted-foreground">
             Đang lọc theo:

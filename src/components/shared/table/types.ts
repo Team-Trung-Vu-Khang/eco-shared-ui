@@ -104,6 +104,13 @@ export interface DataTableProps<T> {
   totalElements?: number;
   onFilterChange?: (key: string, value: string) => void;
   filters?: TableFilterDef[];
+  /**
+   * Bộ lọc tuỳ biến: khi truyền, nút "Bộ lọc" trên toolbar gọi hàm này (VD: mở Sheet/Dialog riêng)
+   * thay cho dropdown mặc định, và `filters` không được dùng.
+   */
+  onFilterClick?: () => void;
+  /** Số bộ lọc đang áp dụng — hiện badge trên nút "Bộ lọc" khi dùng `onFilterClick` */
+  filterCount?: number;
 
   /**
    * Tùy chọn opt-in hiển thị Card View trên mobile (Mặc định: false - đảm bảo tương thích ngược 100%).

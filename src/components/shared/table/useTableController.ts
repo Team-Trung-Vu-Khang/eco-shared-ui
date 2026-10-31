@@ -18,6 +18,8 @@ export interface TableControllerReturn<T extends { id: string | number }> {
   downloadable: boolean;
   searchPlaceholder: string;
   filters: TableFilterDef[];
+  onFilterClick?: () => void;
+  filterCount: number;
   enableMobileCard: boolean;
   renderMobileCard?: (row: T, helpers: MobileCardHelpers<T>) => React.ReactNode;
 
@@ -89,6 +91,8 @@ export function useTableController<T extends { id: string | number }>({
   totalElements,
   onFilterChange,
   filters = [],
+  onFilterClick,
+  filterCount = 0,
   enableMobileCard = false,
   renderMobileCard,
   mobileBreakpoint = 768,
@@ -292,6 +296,8 @@ export function useTableController<T extends { id: string | number }>({
     downloadable,
     searchPlaceholder,
     filters,
+    onFilterClick,
+    filterCount,
     enableMobileCard,
     renderMobileCard,
 
