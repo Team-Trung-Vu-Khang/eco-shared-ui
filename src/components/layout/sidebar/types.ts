@@ -17,12 +17,14 @@ export type FarmRole =
   | "MEVI_FACTORY_ADMIN"
   | "MEVI_SHOP_ADMIN"
   | "MEVI_SHOP_STAFF"
+  | "MEVI_SHOP_AGENT"
   // Người dùng theo phân hệ
   | "MEVI_EDU_TRAINEES"
   | "MEVI_EDU_LECTURER"
   | "MEVI_FARM_MEMBER"
   | "MEVI_FACTORY_MEMBER"
-  | "MEVI_SHOP_MEMBER";
+  | "MEVI_SHOP_MEMBER"
+  | "MEVI_CUSTOMER";
 
 /** Nhóm quản trị nhà máy: super admin, admin mevi, admin nhà máy */
 export const FACTORY_ADMIN_ROLES: FarmRole[] = [
