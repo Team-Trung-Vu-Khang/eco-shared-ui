@@ -44,12 +44,17 @@ export interface MobileAppLayoutProps {
   extraExcludedPaths?: string[];
   /** Tuỳ chỉnh className cho thẻ main */
   mainClassName?: string;
+  /** Polling khi chưa có workspace (mặc định true). Tắt với phân hệ không cần workspace (vd: shop) */
+  pollWhenEmpty?: boolean;
 }
 
 /** Giao diện mobile: header gọn + bottom navigation, thay cho sidebar */
 export function MobileAppLayout(props: MobileAppLayoutProps) {
   return (
-    <WorkspaceProvider feature={props.workspaceFeature}>
+    <WorkspaceProvider
+      feature={props.workspaceFeature}
+      pollWhenEmpty={props.pollWhenEmpty ?? true}
+    >
       <MobileNavProvider
         navItems={props.navItems}
         extraExcludedPaths={props.extraExcludedPaths}

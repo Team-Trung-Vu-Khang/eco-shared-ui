@@ -16,6 +16,8 @@ export function ShopMobileLayout({
 }: ShopMobileLayoutProps) {
   return (
     <MobileAppLayout
+      // Quản trị cửa hàng không cần workspace → không poll /workspaces mỗi 5s
+      pollWhenEmpty={false}
       navItems={navItems}
       brandIcon={brandIcon}
       brandTitle={brandTitle}

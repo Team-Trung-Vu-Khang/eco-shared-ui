@@ -44,8 +44,8 @@ export function AdminLayout(props: AdminLayoutProps) {
   return (
     <WorkspaceProvider
       feature={props.isFactory || props.isOwnerFactory ? "factory" : undefined}
-      // Trang factory (không phải owner): không có workspace là hợp lệ → không polling
-      pollWhenEmpty={!props.isFactory || !!props.isOwnerFactory}
+      // Trang factory (không phải owner) / quản trị cửa hàng: không có workspace là hợp lệ → không polling
+      pollWhenEmpty={!props.isShop && (!props.isFactory || !!props.isOwnerFactory)}
     >
       <AdminLayoutContent {...props} />
     </WorkspaceProvider>
