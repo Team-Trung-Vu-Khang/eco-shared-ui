@@ -79,6 +79,10 @@ export interface DataTableProps<T> {
   columnToggleable?: boolean;
   /** Hiện nút tải xuống (mặc định true) */
   downloadable?: boolean;
+  /** Bấm nút tải xuống (VD: tạo export job). Không truyền thì nút chỉ hiển thị */
+  onDownload?: () => void;
+  /** Đang tải xuống — khóa nút và hiện spinner */
+  downloading?: boolean;
   searchPlaceholder?: string;
   selectable?: boolean;
   onSearch?: (value: string) => void;

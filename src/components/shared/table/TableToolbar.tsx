@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
-import { Search, Filter, Settings2, Download, X } from "lucide-react";
+import { Search, Filter, Settings2, Download, Loader2, X } from "lucide-react";
 import type { TableControllerReturn } from "./useTableController";
 
 interface TableToolbarProps<T extends { id: string | number }> {
@@ -34,6 +34,8 @@ export function TableToolbar<T extends { id: string | number }>({
     clearFilters,
     columnToggleable,
     downloadable,
+    onDownload,
+    downloading,
     columns,
     visibleColumns,
     setVisibleColumns,
@@ -181,8 +183,16 @@ export function TableToolbar<T extends { id: string | number }>({
                   variant="outline"
                   size="icon"
                   className="h-10 w-10 border-muted-foreground/20"
+                  onClick={onDownload}
+                  disabled={downloading}
+                  title="Tải xuống"
+                  aria-label="Tải xuống"
                 >
-                  <Download className="w-4 h-4" />
+                  {downloading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
                 </Button>
               )}
             </div>

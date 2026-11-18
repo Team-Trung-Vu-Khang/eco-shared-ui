@@ -16,6 +16,8 @@ export interface TableControllerReturn<T extends { id: string | number }> {
   filterable: boolean;
   columnToggleable: boolean;
   downloadable: boolean;
+  onDownload?: () => void;
+  downloading?: boolean;
   searchPlaceholder: string;
   filters: TableFilterDef[];
   onFilterClick?: () => void;
@@ -71,6 +73,8 @@ export function useTableController<T extends { id: string | number }>({
   filterable = true,
   columnToggleable = true,
   downloadable = true,
+  onDownload,
+  downloading = false,
   searchPlaceholder = "Tìm kiếm...",
   selectable = false,
   onSearch,
@@ -116,7 +120,11 @@ export function useTableController<T extends { id: string | number }>({
   });
 
   const [rowsPerPage, setRowsPerPage] = useState(() => {
-    if (typeof window !== "undefined" && window.innerWidth <= mobileBreakpoint && mobilePageSize) {
+    if (
+      typeof window !== "undefined" &&
+      window.innerWidth <= mobileBreakpoint &&
+      mobilePageSize
+    ) {
       return mobilePageSize;
     }
     return pageSize;
@@ -125,7 +133,6 @@ export function useTableController<T extends { id: string | number }>({
   useEffect(() => {
     setRowsPerPage(isMobile && mobilePageSize ? mobilePageSize : pageSize);
   }, [isMobile, mobilePageSize, pageSize]);
-
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -162,7 +169,9 @@ export function useTableController<T extends { id: string | number }>({
       const matchesSearch =
         !search ||
         rowValues.some((value) =>
-          String(value ?? "").toLowerCase().includes(search.toLowerCase()),
+          String(value ?? "")
+            .toLowerCase()
+            .includes(search.toLowerCase()),
         );
 
       // Advanced filters
@@ -294,6 +303,8 @@ export function useTableController<T extends { id: string | number }>({
     filterable,
     columnToggleable,
     downloadable,
+    onDownload,
+    downloading,
     searchPlaceholder,
     filters,
     onFilterClick,
@@ -308,7 +319,14 @@ export function useTableController<T extends { id: string | number }>({
     onWorkflow,
     onRowClick,
     rowActions,
-    hasRowActions: Boolean(onView || onEdit || onWorkflow || onDuplicate || onDelete || rowActions.length),
+    hasRowActions: Boolean(
+      onView ||
+      onEdit ||
+      onWorkflow ||
+      onDuplicate ||
+      onDelete ||
+      rowActions.length,
+    ),
     actionsFor: (row: T) => rowActions.filter((a) => !a.hidden?.(row)),
 
     search,
